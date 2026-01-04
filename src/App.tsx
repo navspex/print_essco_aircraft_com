@@ -229,9 +229,8 @@ function App() {
       </section>
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
-      <section className="relative py-12 border-y border-slate-700" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/85"></div>
-        <div className="relative max-w-6xl mx-auto px-5 text-center">
+      <section className="py-12 bg-slate-800 border-y border-slate-700">
+        <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
             <div className="flex flex-col items-center">
@@ -258,8 +257,9 @@ function App() {
       </section>
 
       {/* ==================== EBAY BADGE ==================== */}
-      <section className="py-12" style={{ backgroundColor: '#1a2332' }}>
-        <div className="max-w-4xl mx-auto px-5 text-center">
+      <section className="relative py-12" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-900/80"></div>
+        <div className="relative max-w-4xl mx-auto px-5 text-center">
           <a href="https://www.ebay.com/fdbk/feedback_profile/esscoaircraft" target="_blank" rel="noopener noreferrer">
             <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg transition-transform duration-300 hover:scale-[1.02]" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
           </a>
