@@ -375,8 +375,9 @@ function App() {
       </section>
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
-      <section id="faq" className="py-16 bg-slate-800">
-        <div className="max-w-4xl mx-auto px-4">
+      <section id="faq" className="relative py-16" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-800/90"></div>
+        <div className="relative max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3"><HelpCircle className="w-10 h-10 text-amber-400" />Frequently Asked Questions</h2>
           </div>
