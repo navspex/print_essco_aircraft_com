@@ -49,7 +49,7 @@ function App() {
       <section 
         className="min-h-[75vh] flex items-center bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('/images/hero_background.jpg')" 
+          backgroundImage: "linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('/images/hero_background.png')" 
         }}
       >
         <div className="content-container w-full py-20">
@@ -121,7 +121,7 @@ function App() {
         id="about"
         className="py-20 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), url('/images/trust_background.jpg')" 
+          backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), url('/images/trust_background.png')" 
         }}
       >
         <div className="content-container">
@@ -464,7 +464,7 @@ function App() {
         id="faq"
         className="py-20 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.70)), url('/images/FAQ_background.jpg')" 
+          backgroundImage: "linear-gradient(rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.70)), url('/images/FAQ_background.png')" 
         }}
       >
         <div className="content-container">
