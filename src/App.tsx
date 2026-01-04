@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, ChevronRight, ChevronDown, ChevronUp, FileText, Link2, FoldVertical, Layers, Plus, Phone, Mail, Clock, CreditCard, Award } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award } from 'lucide-react';
 
 // ==================== PRICING CONSTANTS ====================
 const PRICING = {
