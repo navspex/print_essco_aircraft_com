@@ -229,7 +229,7 @@ function App() {
       </section>
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
-      <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/10">
+      <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
@@ -257,7 +257,7 @@ function App() {
       </section>
 
       {/* ==================== EBAY BADGE ==================== */}
-      <section className="relative py-12 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative py-12 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="absolute inset-0 bg-slate-900/80 transition-all duration-500 group-hover:bg-slate-900/70"></div>
         <div className="relative max-w-4xl mx-auto px-5 text-center">
           <a href="https://www.ebay.com/fdbk/feedback_profile/esscoaircraft" target="_blank" rel="noopener noreferrer" className="block">
@@ -268,7 +268,7 @@ function App() {
       </section>
 
       {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
-      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/10">
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Clear, Competitive Pricing</h2>
@@ -318,7 +318,7 @@ function App() {
       </section>
 
       {/* ==================== WHY US SECTION (NEW) ==================== */}
-      <section className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
         <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -361,7 +361,7 @@ function App() {
       </section>
 
       {/* ==================== CALCULATOR SECTION ==================== */}
-      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/10">
+      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
@@ -373,7 +373,7 @@ function App() {
       </section>
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
-      <section id="faq" className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section id="faq" className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
         <div className="relative max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -400,7 +400,7 @@ function App() {
       </section>
 
       {/* ==================== FINAL CTA ==================== */}
-      <section className="bg-amber-500 py-12 transition-all duration-500 hover:bg-amber-400 hover:shadow-2xl hover:shadow-amber-500/30">
+      <section className="bg-amber-500 py-12 transition-all duration-500 hover:bg-amber-400 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] origin-center">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Ready to see your exact price?</h2>
           <a href="#calculator" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-lg">SEE MY PRICE →</a>
