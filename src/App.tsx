@@ -12,7 +12,7 @@ function App() {
             {/* Logo */}
             <a href="https://esscoaircraft.com" className="flex items-center gap-3">
               <img 
-                src="/images/essco-logo.png" 
+                src="/images/essco-logo.jpg" 
                 alt="ESSCO Aircraft" 
                 className="h-10 w-auto"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
