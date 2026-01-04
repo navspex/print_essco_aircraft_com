@@ -1,4 +1,3 @@
-import React from 'react';
 // Keep your existing calculator component import here
 // import Calculator from './components/Calculator';
 
