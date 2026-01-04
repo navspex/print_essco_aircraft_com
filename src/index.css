@@ -15,3 +15,20 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+/* Centered content container */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* FAQ accordion styling */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary svg {
+  transform: rotate(180deg);
+}
