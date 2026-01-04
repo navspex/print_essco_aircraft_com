@@ -335,3 +335,4 @@ const PricingTransparency: React.FC = () => {
 };
 
 export default PricingTransparency;
+
