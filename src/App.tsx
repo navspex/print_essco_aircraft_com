@@ -207,8 +207,10 @@ function App() {
     <div className="min-h-screen bg-slate-900">
       <Header />
 
-      {/* ==================== HERO (Rev 56 Content) ==================== */}
-      <section className="relative overflow-hidden bg-slate-900">
+      {/* ==================== HERO with Background Image ==================== */}
+      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/hero_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
             UPLOAD ANY PDF.<br />GET INSTANT PRICING.<br />PROCESSED IN 24 HOURS.
@@ -258,7 +260,7 @@ function App() {
       <section className="py-12" style={{ backgroundColor: '#1a2332' }}>
         <div className="max-w-4xl mx-auto px-5 text-center">
           <a href="https://www.ebay.com/fdbk/feedback_profile/esscoaircraft" target="_blank" rel="noopener noreferrer">
-            <img src="/ebay-verified-seller-17000-positive-reviews.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg transition-transform duration-300 hover:scale-[1.02]" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
+            <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg transition-transform duration-300 hover:scale-[1.02]" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
           </a>
           <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
