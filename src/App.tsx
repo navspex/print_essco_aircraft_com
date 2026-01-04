@@ -218,7 +218,7 @@ function App() {
           <p className="mx-auto mb-8 text-white text-lg md:text-xl leading-relaxed max-w-3xl" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>
             Training guides, service docs, operations manuals, and more - we've been printing them since 1955. Professional binding, fast turnaround.
           </p>
-          <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-colors inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+          <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
             <Calculator size={24} strokeWidth={2.5} />
             <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
           </button>
