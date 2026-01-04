@@ -208,7 +208,7 @@ function App() {
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/hero_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/FAQ_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
@@ -229,8 +229,9 @@ function App() {
       </section>
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
-      <section className="bg-slate-800 py-12 border-y border-slate-700">
-        <div className="max-w-6xl mx-auto px-5 text-center">
+      <section className="relative py-12 border-y border-slate-700" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-800/85"></div>
+        <div className="relative max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
             <div className="flex flex-col items-center">
@@ -267,8 +268,9 @@ function App() {
       </section>
 
       {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
-      <section className="py-16 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="relative py-16" style={{ backgroundImage: 'url(/images/Pricing_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-900/90"></div>
+        <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Clear, Competitive Pricing</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">Price per PDF page. Volume discounts automatic. No hidden fees.</p>
@@ -317,8 +319,9 @@ function App() {
       </section>
 
       {/* ==================== WHY US SECTION (NEW) ==================== */}
-      <section className="py-16 bg-slate-800">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="relative py-16" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-800/90"></div>
+        <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Print With ESSCO?</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">70 years of experience. Airport-based facility. Commercial-grade equipment.</p>
@@ -359,8 +362,9 @@ function App() {
       </section>
 
       {/* ==================== CALCULATOR SECTION ==================== */}
-      <section id="calculator" className="py-16" style={{ backgroundColor: '#1e293b' }}>
-        <div className="max-w-5xl mx-auto px-4">
+      <section id="calculator" className="relative py-16" style={{ backgroundImage: 'url(/images/hero_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-900/85"></div>
+        <div className="relative max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
             <p className="text-slate-400 text-lg">Upload your PDF and get pricing in seconds</p>
