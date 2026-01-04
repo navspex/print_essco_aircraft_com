@@ -229,7 +229,7 @@ function App() {
       </section>
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
-      <section className="py-12 bg-slate-800 border-y border-slate-700">
+      <section className="py-12 bg-slate-900 border-y border-slate-700">
         <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
@@ -268,9 +268,8 @@ function App() {
       </section>
 
       {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
-      <section className="relative py-16" style={{ backgroundImage: 'url(/images/Pricing_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-900/90"></div>
-        <div className="relative max-w-7xl mx-auto px-4">
+      <section className="py-16 bg-slate-800">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Clear, Competitive Pricing</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">Price per PDF page. Volume discounts automatic. No hidden fees.</p>
@@ -362,9 +361,8 @@ function App() {
       </section>
 
       {/* ==================== CALCULATOR SECTION ==================== */}
-      <section id="calculator" className="relative py-16" style={{ backgroundImage: 'url(/images/hero_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-900/85"></div>
-        <div className="relative max-w-5xl mx-auto px-4">
+      <section id="calculator" className="py-16 bg-slate-900">
+        <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
             <p className="text-slate-400 text-lg">Upload your PDF and get pricing in seconds</p>
@@ -375,9 +373,8 @@ function App() {
       </section>
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
-      <section id="faq" className="relative py-16" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/90"></div>
-        <div className="relative max-w-4xl mx-auto px-4">
+      <section id="faq" className="py-16 bg-slate-800">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3"><HelpCircle className="w-10 h-10 text-amber-400" />Frequently Asked Questions</h2>
           </div>
