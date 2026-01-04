@@ -12,22 +12,26 @@ export default {
         'essco-dark-gray': '#4d4d4d',
         'essco-light-gray': '#CECECD',
         'essco-bg': '#f8f8f8',
-        'essco-blue': '#069',
-        'essco-orange': '#f60',
+        'essco-navy': '#0F172A',
+        'essco-navy-light': '#1E293B',
+        'essco-gold': '#F59E0B',
+        'essco-gold-light': '#FBBF24',
+        'essco-gold-pale': '#FEF3C7',
       },
       fontFamily: {
         'oswald': ['Oswald', 'sans-serif'],
       },
       fontSize: {
-        'section-title-mobile': '15px',      // 107% of 14px base
-        'section-title-tablet': '26.32px',   // 188% of 14px base
-        'section-title-desktop': '43.82px',  // 313% of 14px base
-        'section-desc-mobile': '15px',       // 107% of 14px base
-        'section-desc-tablet': '12.32px',    // 88% of 14px base
-        'section-desc-desktop': '17.5px',    // 125% of 14px base
+        'section-title-mobile': '15px',
+        'section-title-tablet': '26.32px',
+        'section-title-desktop': '43.82px',
+        'section-desc-mobile': '15px',
+        'section-desc-tablet': '12.32px',
+        'section-desc-desktop': '17.5px',
       },
       maxWidth: {
         'logo': '211px',
+        'content': '1280px',
       },
       spacing: {
         'section': '1.5em',
