@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Header from './components/Header';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp, ChevronUp } from 'lucide-react';
 
 // ==================== KISS PRICING - Per PDF Page ====================
 // Single/double sided = SAME PRICE (production instruction only)
@@ -203,8 +203,18 @@ const PrintCalculator: React.FC = () => {
 
 // ==================== MAIN APP ====================
 function App() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-900 overflow-x-hidden">
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
@@ -470,10 +480,22 @@ function App() {
         </div>
         <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">© {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 p-3 bg-amber-500/70 hover:bg-amber-500 text-slate-900 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="w-6 h-6" />
+        </button>
+      )}
     </div>
   );
 }
 
 export default App;
+
 
 
