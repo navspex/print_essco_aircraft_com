@@ -208,7 +208,7 @@ function App() {
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/FAQ_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
