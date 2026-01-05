@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp, Loader2, AlertCircle } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, Upload, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp } from 'lucide-react';
 
 // ==================== KISS PRICING - Per PDF Page ====================
+// Single/double sided = SAME PRICE (production instruction only)
 const PRICING = {
   print: {
     bw: { tier1: 0.32, tier2: 0.24, tier3: 0.21 },
@@ -22,52 +23,7 @@ const PRICING = {
   },
   addons: { heavyCover: 2.00, dividerTab: 1.50 },
   quoteThreshold: 500,
-  weightThresholdLbs: 25,
 };
-
-// ==================== SHIPPING WEIGHT CALCULATOR ====================
-const WEIGHT_CONSTANTS = {
-  GRAMS_PER_SHEET: 5,
-  BINDING_WEIGHTS: { none: 0, spiral: 50, comb: 45, perfect: 30 },
-  FOLDOUT_GRAMS: 10,
-  LAMINATION_GRAMS: { letter: 8, legal: 10, ledger: 16 },
-  HEAVY_COVER_GRAMS: 20,
-  DIVIDER_TAB_GRAMS: 5,
-  PACKAGING_GRAMS: 50,
-  GRAMS_PER_LB: 453.592,
-};
-
-function calculateShippingWeight(config: {
-  pageCount: number;
-  quantity: number;
-  sides: 'single' | 'double';
-  binding: 'none' | 'spiral' | 'comb' | 'perfect';
-  foldoutCount: number;
-  laminationCount: number;
-  laminationSize: 'letter' | 'legal' | 'ledger';
-  heavyCover: boolean;
-  dividerTabs: number;
-}): { grams: number; lbs: number; displayLbs: string } {
-  const { pageCount, quantity, sides, binding, foldoutCount, laminationCount, laminationSize, heavyCover, dividerTabs } = config;
-  
-  const sheetsPerCopy = sides === 'double' ? Math.ceil(pageCount / 2) : pageCount;
-  const paperGrams = sheetsPerCopy * WEIGHT_CONSTANTS.GRAMS_PER_SHEET;
-  const bindingGrams = WEIGHT_CONSTANTS.BINDING_WEIGHTS[binding];
-  const foldoutGrams = foldoutCount * WEIGHT_CONSTANTS.FOLDOUT_GRAMS;
-  const laminationGrams = laminationCount * WEIGHT_CONSTANTS.LAMINATION_GRAMS[laminationSize];
-  const coverGrams = heavyCover ? WEIGHT_CONSTANTS.HEAVY_COVER_GRAMS : 0;
-  const tabGrams = dividerTabs * WEIGHT_CONSTANTS.DIVIDER_TAB_GRAMS;
-  
-  const perCopyGrams = paperGrams + bindingGrams + foldoutGrams + laminationGrams + coverGrams + tabGrams;
-  const totalGrams = (perCopyGrams * quantity) + WEIGHT_CONSTANTS.PACKAGING_GRAMS;
-  const lbs = totalGrams / WEIGHT_CONSTANTS.GRAMS_PER_LB;
-  
-  return {
-    grams: Math.round(totalGrams),
-    lbs: lbs,
-    displayLbs: lbs < 1 ? `${Math.round(totalGrams)}g` : `${lbs.toFixed(2)} lbs`,
-  };
-}
 
 function getPriceTier(pageCount: number): 'tier1' | 'tier2' | 'tier3' {
   if (pageCount >= 1001) return 'tier3';
@@ -75,22 +31,8 @@ function getPriceTier(pageCount: number): 'tier1' | 'tier2' | 'tier3' {
   return 'tier1';
 }
 
-// ==================== SHIPPING ADDRESS TYPE ====================
-interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  company: string;
-  address1: string;
-  address2: string;
-  city: string;
-  province: string;
-  zip: string;
-  phone: string;
-}
-
-// ==================== FUNCTIONAL CALCULATOR ====================
+// ==================== FUNCTIONAL CALCULATOR (KISS) ====================
 const PrintCalculator: React.FC = () => {
-  // Calculator state
   const [pageCount, setPageCount] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [colorPages, setColorPages] = useState<number>(0);
@@ -105,24 +47,12 @@ const PrintCalculator: React.FC = () => {
   const [dividerTabs, setDividerTabs] = useState<number>(0);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
 
-  // Customer info state
-  const [email, setEmail] = useState<string>('');
-  const [shipping, setShipping] = useState<ShippingAddress>({
-    firstName: '', lastName: '', company: '', address1: '', address2: '', city: '', province: '', zip: '', phone: ''
-  });
-
-  // UI state
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showQuoteForm, setShowQuoteForm] = useState<boolean>(false);
-  const [quoteNotes, setQuoteNotes] = useState<string>('');
-  const [quoteSubmitted, setQuoteSubmitted] = useState<boolean>(false);
-
   const calculatePrice = useCallback(() => {
     if (pageCount === 0) return { subtotal: 0, perUnit: 0, breakdown: [] };
     const tier = getPriceTier(pageCount);
     const breakdown: { label: string; amount: number }[] = [];
 
+    // KISS: Price per PDF page (single/double = same rate)
     const bwPages = Math.max(0, pageCount - foldoutCount - colorPages);
     const colorPagesCount = Math.min(colorPages, pageCount - foldoutCount);
 
@@ -130,12 +60,12 @@ const PrintCalculator: React.FC = () => {
     if (bwPages > 0) {
       const bwRate = PRICING.print.bw[tier];
       printCost += bwPages * bwRate;
-      breakdown.push({ label: `B&W (${bwPages} pages × $${bwRate.toFixed(2)})`, amount: bwPages * bwRate });
+      breakdown.push({ label: `B&W (${bwPages} PDF pages × $${bwRate.toFixed(2)})`, amount: bwPages * bwRate });
     }
     if (colorPagesCount > 0) {
       const colorRate = PRICING.print.color[tier];
       printCost += colorPagesCount * colorRate;
-      breakdown.push({ label: `Color (${colorPagesCount} pages × $${colorRate.toFixed(2)})`, amount: colorPagesCount * colorRate });
+      breakdown.push({ label: `Color (${colorPagesCount} PDF pages × $${colorRate.toFixed(2)})`, amount: colorPagesCount * colorRate });
     }
 
     const bindingCost = PRICING.binding[binding];
@@ -165,176 +95,8 @@ const PrintCalculator: React.FC = () => {
   }, [pageCount, quantity, colorPages, binding, foldoutCount, foldoutType, laminationCount, laminationSize, laminationThickness, heavyCover, dividerTabs]);
 
   const { subtotal, perUnit, breakdown } = calculatePrice();
-  
-  // Calculate shipping weight
-  const weight = calculateShippingWeight({
-    pageCount, quantity, sides, binding, foldoutCount, laminationCount, laminationSize, heavyCover, dividerTabs
-  });
-
-  // Determine if quote is required (over $500 OR over 25 lbs)
-  const requiresQuote = subtotal > PRICING.quoteThreshold || weight.lbs > PRICING.weightThresholdLbs;
-  const quoteReason = subtotal > PRICING.quoteThreshold && weight.lbs > PRICING.weightThresholdLbs
-    ? 'Order exceeds $500 and 25 lbs'
-    : subtotal > PRICING.quoteThreshold
-    ? 'Order exceeds $500'
-    : weight.lbs > PRICING.weightThresholdLbs
-    ? 'Order exceeds 25 lbs (freight shipping required)'
-    : '';
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type === 'application/pdf') setPdfFile(file);
-  };
-
-  const updateShipping = (field: keyof ShippingAddress, value: string) => {
-    setShipping(prev => ({ ...prev, [field]: value }));
-  };
-
-  // Validate form before checkout
-  const validateForm = (): string | null => {
-    if (pageCount < 1) return 'Please enter page count';
-    if (!email || !email.includes('@')) return 'Please enter a valid email';
-    if (!shipping.firstName.trim()) return 'First name is required';
-    if (!shipping.lastName.trim()) return 'Last name is required';
-    if (!shipping.address1.trim()) return 'Address is required';
-    if (!shipping.city.trim()) return 'City is required';
-    if (!shipping.province.trim()) return 'State/Province is required';
-    if (!shipping.zip.trim()) return 'ZIP/Postal code is required';
-    return null;
-  };
-
-  // Handle checkout - create Shopify draft order
-  const handleCheckout = async () => {
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const orderData = {
-        email,
-        shippingAddress: {
-          firstName: shipping.firstName,
-          lastName: shipping.lastName,
-          company: shipping.company || undefined,
-          address1: shipping.address1,
-          address2: shipping.address2 || undefined,
-          city: shipping.city,
-          province: shipping.province,
-          zip: shipping.zip,
-          country: 'US',
-          phone: shipping.phone || undefined,
-        },
-        lineItem: {
-          title: `Custom Print Job - ${pageCount} pages × ${quantity} copies`,
-          quantity: 1,
-          price: subtotal.toFixed(2),
-        },
-        printConfig: {
-          pageCount,
-          quantity,
-          colorPages,
-          sides,
-          binding,
-          foldoutCount,
-          foldoutType,
-          laminationCount,
-          laminationSize,
-          laminationThickness,
-          heavyCover,
-          dividerTabs,
-          breakdown: breakdown.map(b => `${b.label}: $${b.amount.toFixed(2)}`).join('\n'),
-        },
-        weight: {
-          grams: weight.grams,
-          lbs: weight.lbs,
-        },
-      };
-
-      const response = await fetch('/api/create-draft-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to create order');
-      }
-
-      // Redirect to Shopify checkout
-      if (result.invoiceUrl) {
-        window.location.href = result.invoiceUrl;
-      } else {
-        throw new Error('No checkout URL returned');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handle quote request submission
-  const handleQuoteSubmit = async () => {
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const quoteData = {
-        email,
-        shippingAddress: shipping,
-        printConfig: {
-          pageCount,
-          quantity,
-          colorPages,
-          sides,
-          binding,
-          foldoutCount,
-          foldoutType,
-          laminationCount,
-          laminationSize,
-          laminationThickness,
-          heavyCover,
-          dividerTabs,
-        },
-        estimatedTotal: subtotal,
-        weight: weight,
-        notes: quoteNotes,
-        quoteReason,
-      };
-
-      // For now, send quote request to the same endpoint with a flag
-      // In production, this would go to a separate quote endpoint or email
-      const response = await fetch('/api/create-draft-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...quoteData, isQuoteRequest: true }),
-      });
-
-      if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.error || 'Failed to submit quote request');
-      }
-
-      setQuoteSubmitted(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const requiresQuote = subtotal > PRICING.quoteThreshold;
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => { const file = e.target.files?.[0]; if (file && file.type === 'application/pdf') setPdfFile(file); };
 
   return (
     <div className="bg-slate-800/90 backdrop-blur rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
@@ -367,7 +129,7 @@ const PrintCalculator: React.FC = () => {
               <p className="text-xs text-slate-400 mt-1">Leave blank or 0 for all black & white</p>
             </div>
 
-            {/* Print Sides */}
+            {/* Print Sides - Production instruction only, same price */}
             <div>
               <label className="block text-sm font-semibold text-slate-300 mb-2">Print Sides <span className="text-slate-500 font-normal">(same price)</span></label>
               <div className="grid grid-cols-2 gap-3">
@@ -376,7 +138,7 @@ const PrintCalculator: React.FC = () => {
               </div>
             </div>
 
-            {/* Binding */}
+            {/* Binding - with (glued spine) for Perfect */}
             <div>
               <label className="block text-sm font-semibold text-slate-300 mb-2">Binding Option</label>
               <div className="grid grid-cols-2 gap-3">
@@ -414,70 +176,9 @@ const PrintCalculator: React.FC = () => {
                 <div className="flex items-center gap-3 p-3 rounded-lg border border-slate-600"><span className="flex-1 font-medium text-slate-300">Divider Tabs</span><input type="number" min="0" value={dividerTabs || ''} onChange={(e) => setDividerTabs(parseInt(e.target.value) || 0)} placeholder="0" className="w-20 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-center text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" /><span className="text-slate-400">× $1.50</span></div>
               </div>
             </div>
-
-            {/* ==================== EMAIL & SHIPPING FORM ==================== */}
-            {pageCount > 0 && (
-              <div className="border-t border-slate-600 pt-6 space-y-4">
-                <h4 className="text-lg font-bold text-white flex items-center gap-2"><Mail className="w-5 h-5 text-amber-400" />Contact & Shipping</h4>
-                
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">Email Address *</label>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  <p className="text-xs text-slate-400 mt-1">We'll send your receipt and order updates here</p>
-                </div>
-
-                {/* Name */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">First Name *</label>
-                    <input type="text" value={shipping.firstName} onChange={(e) => updateShipping('firstName', e.target.value)} placeholder="John" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">Last Name *</label>
-                    <input type="text" value={shipping.lastName} onChange={(e) => updateShipping('lastName', e.target.value)} placeholder="Doe" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  </div>
-                </div>
-
-                {/* Company */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">Company <span className="text-slate-500 font-normal">(optional)</span></label>
-                  <input type="text" value={shipping.company} onChange={(e) => updateShipping('company', e.target.value)} placeholder="Company name" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                </div>
-
-                {/* Address */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">Address *</label>
-                  <input type="text" value={shipping.address1} onChange={(e) => updateShipping('address1', e.target.value)} placeholder="123 Main St" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 mb-2" />
-                  <input type="text" value={shipping.address2} onChange={(e) => updateShipping('address2', e.target.value)} placeholder="Apt, suite, etc. (optional)" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                </div>
-
-                {/* City, State, ZIP */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">City *</label>
-                    <input type="text" value={shipping.city} onChange={(e) => updateShipping('city', e.target.value)} placeholder="City" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">State *</label>
-                    <input type="text" value={shipping.province} onChange={(e) => updateShipping('province', e.target.value)} placeholder="OH" maxLength={2} className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">ZIP *</label>
-                    <input type="text" value={shipping.zip} onChange={(e) => updateShipping('zip', e.target.value)} placeholder="44035" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                  </div>
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">Phone <span className="text-slate-500 font-normal">(optional)</span></label>
-                  <input type="tel" value={shipping.phone} onChange={(e) => updateShipping('phone', e.target.value)} placeholder="(555) 123-4567" className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* ==================== ORDER SUMMARY ==================== */}
+          {/* Order Summary */}
           <div>
             <div className="bg-slate-900/80 rounded-xl p-6 sticky top-24 border border-slate-700">
               <h4 className="text-lg font-bold text-white mb-4">Order Summary</h4>
@@ -485,84 +186,11 @@ const PrintCalculator: React.FC = () => {
                 <div className="space-y-2 mb-6">{breakdown.map((item, idx) => (<div key={idx} className="flex justify-between text-sm"><span className="text-slate-400">{item.label}</span><span className="text-white">${item.amount.toFixed(2)}</span></div>))}</div>
                 <div className="border-t border-slate-600 pt-4 mb-2"><div className="flex justify-between"><span className="text-slate-400">Per Copy Cost</span><span className="font-semibold text-white">${perUnit.toFixed(2)}</span></div></div>
                 <div className="flex justify-between mb-4"><span className="text-slate-400">Quantity</span><span className="text-white">× {quantity}</span></div>
-                
-                {/* Shipping Weight Display */}
-                <div className="flex justify-between mb-4 pb-4 border-b border-slate-600">
-                  <span className="text-slate-400 flex items-center gap-2"><Package className="w-4 h-4" />Est. Weight</span>
-                  <span className="text-white font-medium">{weight.displayLbs}</span>
-                </div>
-
                 <div className="border-t-2 border-amber-500 pt-4"><div className="flex justify-between items-center"><span className="text-lg font-bold text-white">Total</span><span className="text-3xl font-bold text-amber-400">${subtotal.toFixed(2)}</span></div><p className="text-xs text-slate-500 mt-2">+ shipping (calculated at checkout)</p></div>
-                
                 {pageCount >= 51 && (<div className="mt-4 p-3 bg-green-900/50 border border-green-700 rounded-lg"><p className="text-sm text-green-400 font-medium">✓ Volume discount applied ({pageCount >= 1001 ? 'Tier 3' : 'Tier 2'} pricing)</p></div>)}
-
-                {/* Error Display */}
-                {error && (
-                  <div className="mt-4 p-3 bg-red-900/50 border border-red-700 rounded-lg flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-400">{error}</p>
-                  </div>
-                )}
-
-                {/* Checkout / Quote Buttons */}
                 <div className="mt-6 space-y-3">
-                  {requiresQuote ? (
-                    <>
-                      {!showQuoteForm && !quoteSubmitted ? (
-                        <button 
-                          onClick={() => setShowQuoteForm(true)} 
-                          className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 px-6 rounded-lg transition-all"
-                        >
-                          Request Custom Quote
-                        </button>
-                      ) : quoteSubmitted ? (
-                        <div className="p-4 bg-green-900/50 border border-green-700 rounded-lg text-center">
-                          <CheckCircle className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                          <p className="text-green-400 font-semibold">Quote Request Submitted!</p>
-                          <p className="text-sm text-slate-400 mt-1">We'll contact you within 24 hours.</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-3">
-                          <textarea
-                            value={quoteNotes}
-                            onChange={(e) => setQuoteNotes(e.target.value)}
-                            placeholder="Additional notes or questions..."
-                            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 resize-none"
-                            rows={3}
-                          />
-                          <button 
-                            onClick={handleQuoteSubmit}
-                            disabled={isLoading}
-                            className="w-full bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-slate-900 font-bold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
-                          >
-                            {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" />Submitting...</> : 'Submit Quote Request'}
-                          </button>
-                          <button 
-                            onClick={() => setShowQuoteForm(false)}
-                            className="w-full text-slate-400 hover:text-white text-sm py-2"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      )}
-                      <p className="text-center text-sm text-slate-500">{quoteReason}</p>
-                    </>
-                  ) : (
-                    <button 
-                      onClick={handleCheckout}
-                      disabled={isLoading}
-                      className="w-full bg-amber-500 hover:bg-amber-400 disabled:bg-amber-500/50 text-slate-900 font-bold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? (
-                        <><Loader2 className="w-5 h-5 animate-spin" />Processing...</>
-                      ) : (
-                        <>
-                          <CreditCard className="w-5 h-5" />
-                          Proceed to Checkout
-                        </>
-                      )}
-                    </button>
-                  )}
+                  {requiresQuote ? (<button className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 px-6 rounded-lg transition-all">Request Quote</button>) : (<button className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"><svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H8.887l-.994 7.27a.64.64 0 0 1-.633.543H7.076z"/></svg>Pay with PayPal</button>)}
+                  {requiresQuote && (<p className="text-center text-sm text-slate-500">Orders over $500 require a personalized quote</p>)}
                 </div>
               </>) : (<div className="text-center py-8"><Calculator className="w-16 h-16 mx-auto text-slate-600 mb-4" /><p className="text-slate-500">Enter page count to see pricing</p></div>)}
             </div>
@@ -581,6 +209,7 @@ function App() {
 
       {/* ==================== HERO with Background Image ==================== */}
       <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/FAQ_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
@@ -589,18 +218,18 @@ function App() {
           <p className="mx-auto mb-8 text-white text-lg md:text-xl leading-relaxed max-w-3xl" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>
             Training guides, service docs, operations manuals, and more - we've been printing them since 1955. Professional binding, fast turnaround.
           </p>
-          <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+          <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
             <Calculator size={24} strokeWidth={2.5} />
             <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
-          </a>
+          </button>
           <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>No credit card required - Takes 30 seconds</span></p>
           <p className="text-white text-base mt-6 italic" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>No minimums. No setup fees. Quantity discounts. No account required.</p>
           <p className="text-slate-400 text-xs mt-3 italic lowercase">*cutoff time 4PM for next day processing</p>
         </div>
       </section>
 
-      {/* ==================== TRUST STATS ==================== */}
-      <section className="py-12 bg-slate-900 border-y border-slate-700">
+      {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
+      <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
@@ -628,8 +257,8 @@ function App() {
       </section>
 
       {/* ==================== EBAY BADGE ==================== */}
-      <section className="relative py-12 group" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-900/80"></div>
+      <section className="relative py-12 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-900/80 transition-all duration-500 group-hover:bg-slate-900/70"></div>
         <div className="relative max-w-4xl mx-auto px-5 text-center">
           <a href="https://www.ebay.com/fdbk/feedback_profile/esscoaircraft" target="_blank" rel="noopener noreferrer" className="block">
             <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
@@ -638,8 +267,8 @@ function App() {
         </div>
       </section>
 
-      {/* ==================== PRICING ==================== */}
-      <section className="py-16 bg-slate-800">
+      {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Clear, Competitive Pricing</h2>
@@ -651,6 +280,7 @@ function App() {
             <div className="flex items-center gap-2 text-slate-300"><CheckCircle className="w-5 h-5 text-green-500" /><span className="font-medium">Same-Day Available</span></div>
           </div>
           
+          {/* Simplified Pricing Table */}
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
             <div className="bg-slate-800 rounded-xl overflow-hidden border border-slate-700">
               <div className="bg-slate-700 text-white p-4 text-center"><h3 className="text-xl font-bold flex items-center justify-center gap-2"><FileText size={20} />Print Rates (Per PDF Page)</h3></div>
@@ -681,15 +311,15 @@ function App() {
           <div className="max-w-4xl mx-auto mt-8 bg-blue-900/30 border border-blue-700 rounded-lg p-6">
             <div className="flex items-start gap-4">
               <svg className="w-6 h-6 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <div><h4 className="font-bold text-white mb-2">Large Orders Over $500 or 25 lbs</h4><p className="text-slate-300">Orders exceeding $500 or 25 lbs qualify for personalized pricing and dedicated support. Configure your order below and we'll provide a custom quote within 24 hours.</p></div>
+              <div><h4 className="font-bold text-white mb-2">Large Orders Over $500</h4><p className="text-slate-300">Orders exceeding $500 qualify for personalized pricing and dedicated support. Configure your order below and we'll provide a custom quote within 24 hours.</p></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== WHY US SECTION ==================== */}
-      <section className="relative py-16 group" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/90"></div>
+      {/* ==================== WHY US SECTION (NEW) ==================== */}
+      <section className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
         <div className="relative max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Print With ESSCO?</h2>
@@ -731,7 +361,7 @@ function App() {
       </section>
 
       {/* ==================== CALCULATOR SECTION ==================== */}
-      <section id="calculator" className="py-16 bg-slate-900">
+      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
@@ -742,9 +372,9 @@ function App() {
         </div>
       </section>
 
-      {/* ==================== FAQ SECTION ==================== */}
-      <section id="faq" className="relative py-16 group" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/90"></div>
+      {/* ==================== FAQ SECTION (NEW) ==================== */}
+      <section id="faq" className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
         <div className="relative max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3"><HelpCircle className="w-10 h-10 text-amber-400" />Frequently Asked Questions</h2>
@@ -770,7 +400,7 @@ function App() {
       </section>
 
       {/* ==================== FINAL CTA ==================== */}
-      <section className="bg-amber-500 py-12">
+      <section className="bg-amber-500 py-12 transition-all duration-500 hover:bg-amber-400 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] origin-center">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Ready to see your exact price?</h2>
           <a href="#calculator" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-lg">SEE MY PRICE →</a>
@@ -778,12 +408,14 @@ function App() {
       </section>
 
       {/* ==================== FOOTER ==================== */}
+      {/* ==================== FOOTER - Links to Shopify (external, new tab) ==================== */}
       <footer className="bg-slate-900 text-slate-400 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
               <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>About ESSCO Aircraft</h3>
               <p className="text-sm leading-relaxed mb-4">Over 70 years of providing quality aircraft manuals and aviation memorabilia. Our extensive library contains over 180,000 items.</p>
+              {/* Social Media Links */}
               <div className="flex gap-4 mt-4">
                 <a href="https://twitter.com/esscoaircraft" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors" aria-label="Twitter"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
                 <a href="https://www.pinterest.com/esscoaircraft/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-amber-400 transition-colors" aria-label="Pinterest"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg></a>
@@ -843,3 +475,4 @@ function App() {
 }
 
 export default App;
+
