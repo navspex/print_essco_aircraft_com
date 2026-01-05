@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Printer, DollarSign, Phone, Mail, Clock } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,12 +14,38 @@ const Header: React.FC = () => {
     { label: 'NEWS', href: 'https://www.esscoaircraft.com/blogs/news-1', external: true },
   ];
 
-  const contactInfo = [
-    { icon: '🖨️', title: 'Print-On-Demand', text: 'Upload your PDF', link: '#calculator', external: false },
-    { icon: '📋', title: 'We buy manuals!', text: 'Contact for a quote', link: 'https://www.esscoaircraft.com/pages/we-buy-manuals-1', external: true },
-    { icon: '📞', title: 'Give Us A Call', text: '877-318-1555', link: 'tel:877-318-1555', external: false },
-    { icon: '✉️', title: 'Email Us', text: 'esscosupport@aol.com', link: 'mailto:esscosupport@aol.com', external: false },
-    { icon: '🕐', title: 'Hours', text: 'Monday - Friday', link: null, external: false },
+  // 5 banner blocks matching Shopify Empire theme highlights-banners
+  const bannerBlocks = [
+    { 
+      icon: <Printer className="w-full h-full" />, 
+      heading: 'Print On Demand', 
+      text: 'Upload your PDF', 
+      href: '#calculator' 
+    },
+    { 
+      icon: <DollarSign className="w-full h-full" />, 
+      heading: 'We Buy Manuals!', 
+      text: 'Contact for a quote', 
+      href: 'mailto:esscosupport@aol.com?subject=Manual%20Purchase%20Inquiry' 
+    },
+    { 
+      icon: <Phone className="w-full h-full" />, 
+      heading: 'Give Us A Call', 
+      text: '877-318-1555', 
+      href: 'tel:877-318-1555' 
+    },
+    { 
+      icon: <Mail className="w-full h-full" />, 
+      heading: 'Email Us', 
+      text: 'esscosupport@aol.com', 
+      href: 'mailto:esscosupport@aol.com' 
+    },
+    { 
+      icon: <Clock className="w-full h-full" />, 
+      heading: 'Hours', 
+      text: 'Monday - Friday 9 to 4',
+      href: undefined
+    },
   ];
 
   return (
@@ -119,56 +146,52 @@ const Header: React.FC = () => {
         )}
       </div>
 
-      {/* Contact Information Bar - Compact on mobile, full on desktop */}
-      <div className="bg-gray-100 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Mobile: Single primary CTA (matches Shopify screenshot) */}
-          <div className="md:hidden py-3">
-            <a
-              href="#calculator"
-              className="flex items-center justify-center gap-3 text-essco-dark-gray hover:text-essco-maroon transition-colors"
-            >
-              <span className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-400 text-gray-600">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-              </span>
-              <div className="text-left">
-                <span className="block font-semibold text-sm">Print On Demand</span>
-                <span className="block text-sm text-gray-600">Upload your PDF</span>
-              </div>
-            </a>
-          </div>
-
-          {/* Desktop: Full contact bar (5 columns) */}
-          <div className="hidden md:grid md:grid-cols-5 gap-4 py-4">
-            {contactInfo.map((item, index) => (
-              <div key={index} className="flex items-center justify-center text-center">
-                {item.link ? (
-                  <a
-                    href={item.link}
-                    className="flex flex-col items-center hover:text-essco-maroon transition-colors"
-                    {...(item.external && { target: "_blank", rel: "noopener noreferrer" })}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-essco-maroon text-xl">{item.icon}</span>
-                      <span className="font-semibold text-essco-dark-gray text-sm">{item.title}</span>
-                    </div>
-                    <span className="text-essco-dark-gray text-sm">{item.text}</span>
-                  </a>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-essco-maroon text-xl">{item.icon}</span>
-                      <span className="font-semibold text-essco-dark-gray text-sm">{item.title}</span>
-                    </div>
-                    <span className="text-essco-dark-gray text-sm">{item.text}</span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Highlights Banners Bar - Horizontal scroll on mobile, 5-column on desktop */}
+      <div className="highlights-banners-container overflow-x-hidden bg-[#f5f5f5] border-b border-gray-200">
+        {/* Mobile: Horizontal scroll carousel (< 1024px) */}
+        <div 
+          className="highlights-banners lg:hidden flex overflow-x-auto py-4 px-2.5 relative"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
+        >
+          {bannerBlocks.map((block, index) => (
+            <BannerBlock key={index} block={block} isMobile />
+          ))}
         </div>
+
+        {/* Desktop: 5-column centered layout (≥ 1024px) */}
+        <div className="hidden lg:flex justify-center py-9 px-6 max-w-[1400px] mx-auto">
+          {bannerBlocks.map((block, index) => (
+            <BannerBlock key={index} block={block} />
+          ))}
+        </div>
+
+        {/* Custom CSS for scrollbar hiding and gradient overlays */}
+        <style>{`
+          .highlights-banners::-webkit-scrollbar {
+            display: none;
+          }
+          .highlights-banners::before,
+          .highlights-banners::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            z-index: 2;
+            pointer-events: none;
+          }
+          .highlights-banners::before {
+            left: 0;
+            background: linear-gradient(to right, #f5f5f5, transparent);
+          }
+          .highlights-banners::after {
+            right: 0;
+            background: linear-gradient(to left, #f5f5f5, transparent);
+          }
+        `}</style>
       </div>
 
       {/* Mobile Menu Drawer */}
@@ -209,21 +232,21 @@ const Header: React.FC = () => {
                 <h3 className="font-oswald font-semibold text-lg text-essco-dark-gray mb-4 uppercase">Contact Us</h3>
                 <div className="space-y-4">
                   <a href="tel:877-318-1555" className="flex items-center gap-3 text-essco-dark-gray hover:text-essco-maroon transition-colors">
-                    <span className="text-xl">📞</span>
+                    <Phone className="w-5 h-5 text-essco-maroon" />
                     <div>
                       <span className="block font-semibold text-sm">Give Us A Call</span>
                       <span className="block text-sm">877-318-1555</span>
                     </div>
                   </a>
                   <a href="mailto:esscosupport@aol.com" className="flex items-center gap-3 text-essco-dark-gray hover:text-essco-maroon transition-colors">
-                    <span className="text-xl">✉️</span>
+                    <Mail className="w-5 h-5 text-essco-maroon" />
                     <div>
                       <span className="block font-semibold text-sm">Email Us</span>
                       <span className="block text-sm">esscosupport@aol.com</span>
                     </div>
                   </a>
                   <div className="flex items-center gap-3 text-essco-dark-gray">
-                    <span className="text-xl">🕐</span>
+                    <Clock className="w-5 h-5 text-essco-maroon" />
                     <div>
                       <span className="block font-semibold text-sm">Hours</span>
                       <span className="block text-sm">Monday - Friday, 9am-4pm</span>
@@ -235,7 +258,7 @@ const Header: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-essco-dark-gray hover:text-essco-maroon transition-colors"
                   >
-                    <span className="text-xl">📋</span>
+                    <DollarSign className="w-5 h-5 text-essco-maroon" />
                     <div>
                       <span className="block font-semibold text-sm">We Buy Manuals!</span>
                       <span className="block text-sm">Contact for a quote</span>
@@ -248,6 +271,70 @@ const Header: React.FC = () => {
         </div>
       )}
     </header>
+  );
+};
+
+// Banner Block Component
+interface BannerBlockProps {
+  block: {
+    icon: React.ReactNode;
+    heading: string;
+    text: string;
+    href?: string;
+  };
+  isMobile?: boolean;
+}
+
+const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
+  const content = (
+    <>
+      {/* Icon container */}
+      <div 
+        className={`
+          flex-shrink-0 text-[#4c5154]
+          ${isMobile ? 'w-9 h-9 mr-4' : 'w-[2.875rem] h-[2.875rem] mr-5'}
+        `}
+        style={{ maxWidth: '35%' }}
+      >
+        {block.icon}
+      </div>
+      
+      {/* Text container */}
+      <div className={`min-w-0 pr-5 leading-[1.4] ${isMobile ? 'text-sm' : 'text-base'}`}>
+        <h6 
+          className="m-0 text-[#4c5154] font-normal"
+          style={{ 
+            fontFamily: '"Roboto Condensed", sans-serif',
+            fontSize: '0.875rem',
+          }}
+        >
+          {block.heading}
+        </h6>
+        <p className="m-0 text-[#4c5154] text-sm">{block.text}</p>
+      </div>
+    </>
+  );
+
+  const baseClasses = `
+    relative flex items-center text-[#4c5154] no-underline
+    ${isMobile 
+      ? 'flex-shrink-0 w-[15.625rem]' // 250px fixed width for mobile scroll
+      : 'w-[20%]' // 5 columns = 20% each
+    }
+  `;
+
+  if (block.href) {
+    return (
+      <a href={block.href} className={baseClasses}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className={baseClasses}>
+      {content}
+    </div>
   );
 };
 
