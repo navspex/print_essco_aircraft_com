@@ -214,7 +214,7 @@ function App() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-900 overflow-x-hidden">
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
@@ -496,4 +496,5 @@ function App() {
 }
 
 export default App;
+
 
