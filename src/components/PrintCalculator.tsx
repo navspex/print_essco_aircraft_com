@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { Calculator, Upload, Lock } from 'lucide-react';
+import { useState, useCallback, useMemo } from 'react';
+import { Calculator, Upload } from 'lucide-react';
 
 // ==================== KISS PRICING - Per PDF Page ====================
 // Single/double sided = SAME PRICE (production instruction only)
@@ -632,3 +632,4 @@ Company: ${company}
 };
 
 export default PrintCalculator;
+
