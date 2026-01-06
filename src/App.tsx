@@ -154,32 +154,32 @@ function App() {
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">70 years of experience. Airport-based facility. Commercial-grade equipment.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <Building2 className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">Airport-Based Facility</h3>
               <p className="text-slate-400 text-sm">Located at KLPR Lorain County Regional Airport in Ohio. We understand aviation documentation requirements.</p>
             </div>
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <Printer className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">Commercial Equipment</h3>
               <p className="text-slate-400 text-sm">Xerox Versant 4100 press, large format printers, professional laminators. Over $100,000 in equipment.</p>
             </div>
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <Users className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">Family-Owned Since 1955</h3>
               <p className="text-slate-400 text-sm">Four generations serving aviation. 180,000+ manuals archived. We know this business inside and out.</p>
             </div>
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <Zap className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">Fast Turnaround</h3>
               <p className="text-slate-400 text-sm">Same-day production available for orders before 4PM EST. Most orders ship within 24-48 hours.</p>
             </div>
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <ThumbsUp className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">No Minimums</h3>
               <p className="text-slate-400 text-sm">Need just one manual? No problem. We treat every order with the same care and attention.</p>
             </div>
-            <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="bg-slate-700/75 rounded-xl p-6 border border-slate-600">
               <ShieldCheck className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-lg mb-2">Proven Track Record</h3>
               <p className="text-slate-400 text-sm">100% positive eBay feedback. 17,000+ reviews. 34,000+ orders completed successfully.</p>
@@ -219,7 +219,7 @@ function App() {
               { q: 'Is there a minimum order?', a: 'No minimums! We print single copies with the same care as bulk orders. Volume discounts apply automatically at 51+ and 1001+ pages.' },
               { q: 'What\'s your quality guarantee?', a: 'We stand behind every print job. If you\'re not satisfied, contact us within 7 days and we\'ll make it right. Our 100% positive eBay feedback speaks for itself.' },
             ].map((faq, idx) => (
-              <details key={idx} className="bg-slate-700/50 rounded-xl border border-slate-600">
+              <details key={idx} className="bg-slate-700/75 rounded-xl border border-slate-600">
                 <summary className="flex items-center justify-between p-5 cursor-pointer font-semibold text-white list-none rounded-xl">{faq.q}<svg className="w-5 h-5 text-slate-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></summary>
                 <div className="px-5 pb-5 text-slate-300">{faq.a}</div>
               </details>
