@@ -20,15 +20,23 @@ function App() {
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <section className="relative overflow-hidden group">
+      <style>{`
+        .hero-bg-zoom {
+          transition: transform 8s ease-out;
+        }
+        .hero-section:hover .hero-bg-zoom {
+          transform: scale(1.1);
+        }
+      `}</style>
+      <section className="hero-section relative overflow-hidden">
         {/* Background image layer - separate for zoom effect */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center transition-transform ease-out group-hover:scale-110"
-          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', transitionDuration: '8000ms' }}
+          className="hero-bg-zoom absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}
         ></div>
-        {/* Dark overlay for text readability - pointer-events-none so hover passes through */}
+        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 z-10 bg-slate-900/75 pointer-events-none"></div>
-        <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
+        <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
             UPLOAD ANY PDF.<br />GET INSTANT PRICING.<br />PROCESSED IN 24 HOURS.
           </h1>
@@ -303,5 +311,6 @@ function App() {
 }
 
 export default App;
+
 
 
