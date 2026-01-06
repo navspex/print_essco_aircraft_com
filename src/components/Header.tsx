@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState, FC } from 'react';
 import { Printer, DollarSign, Phone, Mail, Clock } from 'lucide-react';
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -266,7 +266,7 @@ interface BannerBlockProps {
   isMobile?: boolean;
 }
 
-const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
+const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
   const content = (
     <>
       {/* Icon container */}
@@ -320,5 +320,6 @@ const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
