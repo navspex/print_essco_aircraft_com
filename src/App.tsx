@@ -20,7 +20,12 @@ function App() {
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <section className="relative overflow-hidden" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative overflow-hidden group">
+        {/* Background image layer - separate for zoom effect */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] ease-out group-hover:scale-110"
+          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}
+        ></div>
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
@@ -298,3 +303,4 @@ function App() {
 }
 
 export default App;
+
