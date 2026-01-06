@@ -147,7 +147,7 @@ const Header: FC = () => {
       </div>
 
       {/* Highlights Banners Bar - Horizontal scroll on mobile, 5-column on desktop */}
-      <div className="bg-[#f5f5f5] border-b border-gray-200 overflow-hidden">
+      <div className="bg-slate-800 border-b border-slate-700 overflow-hidden">
         {/* Mobile: Horizontal scroll carousel (< 1024px) */}
         <div 
           className="lg:hidden flex flex-row flex-nowrap overflow-x-auto py-4 px-4"
@@ -272,7 +272,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
       {/* Icon container */}
       <div 
         className={`
-          flex-shrink-0 text-[#4c5154]
+          flex-shrink-0 text-amber-400
           ${isMobile ? 'w-9 h-9 mr-4' : 'w-[2.875rem] h-[2.875rem] mr-5'}
         `}
         style={{ maxWidth: '35%' }}
@@ -283,7 +283,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
       {/* Text container */}
       <div className={`min-w-0 pr-5 leading-[1.4] ${isMobile ? 'text-sm' : 'text-base'}`}>
         <h6 
-          className="m-0 text-[#4c5154] font-normal"
+          className="m-0 text-white font-normal"
           style={{ 
             fontFamily: '"Roboto Condensed", sans-serif',
             fontSize: '0.875rem',
@@ -291,13 +291,13 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
         >
           {block.heading}
         </h6>
-        <p className="m-0 text-[#4c5154] text-sm">{block.text}</p>
+        <p className="m-0 text-slate-300 text-sm">{block.text}</p>
       </div>
     </>
   );
 
   const baseClasses = `
-    relative flex items-center text-[#4c5154] no-underline
+    relative flex items-center text-white no-underline
     ${isMobile 
       ? 'flex-shrink-0 min-w-[250px] w-[250px] pr-4' // Fixed 250px width for mobile scroll, won't shrink
       : 'w-[20%]' // 5 columns = 20% each
@@ -320,6 +320,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
 
