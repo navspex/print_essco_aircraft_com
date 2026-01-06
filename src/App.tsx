@@ -20,22 +20,9 @@ function App() {
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <style>{`
-        .hero-bg-zoom {
-          transition: transform 8s ease-out;
-        }
-        .hero-section:hover .hero-bg-zoom {
-          transform: scale(1.1);
-        }
-      `}</style>
-      <section className="hero-section relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
-        {/* Background image layer - separate for zoom effect */}
-        <div 
-          className="hero-bg-zoom absolute inset-0 z-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}
-        ></div>
+      <section className="relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 z-10 bg-slate-900/75 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-slate-900/75"></div>
         <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
             UPLOAD ANY PDF.<br />GET INSTANT PRICING.<br />PROCESSED IN 24 HOURS.
@@ -43,10 +30,10 @@ function App() {
           <p className="mx-auto mb-8 text-white text-lg md:text-xl leading-relaxed max-w-3xl" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>
             Training guides, service docs, operations manuals, and more - we've been printing them since 1955. Professional binding, fast turnaround.
           </p>
-          <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+          <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
             <Calculator size={24} strokeWidth={2.5} />
             <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
-          </button>
+          </a>
           <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>No credit card required - Takes 30 seconds</span></p>
           <p className="text-white text-base mt-6 italic" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>No minimums. No setup fees. Quantity discounts. No account required.</p>
           <p className="text-slate-400 text-xs mt-3 italic lowercase">*cutoff time 4PM for next day processing</p>
@@ -85,9 +72,7 @@ function App() {
       <section className="relative py-12 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="absolute inset-0 bg-slate-900/80 transition-all duration-500 group-hover:bg-slate-900/70"></div>
         <div className="relative max-w-4xl mx-auto px-5 text-center">
-          <a href="https://www.ebay.com/fdbk/feedback_profile/esscoaircraft" target="_blank" rel="noopener noreferrer" className="block">
-            <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
-          </a>
+          <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
           <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
       </section>
@@ -311,6 +296,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
