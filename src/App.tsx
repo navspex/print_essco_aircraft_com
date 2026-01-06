@@ -28,7 +28,7 @@ function App() {
           transform: scale(1.1);
         }
       `}</style>
-      <section className="hero-section relative overflow-hidden">
+      <section className="hero-section relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         {/* Background image layer - separate for zoom effect */}
         <div 
           className="hero-bg-zoom absolute inset-0 z-0 bg-cover bg-center"
@@ -311,6 +311,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
