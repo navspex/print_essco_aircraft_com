@@ -147,17 +147,16 @@ const Header: React.FC = () => {
       </div>
 
       {/* Highlights Banners Bar - Horizontal scroll on mobile, 5-column on desktop */}
-      <div className="bg-[#f5f5f5] border-b border-gray-200">
+      <div className="bg-[#f5f5f5] border-b border-gray-200 overflow-hidden">
         {/* Mobile: Horizontal scroll carousel (< 1024px) */}
         <div 
-          className="lg:hidden flex overflow-x-auto py-4 px-4 gap-0"
+          className="lg:hidden flex flex-row flex-nowrap overflow-x-auto py-4 px-4"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
             WebkitOverflowScrolling: 'touch',
           }}
         >
-          <style>{`.mobile-scroll::-webkit-scrollbar { display: none; }`}</style>
           {bannerBlocks.map((block, index) => (
             <BannerBlock key={index} block={block} isMobile />
           ))}
@@ -169,6 +168,11 @@ const Header: React.FC = () => {
             <BannerBlock key={index} block={block} />
           ))}
         </div>
+        
+        {/* Hide scrollbar on webkit browsers */}
+        <style>{`
+          .lg\\:hidden.flex::-webkit-scrollbar { display: none; }
+        `}</style>
       </div>
 
       {/* Mobile Menu Drawer */}
@@ -295,7 +299,7 @@ const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
   const baseClasses = `
     relative flex items-center text-[#4c5154] no-underline
     ${isMobile 
-      ? 'flex-shrink-0 w-[15.625rem]' // 250px fixed width for mobile scroll
+      ? 'flex-shrink-0 min-w-[250px] w-[250px] pr-4' // Fixed 250px width for mobile scroll, won't shrink
       : 'w-[20%]' // 5 columns = 20% each
     }
   `;
@@ -316,4 +320,5 @@ const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
