@@ -147,15 +147,17 @@ const Header: React.FC = () => {
       </div>
 
       {/* Highlights Banners Bar - Horizontal scroll on mobile, 5-column on desktop */}
-      <div className="highlights-banners-container overflow-x-hidden bg-[#f5f5f5] border-b border-gray-200">
+      <div className="bg-[#f5f5f5] border-b border-gray-200">
         {/* Mobile: Horizontal scroll carousel (< 1024px) */}
         <div 
-          className="highlights-banners lg:hidden flex overflow-x-auto py-4 px-2.5 relative"
+          className="lg:hidden flex overflow-x-auto py-4 px-4 gap-0"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
+          <style>{`.mobile-scroll::-webkit-scrollbar { display: none; }`}</style>
           {bannerBlocks.map((block, index) => (
             <BannerBlock key={index} block={block} isMobile />
           ))}
@@ -167,31 +169,6 @@ const Header: React.FC = () => {
             <BannerBlock key={index} block={block} />
           ))}
         </div>
-
-        {/* Custom CSS for scrollbar hiding and gradient overlays */}
-        <style>{`
-          .highlights-banners::-webkit-scrollbar {
-            display: none;
-          }
-          .highlights-banners::before,
-          .highlights-banners::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 20px;
-            z-index: 2;
-            pointer-events: none;
-          }
-          .highlights-banners::before {
-            left: 0;
-            background: linear-gradient(to right, #f5f5f5, transparent);
-          }
-          .highlights-banners::after {
-            right: 0;
-            background: linear-gradient(to left, #f5f5f5, transparent);
-          }
-        `}</style>
       </div>
 
       {/* Mobile Menu Drawer */}
@@ -339,3 +316,4 @@ const BannerBlock: React.FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
