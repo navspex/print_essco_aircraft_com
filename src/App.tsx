@@ -23,8 +23,8 @@ function App() {
       <section className="relative overflow-hidden group">
         {/* Background image layer - separate for zoom effect */}
         <div 
-          className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-[8000ms] ease-out group-hover:scale-110"
-          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}
+          className="absolute inset-0 z-0 bg-cover bg-center transition-transform ease-out group-hover:scale-110"
+          style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', transitionDuration: '8000ms' }}
         ></div>
         {/* Dark overlay for text readability - pointer-events-none so hover passes through */}
         <div className="absolute inset-0 z-10 bg-slate-900/75 pointer-events-none"></div>
