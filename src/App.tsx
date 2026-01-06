@@ -17,11 +17,27 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 overflow-x-hidden">
+      {/* Global CSS for background zoom effect on all sections */}
+      <style>{`
+        .bg-zoom-container { position: relative; overflow: hidden; }
+        .bg-zoom-layer {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          transition: transform 8s ease-out;
+          z-index: 0;
+        }
+        .bg-zoom-container:hover .bg-zoom-layer {
+          transform: scale(1.1);
+        }
+      `}</style>
+      
       <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
-      <section className="relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        {/* Dark overlay for text readability - z-10 so content at z-20 is clickable */}
+      <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-900/75"></div>
         <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
@@ -69,9 +85,10 @@ function App() {
       </section>
 
       {/* ==================== EBAY BADGE ==================== */}
-      <section className="relative py-12 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/trust_background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-900/80 transition-all duration-500 group-hover:bg-slate-900/70"></div>
-        <div className="relative max-w-4xl mx-auto px-5 text-center">
+      <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
+        <div className="absolute inset-0 z-10 bg-slate-900/80"></div>
+        <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
           <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
           <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
@@ -128,9 +145,10 @@ function App() {
       </section>
 
       {/* ==================== WHY US SECTION (NEW) ==================== */}
-      <section className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/why_us.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
-        <div className="relative max-w-7xl mx-auto px-4">
+      <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/why_us.jpg)' }}></div>
+        <div className="absolute inset-0 z-10 bg-slate-800/90"></div>
+        <div className="relative z-20 max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Print With ESSCO?</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">70 years of experience. Airport-based facility. Commercial-grade equipment.</p>
@@ -183,9 +201,10 @@ function App() {
       </section>
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
-      <section id="faq" className="relative py-16 group transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/print_room.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="absolute inset-0 bg-slate-800/90 transition-all duration-500 group-hover:bg-slate-800/80"></div>
-        <div className="relative max-w-4xl mx-auto px-4">
+      <section id="faq" className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
+        <div className="absolute inset-0 z-10 bg-slate-800/90"></div>
+        <div className="relative z-20 max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3"><HelpCircle className="w-10 h-10 text-amber-400" />Frequently Asked Questions</h2>
           </div>
@@ -296,6 +315,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
