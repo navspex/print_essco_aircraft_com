@@ -25,11 +25,11 @@ function App() {
           inset: 0;
           background-size: cover;
           background-position: center;
-          transition: transform 8s ease-out;
+          transition: transform 6s ease-out;
           z-index: 0;
         }
         .bg-zoom-container:hover .bg-zoom-layer {
-          transform: scale(1.1);
+          transform: scale(1.25);
         }
       `}</style>
       
