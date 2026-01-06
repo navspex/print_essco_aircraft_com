@@ -21,8 +21,8 @@ function App() {
 
       {/* ==================== HERO with Background Image ==================== */}
       <section className="relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-slate-900/75"></div>
+        {/* Dark overlay for text readability - z-10 so content at z-20 is clickable */}
+        <div className="absolute inset-0 z-10 bg-slate-900/75"></div>
         <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
           <h1 className="mb-8 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
             UPLOAD ANY PDF.<br />GET INSTANT PRICING.<br />PROCESSED IN 24 HOURS.
@@ -296,6 +296,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
