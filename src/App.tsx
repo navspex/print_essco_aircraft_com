@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import PrintCalculator from './components/PrintCalculator';
+import ScrollReveal from './components/ScrollReveal';
 import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp, ChevronUp } from 'lucide-react';
 
 // ==================== MAIN APP ====================
@@ -33,9 +34,12 @@ function App() {
         }
       `}</style>
       
-      <Header />
+      <ScrollReveal>
+        <Header />
+      </ScrollReveal>
 
       {/* ==================== HERO with Background Image ==================== */}
+      <ScrollReveal delay={100}>
       <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-900/50"></div>
@@ -57,8 +61,10 @@ function App() {
           <p className="text-slate-400 text-xs mt-3 italic lowercase">*cutoff time 4PM for next day processing</p>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
+      <ScrollReveal delay={200}>
       <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
@@ -85,8 +91,10 @@ function App() {
           <p className="mt-2 text-slate-400">Family-owned since 1955 · 180,000+ aviation manuals archived</p>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== EBAY BADGE ==================== */}
+      <ScrollReveal delay={300}>
       <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-900/55"></div>
@@ -95,8 +103,10 @@ function App() {
           <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
+      <ScrollReveal delay={100}>
       <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -145,8 +155,10 @@ function App() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== WHY US SECTION (NEW) ==================== */}
+      <ScrollReveal delay={200}>
       <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/why_us.jpg)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-800/65"></div>
@@ -189,8 +201,10 @@ function App() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== CALCULATOR SECTION ==================== */}
+      <ScrollReveal delay={300}>
       <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
@@ -201,8 +215,10 @@ function App() {
           <p className="flex items-center justify-center gap-2 mt-6 text-sm text-slate-500"><Lock size={14} className="text-green-500" /><span>Secure upload - Files auto-delete after 7 days</span></p>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
+      <ScrollReveal delay={100}>
       <section id="faq" className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-800/65"></div>
@@ -229,17 +245,21 @@ function App() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== FINAL CTA ==================== */}
+      <ScrollReveal delay={200}>
       <section className="bg-amber-500 py-12 transition-all duration-500 hover:bg-amber-400 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] origin-center">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Ready to see your exact price?</h2>
           <a href="#calculator" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-lg">SEE MY PRICE →</a>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* ==================== FOOTER ==================== */}
       {/* ==================== FOOTER - Links to Shopify (external, new tab) ==================== */}
+      <ScrollReveal delay={300}>
       <footer className="bg-slate-900 text-slate-400 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -301,6 +321,7 @@ function App() {
         </div>
         <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">© {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
       </footer>
+      </ScrollReveal>
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
