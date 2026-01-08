@@ -237,42 +237,80 @@ function App() {
             <p className="text-lg text-slate-400 max-w-3xl mx-auto">For seven decades, ESSCO Aircraft has been the go-to source for aviation documentation printing. Our reputation wasn't built overnight—it's the result of consistent quality, fair pricing, and personalized service that treats every customer like family. We understand that aviation documentation isn't just paperwork; it's critical information that keeps aircraft flying safely and operations running smoothly.</p>
           </div>
           
-          {/* Timeline */}
-          <div className="relative py-12 mb-12">
-            <div className="timeline-connector hidden md:block"></div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+          {/* Timeline - Alternating Above/Below */}
+          <div className="relative py-8 mb-12 hidden md:block">
+            {/* Horizontal Line */}
+            <div className="absolute left-0 right-0 top-1/2 h-1 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transform -translate-y-1/2"></div>
+            
+            <div className="grid grid-cols-4 gap-4 relative">
+              {/* Milestone 1 - Above */}
+              <div className="flex flex-col items-center">
+                <div className="mb-8 text-center">
+                  <p className="text-slate-300 text-sm mb-2 px-2">ESSCO Aircraft founded as a family-owned aviation business serving the Northeast Ohio aviation community.</p>
+                  <h3 className="text-2xl font-bold text-amber-400">1955</h3>
+                </div>
+                <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 border-4 border-slate-900 z-10">
                   <span className="text-slate-900 font-bold text-lg">1</span>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-400 mb-2">1955</h3>
-                <p className="text-slate-300 text-sm">ESSCO Aircraft founded as a family-owned aviation business serving the Northeast Ohio aviation community.</p>
+                <div className="h-20"></div>
               </div>
               
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+              {/* Milestone 2 - Below */}
+              <div className="flex flex-col items-center">
+                <div className="h-20"></div>
+                <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 border-4 border-slate-900 z-10">
                   <span className="text-slate-900 font-bold text-lg">2</span>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-400 mb-2">2006</h3>
-                <p className="text-slate-300 text-sm">Launched online printing services, becoming one of the first aviation specialists on eBay with verified seller status.</p>
+                <div className="mt-8 text-center">
+                  <h3 className="text-2xl font-bold text-amber-400">2006</h3>
+                  <p className="text-slate-300 text-sm mt-2 px-2">Launched online printing services, becoming one of the first aviation specialists on eBay with verified seller status.</p>
+                </div>
               </div>
               
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+              {/* Milestone 3 - Above */}
+              <div className="flex flex-col items-center">
+                <div className="mb-8 text-center">
+                  <p className="text-slate-300 text-sm mb-2 px-2">Invested $100,000+ in commercial printing equipment to serve growing demand from aviation professionals nationwide.</p>
+                  <h3 className="text-2xl font-bold text-amber-400">2015</h3>
+                </div>
+                <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 border-4 border-slate-900 z-10">
                   <span className="text-slate-900 font-bold text-lg">3</span>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-400 mb-2">2015</h3>
-                <p className="text-slate-300 text-sm">Invested $100,000+ in commercial printing equipment to serve growing demand from aviation professionals nationwide.</p>
+                <div className="h-20"></div>
               </div>
               
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+              {/* Milestone 4 - Below */}
+              <div className="flex flex-col items-center">
+                <div className="h-20"></div>
+                <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 border-4 border-slate-900 z-10">
                   <span className="text-slate-900 font-bold text-lg">4</span>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-400 mb-2">Today</h3>
-                <p className="text-slate-300 text-sm">Completed 34,000+ orders with 100% positive feedback, maintaining our family's commitment to aviation excellence.</p>
+                <div className="mt-8 text-center">
+                  <h3 className="text-2xl font-bold text-amber-400">Today</h3>
+                  <p className="text-slate-300 text-sm mt-2 px-2">Completed 34,000+ orders with 100% positive feedback, maintaining our family's commitment to aviation excellence.</p>
+                </div>
               </div>
             </div>
+          </div>
+          
+          {/* Timeline - Mobile (Vertical) */}
+          <div className="md:hidden space-y-6 mb-12">
+            {[
+              { num: 1, year: '1955', text: 'ESSCO Aircraft founded as a family-owned aviation business serving the Northeast Ohio aviation community.' },
+              { num: 2, year: '2006', text: 'Launched online printing services, becoming one of the first aviation specialists on eBay with verified seller status.' },
+              { num: 3, year: '2015', text: 'Invested $100,000+ in commercial printing equipment to serve growing demand from aviation professionals nationwide.' },
+              { num: 4, year: 'Today', text: 'Completed 34,000+ orders with 100% positive feedback, maintaining our family\'s commitment to aviation excellence.' },
+            ].map((item) => (
+              <div key={item.num} className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 flex-shrink-0">
+                  <span className="text-slate-900 font-bold">{item.num}</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-amber-400">{item.year}</h3>
+                  <p className="text-slate-300 text-sm mt-1">{item.text}</p>
+                </div>
+              </div>
+            ))}
           </div>
           
           {/* Our Promise & What Sets Us Apart */}
@@ -530,4 +568,5 @@ function App() {
 }
 
 export default App;
+
 
