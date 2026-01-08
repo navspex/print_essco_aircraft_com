@@ -177,6 +177,28 @@ function App() {
             <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our facility at KLPR Lorain County Regional Airport houses over $100,000 in commercial-grade printing and finishing equipment. We've invested in the same professional machinery used by commercial print shops and major publishers because aviation professionals deserve nothing less than exceptional quality.</p>
           </div>
           
+          {/* Equipment Image Strip */}
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-12 max-w-6xl mx-auto">
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-xerox-versant.png" alt="Xerox Versant 4100 Press" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-hp-designjet.png" alt="HP DesignJet XL 3800" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-horizon-binder.png" alt="Horizon BQ-160 Binder" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-triumph-cutter.png" alt="TRIUMPH 4315 Guillotine Cutter" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-roll-laminator.png" alt="Commercial Roll Laminator" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+            <div className="aspect-square overflow-hidden rounded-lg">
+              <img src="/images/equip-archive-library.png" alt="180,000+ Document Archive" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </div>
+          </div>
+          
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
               <Printer className="w-12 h-12 text-amber-400 mb-4" />
@@ -508,3 +530,4 @@ function App() {
 }
 
 export default App;
+
