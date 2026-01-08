@@ -15,3 +15,28 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+/* ==================== SCROLL REVEAL ANIMATIONS ==================== */
+/* Gamma-style stagger reveal: fade-in + slide-up on viewport entry */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.scroll-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal-item.scroll-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
