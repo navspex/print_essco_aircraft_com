@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import PrintCalculator from './components/PrintCalculator';
 import ScrollReveal from './components/ScrollReveal';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp, ChevronUp } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Building2, Printer, Users, ThumbsUp, ChevronUp, Upload, Truck, Archive, MapPin } from 'lucide-react';
 
 // ==================== MAIN APP ====================
 function App() {
@@ -31,6 +31,15 @@ function App() {
         }
         .bg-zoom-container:hover .bg-zoom-layer {
           transform: scale(1.25);
+        }
+        .timeline-connector {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
+          z-index: 0;
         }
       `}</style>
       
@@ -157,47 +166,162 @@ function App() {
       </section>
       </ScrollReveal>
 
-      {/* ==================== WHY US SECTION (NEW) ==================== */}
+      {/* ==================== PROFESSIONAL EQUIPMENT SECTION ==================== */}
       <ScrollReveal delay={200}>
       <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
-        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/why_us.jpg)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-800/65"></div>
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
+        <div className="absolute inset-0 z-10 bg-slate-800/75"></div>
         <div className="relative z-20 max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Print With ESSCO?</h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">70 years of experience. Airport-based facility. Commercial-grade equipment.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Professional Equipment, Professional Results</h2>
+            <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our facility at KLPR Lorain County Regional Airport houses over $100,000 in commercial-grade printing and finishing equipment. We've invested in the same professional machinery used by commercial print shops and major publishers because aviation professionals deserve nothing less than exceptional quality.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <Building2 className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">Airport-Based Facility</h3>
-              <p className="text-slate-400 text-sm">Located at KLPR Lorain County Regional Airport in Ohio. We understand aviation documentation requirements.</p>
+          
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <Printer className="w-12 h-12 text-amber-400 mb-4" />
+              <h3 className="text-white font-bold text-xl mb-3">Professional Equipment</h3>
+              <p className="text-slate-300 leading-relaxed">Our $100,000+ facility features commercial-grade printing and finishing equipment including the Xerox Versant 4100 Press, HP Designjet XL 3800, Horizon BQ-160 Binder, TRIUMPH 4315 Guillotine Cutter, and commercial roll laminator. We use the same professional machinery trusted by major publishers and commercial print shops nationwide.</p>
             </div>
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <Printer className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">Commercial Equipment</h3>
-              <p className="text-slate-400 text-sm">Xerox Versant 4100 press, large format printers, professional laminators. Over $100,000 in equipment.</p>
+            
+            <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <Archive className="w-12 h-12 text-amber-400 mb-4" />
+              <h3 className="text-white font-bold text-xl mb-3">Archive Access</h3>
+              <p className="text-slate-300 leading-relaxed">With 180,000+ aviation technical documents in our archive library, we maintain one of the most comprehensive collections of aircraft manuals, maintenance procedures, and regulatory documentation in the industry. Our organized archive system allows us to quickly locate and reproduce legacy documentation when original copies are no longer available from manufacturers.</p>
             </div>
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <Users className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">Family-Owned Since 1955</h3>
-              <p className="text-slate-400 text-sm">Four generations serving aviation. 180,000+ manuals archived. We know this business inside and out.</p>
+            
+            <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <Zap className="w-12 h-12 text-amber-400 mb-4" />
+              <h3 className="text-white font-bold text-xl mb-3">Fast Turnaround</h3>
+              <p className="text-slate-300 leading-relaxed">Most orders ship within 1-2 business days with same-day production available for rush jobs. Orders placed before 4pm EST can be produced the same day and shipped next business day via your preferred carrier. We understand that downtime costs money in aviation, so we prioritize quick turnaround without sacrificing quality.</p>
             </div>
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <Zap className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">Fast Turnaround</h3>
-              <p className="text-slate-400 text-sm">Same-day production available for orders before 4PM EST. Most orders ship within 24-48 hours.</p>
+            
+            <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <MapPin className="w-12 h-12 text-amber-400 mb-4" />
+              <h3 className="text-white font-bold text-xl mb-3">Airport Location</h3>
+              <p className="text-slate-300 leading-relaxed">Operating from KLPR Lorain County Regional Airport gives us unique insight into aviation industry needs. We're surrounded by aircraft maintenance facilities, flight schools, and aviation businesses daily, which keeps us connected to the real-world documentation requirements of the aviation community we serve.</p>
             </div>
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <ThumbsUp className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">No Minimums</h3>
-              <p className="text-slate-400 text-sm">Need just one manual? No problem. We treat every order with the same care and attention.</p>
+          </div>
+        </div>
+      </section>
+      </ScrollReveal>
+
+      {/* ==================== WHY AVIATION PROFESSIONALS CHOOSE ESSCO ==================== */}
+      <ScrollReveal delay={100}>
+      <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Aviation Professionals Choose ESSCO</h2>
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">For seven decades, ESSCO Aircraft has been the go-to source for aviation documentation printing. Our reputation wasn't built overnight—it's the result of consistent quality, fair pricing, and personalized service that treats every customer like family. We understand that aviation documentation isn't just paperwork; it's critical information that keeps aircraft flying safely and operations running smoothly.</p>
+          </div>
+          
+          {/* Timeline */}
+          <div className="relative py-12 mb-12">
+            <div className="timeline-connector hidden md:block"></div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+                  <span className="text-slate-900 font-bold text-lg">1</span>
+                </div>
+                <h3 className="text-2xl font-bold text-amber-400 mb-2">1955</h3>
+                <p className="text-slate-300 text-sm">ESSCO Aircraft founded as a family-owned aviation business serving the Northeast Ohio aviation community.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+                  <span className="text-slate-900 font-bold text-lg">2</span>
+                </div>
+                <h3 className="text-2xl font-bold text-amber-400 mb-2">2006</h3>
+                <p className="text-slate-300 text-sm">Launched online printing services, becoming one of the first aviation specialists on eBay with verified seller status.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+                  <span className="text-slate-900 font-bold text-lg">3</span>
+                </div>
+                <h3 className="text-2xl font-bold text-amber-400 mb-2">2015</h3>
+                <p className="text-slate-300 text-sm">Invested $100,000+ in commercial printing equipment to serve growing demand from aviation professionals nationwide.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/30">
+                  <span className="text-slate-900 font-bold text-lg">4</span>
+                </div>
+                <h3 className="text-2xl font-bold text-amber-400 mb-2">Today</h3>
+                <p className="text-slate-300 text-sm">Completed 34,000+ orders with 100% positive feedback, maintaining our family's commitment to aviation excellence.</p>
+              </div>
             </div>
-            <div className="bg-slate-700/85 rounded-xl p-6 border border-slate-600">
-              <ShieldCheck className="w-10 h-10 text-amber-400 mb-4" />
-              <h3 className="text-white font-bold text-lg mb-2">Proven Track Record</h3>
-              <p className="text-slate-400 text-sm">100% positive eBay feedback. 17,000+ reviews. 34,000+ orders completed successfully.</p>
+          </div>
+          
+          {/* Our Promise & What Sets Us Apart */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><ShieldCheck className="w-6 h-6 text-amber-400" />Our Promise to You</h3>
+              <ul className="space-y-3 text-slate-300">
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>Every document printed on commercial-grade equipment to exacting standards</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>No job too small or too large—we treat every customer with equal priority</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>Transparent pricing with no hidden fees or surprise charges</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>Fast turnaround times that respect your operational schedule</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>Secure handling of all proprietary and sensitive documentation</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" /><span>Expert guidance on paper selection, binding, and finishing options</span></li>
+              </ul>
             </div>
+            
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><Star className="w-6 h-6 text-amber-400" />What Sets Us Apart</h3>
+              <p className="text-slate-300 mb-4">Unlike generic print shops, we specialize exclusively in aviation and technical documentation. We understand FAA requirements, aircraft maintenance documentation standards, and the importance of clear, durable manuals that withstand daily shop floor use.</p>
+              <p className="text-slate-300">Our airport-based location isn't just convenient—it keeps us immersed in the aviation community we serve, ensuring we always understand your needs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      </ScrollReveal>
+
+      {/* ==================== HOW OUR PROCESS WORKS ==================== */}
+      <ScrollReveal delay={200}>
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How Our Process Works</h2>
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Getting your aviation documentation printed professionally has never been easier. We've streamlined our process to eliminate complexity while maintaining the personal touch that sets us apart from automated online print services. From upload to delivery, every step is designed with your convenience in mind.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Upload Your PDF</h3>
+              <p className="text-slate-400 text-sm">Simply upload your print-ready PDF document through our secure online system. Files are encrypted during transfer and stored securely. We accept single files up to 500MB.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Calculator className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Get Instant Quote</h3>
+              <p className="text-slate-400 text-sm">Our system automatically calculates your exact price based on page count, color requirements, and binding options. See your total before committing—no surprises.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CreditCard className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Approve & Pay</h3>
+              <p className="text-slate-400 text-sm">Review your quote and specifications. Once you approve, pay securely online using credit card or PayPal. Orders over $500 can arrange terms.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">We Print & Ship</h3>
+              <p className="text-slate-400 text-sm">Your job enters production immediately. Most orders ship within 1-2 business days with tracking provided. Same-day production available before 4pm EST.</p>
+            </div>
+          </div>
+          
+          <div className="mt-8 text-center">
+            <p className="text-slate-400 flex items-center justify-center gap-2"><HelpCircle className="w-5 h-5" /><span><strong>Need Help?</strong> Our team is available Monday-Friday 8am-5pm EST at <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> or email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a>. We're happy to answer questions about file preparation, paper options, or anything else.</span></p>
           </div>
         </div>
       </section>
@@ -216,6 +340,7 @@ function App() {
         </div>
       </section>
       </ScrollReveal>
+
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
       <ScrollReveal delay={100}>
@@ -247,17 +372,62 @@ function App() {
       </section>
       </ScrollReveal>
 
-      {/* ==================== FINAL CTA ==================== */}
+      {/* ==================== READY TO GET STARTED CTA ==================== */}
       <ScrollReveal delay={200}>
-      <section className="bg-amber-500 py-12 transition-all duration-500 hover:bg-amber-400 hover:shadow-2xl hover:shadow-amber-500/50 hover:scale-[1.02] origin-center">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Ready to see your exact price?</h2>
-          <a href="#calculator" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-lg">SEE MY PRICE →</a>
+      <section className="py-16 bg-slate-900 border-t border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Join thousands of aviation professionals who trust ESSCO Aircraft for their documentation printing needs. From single manuals to fleet-wide documentation projects, we deliver the quality, service, and reliability that aviation professionals demand. Our 70-year track record speaks for itself—100% positive feedback from 17,000+ verified customers, 34,000+ orders completed, and a commitment to excellence that's been passed down through three generations of family ownership.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
+              <Upload className="w-10 h-10 text-amber-400 mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Upload Your Document</h3>
+              <p className="text-slate-400 text-sm">Get started in seconds with our secure online upload system. Your files are encrypted and handled with complete confidentiality.</p>
+            </div>
+            
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
+              <Calculator className="w-10 h-10 text-amber-400 mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Instant Pricing</h3>
+              <p className="text-slate-400 text-sm">See your exact cost immediately with automatic volume discounts applied. No waiting for quotes or callbacks.</p>
+            </div>
+            
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
+              <Truck className="w-10 h-10 text-amber-400 mx-auto mb-4" />
+              <h3 className="text-white font-bold text-lg mb-2">Fast Delivery</h3>
+              <p className="text-slate-400 text-sm">Most orders ship within 1-2 business days with tracking provided. Same-day production available before 4pm EST.</p>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              START YOUR ORDER NOW →
+            </a>
+            <p className="mt-4 text-slate-500 text-sm">Questions? Call <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> • Email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a></p>
+            <p className="mt-2 text-slate-600 text-xs">Monday-Friday 8am-4pm EST</p>
+          </div>
+          
+          {/* Trust Badges */}
+          <div className="flex flex-wrap justify-center items-center gap-8 mt-10 pt-8 border-t border-slate-800">
+            <div className="flex items-center gap-2 text-slate-400">
+              <Lock className="w-5 h-5 text-green-500" />
+              <span className="text-sm">Secure Upload</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-400">
+              <Award className="w-5 h-5 text-amber-400" />
+              <span className="text-sm">Quality Guaranteed</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-400">
+              <Plane className="w-5 h-5 text-blue-400" />
+              <span className="text-sm">70 Years Aviation Experience</span>
+            </div>
+          </div>
         </div>
       </section>
       </ScrollReveal>
 
-      {/* ==================== FOOTER ==================== */}
       {/* ==================== FOOTER - Links to Shopify (external, new tab) ==================== */}
       <ScrollReveal delay={300}>
       <footer className="bg-slate-900 text-slate-400 border-t border-slate-800">
@@ -338,11 +508,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
