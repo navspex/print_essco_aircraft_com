@@ -74,20 +74,23 @@ function App() {
             <button 
               onClick={() => setShowVideoModal(true)}
               className="group relative overflow-hidden rounded-xl border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02]"
-              style={{ width: '340px', height: '240px' }}
+              style={{ width: '220px', height: '240px' }}
             >
               <img 
                 src="/images/emma-video-thumb.png" 
                 alt="Watch Emma explain how ESSCO printing works" 
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover"
               />
-              {/* Dark overlay - only bottom 25% */}
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-slate-900 to-transparent"></div>
-              {/* Play button - pinned to bottom */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+              {/* Play button - positioned in top third */}
+              <div className="absolute top-4 right-4">
                 <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-black/50">
                   <Play size={24} className="text-slate-900 ml-1" fill="currentColor" />
                 </div>
+              </div>
+              {/* Dark overlay - only bottom strip */}
+              <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-900 to-transparent"></div>
+              {/* Text overlay */}
+              <div className="absolute bottom-2 left-0 right-0 text-center">
                 <span className="text-white text-sm font-semibold drop-shadow-lg">See How It Works</span>
               </div>
             </button>
