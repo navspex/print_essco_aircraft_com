@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import PrintCalculator from './components/PrintCalculator';
 import ScrollReveal from './components/ScrollReveal';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X } from 'lucide-react';
 
 // ==================== MAIN APP ====================
 function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -65,6 +66,21 @@ function App() {
             <Calculator size={24} strokeWidth={2.5} />
             <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
           </a>
+          
+          {/* Video CTA - Emma Explainer */}
+          <button 
+            onClick={() => setShowVideoModal(true)}
+            className="mt-6 bg-slate-800/90 hover:bg-slate-700 text-white px-6 py-3 rounded-lg border border-slate-600 hover:border-amber-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/20 inline-flex items-center gap-3 group"
+          >
+            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Play size={20} className="text-slate-900 ml-0.5" fill="currentColor" />
+            </div>
+            <span className="text-left">
+              <span className="block text-sm font-semibold">Watch: How It Works</span>
+              <span className="block text-xs text-slate-400">2 min video</span>
+            </span>
+          </button>
+          
           <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>No credit card required - Takes 30 seconds</span></p>
           <p className="text-white text-base mt-6 italic" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>No minimums. No setup fees. Quantity discounts. No account required.</p>
           <p className="text-slate-400 text-xs mt-3 italic lowercase">*cutoff time 4PM for next day processing</p>
@@ -562,6 +578,41 @@ function App() {
         >
           <ChevronUp className="w-6 h-6" />
         </button>
+      )}
+
+      {/* Video Modal - Emma Explainer */}
+      {showVideoModal && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={() => setShowVideoModal(false)}
+        >
+          {/* Close button */}
+          <button 
+            onClick={() => setShowVideoModal(false)}
+            className="absolute top-4 right-4 p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+            aria-label="Close video"
+          >
+            <X size={32} />
+          </button>
+          
+          {/* Video container - optimized for vertical YouTube Shorts */}
+          <div 
+            className="relative w-full max-w-sm mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative pb-[177.78%]"> {/* 9:16 aspect ratio */}
+              <iframe
+                className="absolute inset-0 w-full h-full rounded-xl shadow-2xl"
+                src="https://www.youtube.com/embed/HDmPUf_A_Dc?autoplay=1&rel=0"
+                title="ESSCO Print-On-Demand - How It Works"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p className="text-center text-white/70 text-sm mt-4">Click anywhere outside to close</p>
+          </div>
+        </div>
       )}
     </div>
   );
