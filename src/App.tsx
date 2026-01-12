@@ -62,24 +62,39 @@ function App() {
               Training guides, service docs, operations manuals, and more - we've been printing them since 1955. Professional binding, fast turnaround.
             </p>
           </div>
-          <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
-            <Calculator size={24} strokeWidth={2.5} />
-            <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
-          </a>
-          
-          {/* Video CTA - Emma Explainer */}
-          <button 
-            onClick={() => setShowVideoModal(true)}
-            className="mt-6 bg-slate-800/90 hover:bg-slate-700 text-white px-6 py-3 rounded-lg border border-slate-600 hover:border-amber-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/20 inline-flex items-center gap-3 group"
-          >
-            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Play size={20} className="text-slate-900 ml-0.5" fill="currentColor" />
-            </div>
-            <span className="text-left">
-              <span className="block text-sm font-semibold">Watch: How It Works</span>
-              <span className="block text-xs text-slate-400">2 min video</span>
-            </span>
-          </button>
+          {/* CTA Row: Button + Emma Video Tile */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            {/* Primary CTA */}
+            <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              <Calculator size={24} strokeWidth={2.5} />
+              <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
+            </a>
+            
+            {/* Emma Video Thumbnail Tile */}
+            <button 
+              onClick={() => setShowVideoModal(true)}
+              className="group relative overflow-hidden rounded-xl border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02]"
+              style={{ width: '200px', height: '120px' }}
+            >
+              <img 
+                src="/images/emma-video-thumb.png" 
+                alt="Watch Emma explain how ESSCO printing works" 
+                className="w-full h-full object-cover object-top"
+              />
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 bg-amber-500/90 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400 transition-all duration-300 shadow-lg">
+                  <Play size={24} className="text-slate-900 ml-1" fill="currentColor" />
+                </div>
+              </div>
+              {/* Text overlay */}
+              <div className="absolute bottom-2 left-0 right-0 text-center">
+                <span className="text-white text-xs font-semibold drop-shadow-lg">See How It Works</span>
+              </div>
+            </button>
+          </div>
           
           <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>No credit card required - Takes 30 seconds</span></p>
           <p className="text-white text-base mt-6 italic" style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.9)' }}>No minimums. No setup fees. Quantity discounts. No account required.</p>
