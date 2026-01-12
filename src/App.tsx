@@ -118,14 +118,66 @@ function App() {
       </section>
       </ScrollReveal>
 
-      {/* ==================== EBAY BADGE ==================== */}
-      <ScrollReveal delay={300}>
-      <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
-        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-900/55"></div>
-        <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
-          <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
-          <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
+      {/* ==================== CALCULATOR SECTION ==================== */}
+      <ScrollReveal delay={100}>
+      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
+            <p className="text-slate-400 text-lg">Upload your PDF and get pricing in seconds</p>
+          </div>
+          <PrintCalculator />
+          <p className="flex items-center justify-center gap-2 mt-6 text-sm text-slate-500"><Lock size={14} className="text-green-500" /><span>Secure upload - Files auto-delete after 7 days</span></p>
+        </div>
+      </section>
+      </ScrollReveal>
+
+      {/* ==================== HOW OUR PROCESS WORKS ==================== */}
+      <ScrollReveal delay={200}>
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How Our Process Works</h2>
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Getting your aviation documentation printed professionally has never been easier. We've streamlined our process to eliminate complexity while maintaining the personal touch that sets us apart from automated online print services. From upload to delivery, every step is designed with your convenience in mind.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Upload Your PDF</h3>
+              <p className="text-slate-400 text-sm">Simply upload your print-ready PDF document through our secure online system. Files are encrypted during transfer and stored securely. We accept single files up to 500MB.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Calculator className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Get Instant Quote</h3>
+              <p className="text-slate-400 text-sm">Our system automatically calculates your exact price based on page count, color requirements, and binding options. See your total before committing—no surprises.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CreditCard className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Approve & Pay</h3>
+              <p className="text-slate-400 text-sm">Review your quote and specifications. Once you approve, pay securely online using credit card or PayPal. Orders over $500 can arrange terms.</p>
+            </div>
+            
+            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
+              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Truck className="w-7 h-7 text-amber-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">We Print & Ship</h3>
+              <p className="text-slate-400 text-sm">Your job enters production immediately. Most orders ship within 1-2 business days with tracking provided. Same-day production available before 4pm EST.</p>
+            </div>
+          </div>
+          
+          <div className="mt-8 text-center">
+            <p className="text-slate-400 flex items-center justify-center gap-2"><HelpCircle className="w-5 h-5" /><span><strong>Need Help?</strong> Our team is available Monday-Friday 8am-5pm EST at <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> or email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a>. We're happy to answer questions about file preparation, paper options, or anything else.</span></p>
+          </div>
         </div>
       </section>
       </ScrollReveal>
@@ -353,70 +405,17 @@ function App() {
       </section>
       </ScrollReveal>
 
-      {/* ==================== HOW OUR PROCESS WORKS ==================== */}
+      {/* ==================== EBAY BADGE ==================== */}
       <ScrollReveal delay={200}>
-      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How Our Process Works</h2>
-            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Getting your aviation documentation printed professionally has never been easier. We've streamlined our process to eliminate complexity while maintaining the personal touch that sets us apart from automated online print services. From upload to delivery, every step is designed with your convenience in mind.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
-              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Upload className="w-7 h-7 text-amber-400" />
-              </div>
-              <h3 className="text-white font-bold text-lg mb-2">Upload Your PDF</h3>
-              <p className="text-slate-400 text-sm">Simply upload your print-ready PDF document through our secure online system. Files are encrypted during transfer and stored securely. We accept single files up to 500MB.</p>
-            </div>
-            
-            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
-              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Calculator className="w-7 h-7 text-amber-400" />
-              </div>
-              <h3 className="text-white font-bold text-lg mb-2">Get Instant Quote</h3>
-              <p className="text-slate-400 text-sm">Our system automatically calculates your exact price based on page count, color requirements, and binding options. See your total before committing—no surprises.</p>
-            </div>
-            
-            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
-              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CreditCard className="w-7 h-7 text-amber-400" />
-              </div>
-              <h3 className="text-white font-bold text-lg mb-2">Approve & Pay</h3>
-              <p className="text-slate-400 text-sm">Review your quote and specifications. Once you approve, pay securely online using credit card or PayPal. Orders over $500 can arrange terms.</p>
-            </div>
-            
-            <div className="bg-slate-700/80 rounded-xl p-6 border border-slate-600 text-center transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
-              <div className="w-14 h-14 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-7 h-7 text-amber-400" />
-              </div>
-              <h3 className="text-white font-bold text-lg mb-2">We Print & Ship</h3>
-              <p className="text-slate-400 text-sm">Your job enters production immediately. Most orders ship within 1-2 business days with tracking provided. Same-day production available before 4pm EST.</p>
-            </div>
-          </div>
-          
-          <div className="mt-8 text-center">
-            <p className="text-slate-400 flex items-center justify-center gap-2"><HelpCircle className="w-5 h-5" /><span><strong>Need Help?</strong> Our team is available Monday-Friday 8am-5pm EST at <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> or email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a>. We're happy to answer questions about file preparation, paper options, or anything else.</span></p>
-          </div>
+      <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
+        <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
+        <div className="absolute inset-0 z-10 bg-slate-900/55"></div>
+        <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
+          <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
+          <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
       </section>
       </ScrollReveal>
-
-      {/* ==================== CALCULATOR SECTION ==================== */}
-      <ScrollReveal delay={300}>
-      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
-            <p className="text-slate-400 text-lg">Upload your PDF and get pricing in seconds</p>
-          </div>
-          <PrintCalculator />
-          <p className="flex items-center justify-center gap-2 mt-6 text-sm text-slate-500"><Lock size={14} className="text-green-500" /><span>Secure upload - Files auto-delete after 7 days</span></p>
-        </div>
-      </section>
-      </ScrollReveal>
-
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
       <ScrollReveal delay={100}>
