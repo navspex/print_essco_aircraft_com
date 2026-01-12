@@ -74,23 +74,20 @@ function App() {
             <button 
               onClick={() => setShowVideoModal(true)}
               className="group relative overflow-hidden rounded-xl border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02]"
-              style={{ width: '280px', height: '180px' }}
+              style={{ width: '340px', height: '240px' }}
             >
               <img 
                 src="/images/emma-video-thumb.png" 
                 alt="Watch Emma explain how ESSCO printing works" 
                 className="w-full h-full object-cover object-top"
               />
-              {/* Dark overlay - only bottom portion */}
-              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-              {/* Play button - positioned in bottom third */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-                <div className="w-14 h-14 bg-amber-500/90 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-black/50">
-                  <Play size={28} className="text-slate-900 ml-1" fill="currentColor" />
+              {/* Dark overlay - only bottom 25% */}
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-slate-900 to-transparent"></div>
+              {/* Play button - pinned to bottom */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-black/50">
+                  <Play size={24} className="text-slate-900 ml-1" fill="currentColor" />
                 </div>
-              </div>
-              {/* Text overlay */}
-              <div className="absolute bottom-1.5 left-0 right-0 text-center">
                 <span className="text-white text-sm font-semibold drop-shadow-lg">See How It Works</span>
               </div>
             </button>
