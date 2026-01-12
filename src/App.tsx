@@ -26,11 +26,11 @@ function App() {
           inset: 0;
           background-size: cover;
           background-position: center;
-          transition: transform 6s ease-out;
+          transition: transform 8s ease-out;
           z-index: 0;
         }
         .bg-zoom-container:hover .bg-zoom-layer {
-          transform: scale(1.25);
+          transform: scale(1.10);
         }
         .timeline-connector {
           position: absolute;
@@ -49,7 +49,7 @@ function App() {
 
       {/* ==================== HERO with Background Image ==================== */}
       <ScrollReveal delay={100}>
-      <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-900/50"></div>
         <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
@@ -74,7 +74,7 @@ function App() {
 
       {/* ==================== TRUST STATS (Rev 56 Content) ==================== */}
       <ScrollReveal delay={200}>
-      <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="py-12 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-6xl mx-auto px-5 text-center">
           <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">We've printed manuals for flight schools, factories, shipyards, and hospitals.</p>
           <div className="flex flex-col md:flex-row justify-around gap-8 mb-8">
@@ -104,7 +104,7 @@ function App() {
 
       {/* ==================== EBAY BADGE ==================== */}
       <ScrollReveal delay={300}>
-      <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+      <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-900/55"></div>
         <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
@@ -116,7 +116,7 @@ function App() {
 
       {/* ==================== PRICING (KISS - Per PDF Page) ==================== */}
       <ScrollReveal delay={100}>
-      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Clear, Competitive Pricing</h2>
@@ -168,7 +168,7 @@ function App() {
 
       {/* ==================== PROFESSIONAL EQUIPMENT SECTION ==================== */}
       <ScrollReveal delay={200}>
-      <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+      <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-800/75"></div>
         <div className="relative z-20 max-w-7xl mx-auto px-4">
@@ -180,22 +180,22 @@ function App() {
           {/* Equipment Image Strip */}
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-12 max-w-6xl mx-auto">
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-xerox-versant.png" alt="Xerox Versant 4100 Press" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-xerox-versant.png" alt="Xerox Versant 4100 Press" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-hp-designjet.png" alt="HP DesignJet XL 3800" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-hp-designjet.png" alt="HP DesignJet XL 3800" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-horizon-binder.png" alt="Horizon BQ-160 Binder" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-horizon-binder.png" alt="Horizon BQ-160 Binder" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-triumph-cutter.png" alt="TRIUMPH 4315 Guillotine Cutter" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-triumph-cutter.png" alt="TRIUMPH 4315 Guillotine Cutter" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-roll-laminator.png" alt="Commercial Roll Laminator" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-roll-laminator.png" alt="Commercial Roll Laminator" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-archive-library.png" alt="180,000+ Document Archive" className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+              <img src="/images/equip-archive-library.png" alt="180,000+ Document Archive" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
           </div>
           
@@ -230,7 +230,7 @@ function App() {
 
       {/* ==================== WHY AVIATION PROFESSIONALS CHOOSE ESSCO ==================== */}
       <ScrollReveal delay={100}>
-      <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Aviation Professionals Choose ESSCO</h2>
@@ -339,7 +339,7 @@ function App() {
 
       {/* ==================== HOW OUR PROCESS WORKS ==================== */}
       <ScrollReveal delay={200}>
-      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How Our Process Works</h2>
@@ -389,7 +389,7 @@ function App() {
 
       {/* ==================== CALCULATOR SECTION ==================== */}
       <ScrollReveal delay={300}>
-      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
@@ -404,7 +404,7 @@ function App() {
 
       {/* ==================== FAQ SECTION (NEW) ==================== */}
       <ScrollReveal delay={100}>
-      <section id="faq" className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.02] origin-center">
+      <section id="faq" className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
         <div className="absolute inset-0 z-10 bg-slate-800/65"></div>
         <div className="relative z-20 max-w-4xl mx-auto px-4">
@@ -434,7 +434,7 @@ function App() {
 
       {/* ==================== READY TO GET STARTED CTA ==================== */}
       <ScrollReveal delay={200}>
-      <section className="py-16 bg-slate-900 border-t border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.02] origin-center">
+      <section className="py-16 bg-slate-900 border-t border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Get Started?</h2>
@@ -557,7 +557,7 @@ function App() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 p-3 bg-amber-500/70 hover:bg-amber-500 text-slate-900 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+          className="fixed bottom-6 right-6 p-3 bg-amber-500/70 hover:bg-amber-500 text-slate-900 rounded-full shadow-lg transition-all duration-300 hover:scale-105 z-50"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-6 h-6" />
@@ -568,5 +568,6 @@ function App() {
 }
 
 export default App;
+
 
 
