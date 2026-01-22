@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
-import PrintCalculator from './components/PrintCalculator';
 import ScrollReveal from './components/ScrollReveal';
 import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X } from 'lucide-react';
 
@@ -133,7 +132,7 @@ function App() {
       </section>
       </ScrollReveal>
 
-      {/* ==================== CALCULATOR SECTION ==================== */}
+      {/* ==================== CALCULATOR SECTION - COMING SOON PLACEHOLDER ==================== */}
       <ScrollReveal delay={100}>
       <section id="calculator" className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-5xl mx-auto px-4">
@@ -141,7 +140,32 @@ function App() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Get Your Instant Quote</h2>
             <p className="text-slate-400 text-lg">Upload your PDF and get pricing in seconds</p>
           </div>
-          <PrintCalculator />
+          
+          {/* Calculator Coming Soon Placeholder */}
+          <div className="bg-slate-800/50 rounded-2xl border-2 border-dashed border-slate-600 p-12 text-center">
+            <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Calculator className="w-10 h-10 text-amber-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-3">Calculator Coming Soon</h3>
+            <p className="text-slate-400 max-w-md mx-auto mb-6">
+              We're upgrading our instant quote calculator with automatic PDF analysis. 
+              Upload your document and get accurate pricing in seconds.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-500">
+              <span className="flex items-center gap-2"><CheckCircle size={16} className="text-green-500" />Auto page counting</span>
+              <span className="flex items-center gap-2"><CheckCircle size={16} className="text-green-500" />Color detection</span>
+              <span className="flex items-center gap-2"><CheckCircle size={16} className="text-green-500" />Instant pricing</span>
+            </div>
+            <div className="mt-8 pt-6 border-t border-slate-700">
+              <p className="text-slate-400 text-sm mb-2">Need a quote now? Contact us directly:</p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="tel:877-318-1555" className="text-amber-400 hover:text-amber-300 font-medium">877-318-1555</a>
+                <span className="text-slate-600">•</span>
+                <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:text-amber-300 font-medium">dale@esscoaircraft.com</a>
+              </div>
+            </div>
+          </div>
+          
           <p className="flex items-center justify-center gap-2 mt-6 text-sm text-slate-500"><Lock size={14} className="text-green-500" /><span>Secure upload - Files auto-delete after 7 days</span></p>
         </div>
       </section>
@@ -633,6 +657,3 @@ function App() {
 }
 
 export default App;
-
-
-
