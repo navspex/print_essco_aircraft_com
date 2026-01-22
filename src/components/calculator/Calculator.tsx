@@ -1,11 +1,12 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
+// V30 - With R2 storage integration
 
 import { useState, useCallback } from 'react';
 import { 
-  Upload, FileCheck, AlertCircle, Loader2, FileText, 
+  Upload, FileCheck, AlertCircle, Loader2, 
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
-  Phone, Mail
+  Phone, Mail, Lock
 } from 'lucide-react';
 import { analyzePDF, formatFileSize, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
 import { 
@@ -14,7 +15,7 @@ import {
   type BindingType, type CoverType, type PricingBreakdown
 } from '../../lib/pricing';
 
-type CalculatorStep = 'upload' | 'analyzing' | 'configure' | 'review' | 'submitting' | 'success' | 'error';
+type CalculatorStep = 'upload' | 'analyzing' | 'configure' | 'submitting' | 'error';
 
 interface OrderConfig {
   copies: number;
@@ -39,6 +40,7 @@ export default function Calculator() {
   const [pricing, setPricing] = useState<PricingBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string>('');
 
   // Calculate pricing whenever config or analysis changes
   const updatePricing = useCallback((analysisData: PDFAnalysisResult, orderConfig: OrderConfig) => {
@@ -102,7 +104,7 @@ export default function Calculator() {
     setDragActive(false);
     
     const droppedFile = e.dataTransfer.files?.[0];
-    if (droppedFile?.type === 'application/pdf') {
+    if (droppedFile && (droppedFile.type === 'application/pdf' || droppedFile.name.toLowerCase().endsWith('.pdf'))) {
       handleFile(droppedFile);
     } else {
       setError('Please upload a PDF file');
@@ -118,6 +120,33 @@ export default function Calculator() {
     }
   }, [config, analysis, updatePricing]);
 
+  // Upload PDF to R2 storage
+  const uploadPdfToStorage = async (): Promise<{ success: boolean; fileKey?: string; error?: string }> => {
+    if (!file) return { success: false, error: 'No file selected' };
+    
+    setUploadProgress('Uploading PDF...');
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch('/api/upload-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        return { success: true, fileKey: data.fileKey };
+      } else {
+        return { success: false, error: data.error || 'Upload failed' };
+      }
+    } catch (err) {
+      return { success: false, error: 'Network error during upload' };
+    }
+  };
+
   // Submit to Shopify Draft Order
   const handleSubmit = useCallback(async () => {
     if (!analysis || !pricing || !file) return;
@@ -128,8 +157,21 @@ export default function Calculator() {
     }
 
     setStep('submitting');
+    setUploadProgress('Uploading PDF...');
 
     try {
+      // Step 1: Upload PDF to R2
+      const uploadResult = await uploadPdfToStorage();
+      
+      if (!uploadResult.success) {
+        setError(uploadResult.error || 'Failed to upload PDF');
+        setStep('error');
+        return;
+      }
+      
+      setUploadProgress('Creating order...');
+
+      // Step 2: Create Draft Order with file key
       const response = await fetch('/api/create-draft-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -146,6 +188,8 @@ export default function Calculator() {
           foldoutCount: analysis.foldoutPages,
           printMode: config.printMode,
           shippingWeightGrams: pricing.totalWeightGrams,
+          // R2 file key for production team
+          pdfFileKey: uploadResult.fileKey,
         }),
       });
 
@@ -171,6 +215,7 @@ export default function Calculator() {
     setAnalysis(null);
     setPricing(null);
     setError(null);
+    setUploadProgress('');
     setConfig({
       copies: 1,
       binding: 'none',
@@ -246,8 +291,8 @@ export default function Calculator() {
             <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <FileCheck className="w-6 h-6 text-green-400" />
             </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-white mb-1">{file?.name}</h3>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-semibold text-white mb-1 truncate">{file?.name}</h3>
               <p className="text-slate-400 text-sm mb-3">{formatFileSize(file?.size || 0)}</p>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -273,7 +318,7 @@ export default function Calculator() {
             </div>
             <button
               onClick={handleReset}
-              className="text-slate-400 hover:text-white text-sm underline"
+              className="text-slate-400 hover:text-white text-sm underline flex-shrink-0"
             >
               Change file
             </button>
@@ -297,7 +342,7 @@ export default function Calculator() {
                 onChange={(e) => handleConfigChange({ copies: Math.max(1, Math.min(100, parseInt(e.target.value) || 1)) })}
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-amber-500"
               />
-              <p className="text-slate-500 text-xs mt-1">Volume discounts apply automatically</p>
+              <p className="text-slate-500 text-xs mt-1">Volume discounts apply automatically (max 100)</p>
             </div>
 
             {/* Print Mode */}
@@ -395,7 +440,7 @@ export default function Calculator() {
           </div>
 
           {/* Right Column - Pricing */}
-          <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 h-fit sticky top-4">
+          <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 h-fit md:sticky md:top-4">
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-amber-400" />
               Price Breakdown
@@ -406,7 +451,7 @@ export default function Calculator() {
               {pricing.bwPagesCost > 0 && (
                 <div className="flex justify-between">
                   <span className="text-slate-400">
-                    {analysis.bwPages} B&W pages × {config.copies} copies @ {formatPrice(pricing.bwRate)}
+                    {analysis.bwPages} B&W × {config.copies} @ {formatPrice(pricing.bwRate)}
                   </span>
                   <span className="text-white">{formatPrice(pricing.bwPagesCost)}</span>
                 </div>
@@ -414,7 +459,7 @@ export default function Calculator() {
               {pricing.colorPagesCost > 0 && (
                 <div className="flex justify-between">
                   <span className="text-slate-400">
-                    {analysis.colorPages} Color pages × {config.copies} copies @ {formatPrice(pricing.colorRate)}
+                    {analysis.colorPages} Color × {config.copies} @ {formatPrice(pricing.colorRate)}
                   </span>
                   <span className="text-white">{formatPrice(pricing.colorPagesCost)}</span>
                 </div>
@@ -448,7 +493,7 @@ export default function Calculator() {
               {pricing.tierApplied > 1 && (
                 <div className="flex items-center gap-2 text-green-400 text-xs py-2">
                   <CheckCircle size={14} />
-                  <span>Volume discount applied: {getTierDescription(pricing.tierApplied)}</span>
+                  <span>Volume discount: {getTierDescription(pricing.tierApplied)}</span>
                 </div>
               )}
 
@@ -471,7 +516,7 @@ export default function Calculator() {
                   <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-amber-400 font-medium text-sm">{pricing.quoteReason}</p>
-                    <p className="text-slate-400 text-sm mt-2">Please contact us for a custom quote:</p>
+                    <p className="text-slate-400 text-sm mt-2">Contact us for a custom quote:</p>
                     <div className="flex flex-wrap gap-3 mt-2">
                       <a href="tel:877-318-1555" className="text-amber-400 hover:text-amber-300 text-sm flex items-center gap-1">
                         <Phone size={14} /> 877-318-1555
@@ -495,7 +540,7 @@ export default function Calculator() {
 
             <p className="text-slate-500 text-xs mt-3 text-center">
               By proceeding, you agree to our{' '}
-              <a href="/pages/copyright-disclaimers" className="text-amber-400 hover:underline">Terms</a>
+              <a href="/pages/copyright-disclaimers" className="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">Terms</a>
             </p>
           </div>
         </div>
@@ -507,8 +552,8 @@ export default function Calculator() {
   const renderSubmitting = () => (
     <div className="text-center py-12">
       <Loader2 className="w-12 h-12 text-amber-400 animate-spin mx-auto mb-4" />
-      <h3 className="text-xl font-semibold text-white mb-2">Creating Your Order...</h3>
-      <p className="text-slate-400">Preparing your checkout</p>
+      <h3 className="text-xl font-semibold text-white mb-2">Processing Your Order...</h3>
+      <p className="text-slate-400">{uploadProgress || 'Please wait...'}</p>
     </div>
   );
 
