@@ -223,34 +223,47 @@ const PrintCalculator: React.FC = () => {
     try {
       // Backend expects specific format - see functions/api/create-draft-order.js
       const orderData = {
-        email, // Top-level email (not nested in customer)
-        totalPrice: subtotal, // NUMBER, not string
-        shippingAddress: { // Not "shipping", must be "shippingAddress"
+        customer: {
+          email,
           firstName,
           lastName,
+          company,
+          phone,
+        },
+        shipping: {
           address1,
-          address2: address2 || null,
+          address2,
           city,
-          province: state, // Backend expects "province" not "state"
+          state,
           zip,
           country: 'US',
-          phone: phone || null,
-          company: company || null,
         },
-        documentName: pdfFile?.name || 'Custom Print Job',
-        pageCount,
-        bwPages: Math.max(0, pageCount - foldoutCount - colorPages),
-        colorPages,
-        bindingType: binding,
-        foldoutCount,
-        laminationPages: laminationCount,
-        heavyCover,
-        dividerTabs,
-        quantity,
-        shippingWeightGrams: Math.round(estimatedWeight * 453.592), // Convert lbs to grams
+        lineItems: [{
+          title: `Print Job - ${pageCount} pages × ${quantity} copies`,
+          price: subtotal.toFixed(2),
+          quantity: 1,
+          properties: {
+            pageCount,
+            copies: quantity,
+            colorPages,
+            sides,
+            binding,
+            foldoutCount,
+            foldoutType,
+            laminationCount,
+            laminationSize,
+            laminationThickness,
+            heavyCover,
+            dividerTabs,
+            estimatedWeight: `${estimatedWeight} lbs`,
+            fileName: pdfFile?.name || 'No file uploaded',
+          },
+        }],
+        totalPrice: subtotal.toFixed(2),
+        estimatedWeight,
       };
 
-      const response = await fetch('/api/create-draft-order', {
+      const response = await fetch('/api/submit-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
