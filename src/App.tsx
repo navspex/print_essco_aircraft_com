@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ScrollReveal from './components/ScrollReveal';
-import Calculator from './components/calculator/Calculator';
-import { Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X } from 'lucide-react';
+import PODCalculator from './components/calculator/Calculator';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X } from 'lucide-react';
 
 // ==================== MAIN APP ====================
 function App() {
@@ -143,7 +143,7 @@ function App() {
           </div>
           
           {/* POD Calculator Component */}
-          <Calculator />
+          <PODCalculator />
           
           <p className="flex items-center justify-center gap-2 mt-6 text-sm text-slate-500"><Lock size={14} className="text-green-500" /><span>Secure upload - Files auto-delete after 7 days</span></p>
         </div>
