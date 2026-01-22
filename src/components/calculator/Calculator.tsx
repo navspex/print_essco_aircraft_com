@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V31 - Early R2 upload (after analysis), checkout opens in new tab
+// V32 - Checkout opened state shows quote summary + "Start New Quote" button
 
 import { useState, useCallback } from 'react';
 import { 
@@ -15,7 +15,7 @@ import {
   type BindingType, type CoverType, type PricingBreakdown
 } from '../../lib/pricing';
 
-type CalculatorStep = 'upload' | 'analyzing' | 'configure' | 'submitting' | 'error';
+type CalculatorStep = 'upload' | 'analyzing' | 'configure' | 'submitting' | 'checkout_opened' | 'error';
 
 interface OrderConfig {
   copies: number;
@@ -236,8 +236,8 @@ export default function Calculator() {
       if (data.success && data.checkoutUrl) {
         // Open Shopify checkout in new tab (preserves calculator state if user hits back)
         window.open(data.checkoutUrl, '_blank');
-        // Reset to upload state so they can start fresh if needed
-        setStep('upload');
+        // Show "checkout opened" state instead of resetting
+        setStep('checkout_opened');
         setUploadProgress('');
       } else {
         setError(data.error || 'Failed to create order');
@@ -599,6 +599,54 @@ export default function Calculator() {
     </div>
   );
 
+  // Checkout Opened Step
+  const renderCheckoutOpened = () => (
+    <div className="text-center py-12">
+      <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <CheckCircle className="w-8 h-8 text-green-400" />
+      </div>
+      <h3 className="text-xl font-semibold text-white mb-2">Your Order is Open in Another Tab</h3>
+      <p className="text-slate-400 mb-6 max-w-md mx-auto">
+        Complete your checkout in the Shopify tab. Your quote details are below for reference.
+      </p>
+      
+      {/* Quote Summary */}
+      {analysis && pricing && (
+        <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6 text-left max-w-md mx-auto">
+          <h4 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
+            <DollarSign size={18} />
+            Quote Summary
+          </h4>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-slate-400">Document:</span>
+              <span className="text-white truncate ml-2 max-w-[200px]">{file?.name}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Pages:</span>
+              <span className="text-white">{analysis.totalPages} ({analysis.bwPages} B&W, {analysis.colorPages} color)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Copies:</span>
+              <span className="text-white">{config.copies}</span>
+            </div>
+            <div className="flex justify-between border-t border-slate-700 pt-2 mt-2">
+              <span className="text-slate-300 font-medium">Total:</span>
+              <span className="text-amber-400 font-bold">{formatPrice(pricing.totalPrice)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <button
+        onClick={handleReset}
+        className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition-all duration-300"
+      >
+        Start New Quote
+      </button>
+    </div>
+  );
+
   // Error Step
   const renderError = () => (
     <div className="text-center py-12">
@@ -630,6 +678,7 @@ export default function Calculator() {
       {step === 'analyzing' && renderAnalyzing()}
       {step === 'configure' && renderConfigure()}
       {step === 'submitting' && renderSubmitting()}
+      {step === 'checkout_opened' && renderCheckoutOpened()}
       {step === 'error' && renderError()}
     </div>
   );
