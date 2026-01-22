@@ -221,45 +221,33 @@ const PrintCalculator: React.FC = () => {
     setError(null);
 
     try {
+      // Backend expects specific format - see functions/api/create-draft-order.js
       const orderData = {
-        customer: {
-          email,
+        email, // Top-level email (not nested in customer)
+        totalPrice: subtotal, // NUMBER, not string
+        shippingAddress: { // Not "shipping", must be "shippingAddress"
           firstName,
           lastName,
-          company,
-          phone,
-        },
-        shipping: {
           address1,
-          address2,
+          address2: address2 || null,
           city,
-          state,
+          province: state, // Backend expects "province" not "state"
           zip,
           country: 'US',
+          phone: phone || null,
+          company: company || null,
         },
-        lineItems: [{
-          title: `Print Job - ${pageCount} pages × ${quantity} copies`,
-          price: subtotal.toFixed(2),
-          quantity: 1,
-          properties: {
-            pageCount,
-            copies: quantity,
-            colorPages,
-            sides,
-            binding,
-            foldoutCount,
-            foldoutType,
-            laminationCount,
-            laminationSize,
-            laminationThickness,
-            heavyCover,
-            dividerTabs,
-            estimatedWeight: `${estimatedWeight} lbs`,
-            fileName: pdfFile?.name || 'No file uploaded',
-          },
-        }],
-        totalPrice: subtotal.toFixed(2),
-        estimatedWeight,
+        documentName: pdfFile?.name || 'Custom Print Job',
+        pageCount,
+        bwPages: Math.max(0, pageCount - foldoutCount - colorPages),
+        colorPages,
+        bindingType: binding,
+        foldoutCount,
+        laminationPages: laminationCount,
+        heavyCover,
+        dividerTabs,
+        quantity,
+        shippingWeightGrams: Math.round(estimatedWeight * 453.592), // Convert lbs to grams
       };
 
       const response = await fetch('/api/create-draft-order', {
