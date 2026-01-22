@@ -11,26 +11,23 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 /**
- * Cloudflare Pages Function handler
+ * Handle CORS preflight
  */
-export async function onRequest(context) {
+export async function onRequestOptions() {
+  return new Response(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
+}
+
+/**
+ * Cloudflare Pages Function handler - POST only
+ */
+export async function onRequestPost(context) {
   const { request, env } = context;
-
-  // Handle CORS preflight
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
-  }
-
-  // Only allow POST
-  if (request.method !== 'POST') {
-    return jsonResponse({ error: 'Method not allowed' }, 405);
-  }
 
   try {
     // Parse multipart form data
