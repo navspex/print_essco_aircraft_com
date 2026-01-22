@@ -6,7 +6,7 @@ import { useState, useCallback } from 'react';
 import { 
   Upload, FileCheck, AlertCircle, Loader2, 
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
-  Phone, Mail, Lock
+  Phone, Mail
 } from 'lucide-react';
 import { analyzePDF, formatFileSize, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
 import { 
