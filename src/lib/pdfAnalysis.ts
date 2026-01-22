@@ -2,10 +2,11 @@
 // Uses PDF.js for automatic page counting, size detection, and color analysis
 // This is the MANDATORY auto-detection that V1-29 lacked
 
-import * as pdfjsLib from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+// Configure PDF.js worker - use CDN for reliability
+GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
 
 export interface PageAnalysis {
   pageNumber: number;
@@ -51,11 +52,7 @@ const PAGE_SIZES = {
  * Determine if a page is a foldout (11x17 tabloid)
  */
 function isFoldoutPage(width: number, height: number): boolean {
-  // Check if either dimension exceeds letter size significantly
   const maxDim = Math.max(width, height);
-  const minDim = Math.min(width, height);
-  
-  // Tabloid is 11x17 (792x1224 points)
   // If longest side > 11" (792pt), it's a foldout
   return maxDim > PAGE_SIZES.LETTER_HEIGHT + PAGE_SIZES.TOLERANCE;
 }
@@ -72,60 +69,68 @@ function isOversizedPage(width: number, height: number): boolean {
  * Analyze a single page for color content
  * Samples pixels from the rendered page to detect color
  */
-async function analyzePageForColor(page: any): Promise<boolean> {
-  // Render at low resolution for speed (we just need color detection)
-  const scale = 0.5;
-  const viewport = page.getViewport({ scale });
-  
-  // Create canvas
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  if (!context) return false;
-  
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-  
-  // Render page
-  await page.render({
-    canvasContext: context,
-    viewport: viewport,
-  }).promise;
-  
-  // Sample pixels to detect color
-  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  const pixels = imageData.data;
-  
-  // Sample every Nth pixel for performance
-  const sampleRate = 100; // Check every 100th pixel
-  let colorPixelCount = 0;
-  const threshold = 10; // RGB channels must differ by this much to be "color"
-  
-  for (let i = 0; i < pixels.length; i += 4 * sampleRate) {
-    const r = pixels[i];
-    const g = pixels[i + 1];
-    const b = pixels[i + 2];
-    // const a = pixels[i + 3]; // alpha
+async function analyzePageForColor(page: PDFPageProxy): Promise<boolean> {
+  try {
+    // Render at low resolution for speed (we just need color detection)
+    const scale = 0.3; // Lower scale for faster analysis
+    const viewport = page.getViewport({ scale });
     
-    // Skip white/near-white pixels
-    if (r > 250 && g > 250 && b > 250) continue;
+    // Create offscreen canvas
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    if (!context) return false;
     
-    // Skip black/near-black pixels
-    if (r < 5 && g < 5 && b < 5) continue;
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
     
-    // Check if pixel has color (R, G, B differ significantly)
-    const maxChannel = Math.max(r, g, b);
-    const minChannel = Math.min(r, g, b);
+    // Render page
+    await page.render({
+      canvasContext: context,
+      viewport: viewport,
+    }).promise;
     
-    if (maxChannel - minChannel > threshold) {
-      colorPixelCount++;
-      // If we find enough color pixels, page is color
-      if (colorPixelCount > 5) {
-        return true;
+    // Sample pixels to detect color
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+    
+    // Sample every Nth pixel for performance
+    const sampleRate = Math.max(50, Math.floor(pixels.length / 4000)); // ~1000 samples max
+    let colorPixelCount = 0;
+    const threshold = 15; // RGB channels must differ by this much to be "color"
+    
+    for (let i = 0; i < pixels.length; i += 4 * sampleRate) {
+      const r = pixels[i];
+      const g = pixels[i + 1];
+      const b = pixels[i + 2];
+      const a = pixels[i + 3];
+      
+      // Skip transparent pixels
+      if (a < 128) continue;
+      
+      // Skip white/near-white pixels
+      if (r > 245 && g > 245 && b > 245) continue;
+      
+      // Skip black/near-black pixels
+      if (r < 10 && g < 10 && b < 10) continue;
+      
+      // Check if pixel has color (R, G, B differ significantly)
+      const maxChannel = Math.max(r, g, b);
+      const minChannel = Math.min(r, g, b);
+      
+      if (maxChannel - minChannel > threshold) {
+        colorPixelCount++;
+        // If we find enough color pixels, page is color
+        if (colorPixelCount > 3) {
+          return true;
+        }
       }
     }
+    
+    return false;
+  } catch (err) {
+    console.warn('Color detection failed for page, assuming B&W:', err);
+    return false;
   }
-  
-  return false;
 }
 
 /**
@@ -149,7 +154,7 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
   
   try {
     // Validate file type
-    if (file.type !== 'application/pdf') {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       result.error = 'File must be a PDF';
       return result;
     }
@@ -163,7 +168,7 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
     
     // Load PDF
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf: PDFDocumentProxy = await getDocument({ data: arrayBuffer }).promise;
     
     result.totalPages = pdf.numPages;
     
@@ -212,6 +217,7 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
     result.success = true;
     
   } catch (error) {
+    console.error('PDF analysis error:', error);
     result.error = error instanceof Error ? error.message : 'Failed to analyze PDF';
   }
   
@@ -223,12 +229,12 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
  */
 export async function getPageCount(file: File): Promise<{ success: boolean; pageCount: number; error?: string }> {
   try {
-    if (file.type !== 'application/pdf') {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       return { success: false, pageCount: 0, error: 'File must be a PDF' };
     }
     
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await getDocument({ data: arrayBuffer }).promise;
     
     return { success: true, pageCount: pdf.numPages };
     
