@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V30 - With R2 storage integration
+// V31 - Early R2 upload (after analysis), checkout opens in new tab
 
 import { useState, useCallback } from 'react';
 import { 
@@ -41,6 +41,7 @@ export default function Calculator() {
   const [error, setError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
+  const [r2FileKey, setR2FileKey] = useState<string | null>(null);
 
   // Calculate pricing whenever config or analysis changes
   const updatePricing = useCallback((analysisData: PDFAnalysisResult, orderConfig: OrderConfig) => {
@@ -81,6 +82,15 @@ export default function Calculator() {
       updatePricing(result, config);
       setStep('configure');
       
+      // Upload to R2 immediately after analysis (non-blocking)
+      // File is "in the system" before customer finishes configuring
+      uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
+        if (uploadResult.success && uploadResult.fileKey) {
+          setR2FileKey(uploadResult.fileKey);
+        }
+        // Don't fail the flow if upload fails - we'll retry at checkout
+      });
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze PDF');
       setStep('error');
@@ -120,8 +130,36 @@ export default function Calculator() {
     }
   }, [config, analysis, updatePricing]);
 
-  // Upload PDF to R2 storage
+  // Upload PDF to R2 storage (early - called right after analysis)
+  const uploadPdfToStorageEarly = async (fileToUpload: File): Promise<{ success: boolean; fileKey?: string; error?: string }> => {
+    try {
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+      
+      const response = await fetch('/api/upload-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        return { success: true, fileKey: data.fileKey };
+      } else {
+        return { success: false, error: data.error || 'Upload failed' };
+      }
+    } catch (err) {
+      return { success: false, error: 'Network error during upload' };
+    }
+  };
+
+  // Upload PDF to R2 storage (fallback - if early upload failed)
   const uploadPdfToStorage = async (): Promise<{ success: boolean; fileKey?: string; error?: string }> => {
+    // If we already uploaded early, return that key
+    if (r2FileKey) {
+      return { success: true, fileKey: r2FileKey };
+    }
+    
     if (!file) return { success: false, error: 'No file selected' };
     
     setUploadProgress('Uploading PDF...');
@@ -196,8 +234,11 @@ export default function Calculator() {
       const data = await response.json();
 
       if (data.success && data.checkoutUrl) {
-        // Redirect to Shopify checkout
-        window.location.href = data.checkoutUrl;
+        // Open Shopify checkout in new tab (preserves calculator state if user hits back)
+        window.open(data.checkoutUrl, '_blank');
+        // Reset to upload state so they can start fresh if needed
+        setStep('upload');
+        setUploadProgress('');
       } else {
         setError(data.error || 'Failed to create order');
         setStep('error');
@@ -216,6 +257,7 @@ export default function Calculator() {
     setPricing(null);
     setError(null);
     setUploadProgress('');
+    setR2FileKey(null);
     setConfig({
       copies: 1,
       binding: 'none',
