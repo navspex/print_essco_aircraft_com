@@ -150,6 +150,7 @@ function App() {
       </section>
       </ScrollReveal>
 
+      <ScrollReveal delay={200}>
       <section className="py-16 bg-slate-800 transition-all duration-500 hover:bg-slate-700 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
