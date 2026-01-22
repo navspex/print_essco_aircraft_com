@@ -7,12 +7,12 @@ import {
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
   Phone, Mail
 } from 'lucide-react';
-import { analyzePDF, formatFileSize, type PDFAnalysisResult } from '../lib/pdfAnalysis';
+import { analyzePDF, formatFileSize, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
 import { 
   calculatePrice, formatPrice, getTierDescription,
   BINDING_OPTIONS, COVER_OPTIONS, TAB_SET_PRICE,
   type BindingType, type CoverType, type PricingBreakdown
-} from '../lib/pricing';
+} from '../../lib/pricing';
 
 type CalculatorStep = 'upload' | 'analyzing' | 'configure' | 'review' | 'submitting' | 'success' | 'error';
 
