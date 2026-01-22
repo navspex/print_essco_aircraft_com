@@ -6,10 +6,11 @@
  * - Custom line items (print specifications)
  * - Calculated shipping weight (for carrier-calculated rates)
  * - Customer email and shipping address
+ * - R2 PDF file key for production team
  * 
- * Updated: January 4, 2026
- * - Added weight field for carrier-calculated shipping
- * - Added requiresShipping flag
+ * Updated: January 22, 2026
+ * - Added pdfFileKey for R2 storage reference
+ * - Updated cover/binding options
  * 
  * API Version: 2025-10 (latest stable)
  */
@@ -48,121 +49,109 @@ export async function onRequest(context) {
       return jsonResponse({ error: validation.error }, 400);
     }
 
-    // Create draft order in Shopify
-    const result = await createShopifyDraftOrder(orderData, env);
+    // Build Shopify Draft Order
+    const result = await createDraftOrder(orderData, env);
 
-    if (result.error) {
+    if (result.success) {
+      return jsonResponse({
+        success: true,
+        draftOrderId: result.draftOrderId,
+        checkoutUrl: result.checkoutUrl,
+        orderName: result.orderName,
+      });
+    } else {
       return jsonResponse({ error: result.error }, 500);
     }
 
-    // Success response
-    return jsonResponse({
-      success: true,
-      draftOrderId: result.id,
-      checkoutUrl: result.invoiceUrl,
-      orderName: result.name,
-      totalWeight: result.totalWeight,
-    });
-
   } catch (error) {
     console.error('Draft order creation failed:', error);
-    return jsonResponse({ error: error.message || 'Internal server error' }, 500);
+    return jsonResponse({ error: 'Failed to create order' }, 500);
   }
 }
 
 /**
- * Validate incoming order data
+ * JSON response helper
  */
-function validateOrderData(data) {
-  const required = ['email', 'totalPrice', 'shippingAddress'];
-  
-  for (const field of required) {
-    if (!data[field]) {
-      return { valid: false, error: `Missing required field: ${field}` };
-    }
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
+
+/**
+ * Validate order data
+ */
+function validateOrderData(orderData) {
+  if (!orderData.totalPrice || orderData.totalPrice <= 0) {
+    return { valid: false, error: 'Invalid total price' };
   }
 
-  // Validate shipping address fields
-  const addrRequired = ['firstName', 'lastName', 'address1', 'city', 'province', 'zip'];
-  for (const field of addrRequired) {
-    if (!data.shippingAddress[field]) {
-      return { valid: false, error: `Missing shipping address field: ${field}` };
-    }
-  }
-
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(data.email)) {
-    return { valid: false, error: 'Invalid email format' };
-  }
-
-  // Validate price is positive number
-  if (typeof data.totalPrice !== 'number' || data.totalPrice <= 0) {
-    return { valid: false, error: 'Invalid price' };
-  }
-
-  // Validate weight if provided
-  if (data.shippingWeightGrams !== undefined) {
-    if (typeof data.shippingWeightGrams !== 'number' || data.shippingWeightGrams < 0) {
-      return { valid: false, error: 'Invalid shipping weight' };
-    }
-  }
+  // Email is optional - Shopify checkout will collect it
+  // Shipping address is also optional - Shopify checkout will collect it
 
   return { valid: true };
 }
 
 /**
- * Create Draft Order via Shopify GraphQL Admin API
+ * Create Shopify Draft Order via GraphQL API
  */
-async function createShopifyDraftOrder(orderData, env) {
-  const shop = env.SHOPIFY_SHOP;
+async function createDraftOrder(orderData, env) {
+  const shopifyShop = env.SHOPIFY_SHOP || 'essco-aircraft.myshopify.com';
   const accessToken = env.SHOPIFY_ACCESS_TOKEN;
 
-  if (!shop || !accessToken) {
-    return { error: 'Shopify credentials not configured' };
+  if (!accessToken) {
+    console.error('SHOPIFY_ACCESS_TOKEN not configured');
+    return { success: false, error: 'Shopify configuration error' };
   }
 
-  const endpoint = `https://${shop}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`;
-
   // Build line item title
-  const lineItemTitle = orderData.documentName 
-    ? `Printed & Bound - ${orderData.documentName}`
-    : 'Custom Print Job';
+  const lineItemTitle = `Custom Print Job - ${orderData.documentName || 'Document'}`;
 
-  // Build custom attributes for print specs
+  // Build custom attributes for order metadata
   const customAttributes = [
-    { key: 'Page Count', value: String(orderData.pageCount || 0) },
-    { key: 'B&W Pages', value: String(orderData.bwPages || orderData.pageCount || 0) },
+    { key: 'Document Name', value: orderData.documentName || 'Not specified' },
+    { key: 'Total Pages', value: String(orderData.pageCount || 0) },
+    { key: 'B&W Pages', value: String(orderData.bwPages || 0) },
     { key: 'Color Pages', value: String(orderData.colorPages || 0) },
     { key: 'Binding', value: orderData.bindingType || 'None' },
+    { key: 'Cover', value: orderData.coverType || 'None' },
+    { key: 'Tabs', value: orderData.hasTabs ? 'Yes (5-tab set)' : 'No' },
+    { key: 'Print Mode', value: orderData.printMode || 'double-sided' },
     { key: 'Fold-outs', value: String(orderData.foldoutCount || 0) },
-    { key: 'Laminated Pages', value: String(orderData.laminationPages || 0) },
-    { key: 'Heavy Cover', value: orderData.heavyCover ? 'Yes' : 'No' },
-    { key: 'Divider Tabs', value: String(orderData.dividerTabs || 0) },
     { key: 'Quantity', value: String(orderData.quantity || 1) },
+    { key: 'Weight (grams)', value: String(orderData.shippingWeightGrams || 0) },
+    { key: 'PDF File Key', value: orderData.pdfFileKey || 'Not uploaded' },
     { key: 'Source', value: 'print.esscoaircraft.com' },
   ];
 
-  // Build order note with all specs
+  // Build order note with all specs for production team
   const orderNote = [
     '=== PRINT SPECIFICATIONS ===',
     `Document: ${orderData.documentName || 'Not specified'}`,
     `Total Pages: ${orderData.pageCount || 0}`,
-    `B&W Pages: ${orderData.bwPages || orderData.pageCount || 0}`,
+    `B&W Pages: ${orderData.bwPages || 0}`,
     `Color Pages: ${orderData.colorPages || 0}`,
     `Binding: ${orderData.bindingType || 'None'}`,
+    `Cover: ${orderData.coverType || 'None'}`,
+    `Tabs: ${orderData.hasTabs ? 'Yes (5-tab set)' : 'No'}`,
+    `Print Mode: ${orderData.printMode || 'double-sided'}`,
     orderData.foldoutCount > 0 ? `Fold-outs: ${orderData.foldoutCount}` : null,
-    orderData.laminationPages > 0 ? `Lamination: ${orderData.laminationPages} pages` : null,
-    orderData.heavyCover ? 'Heavy Card Stock Cover: Yes' : null,
-    orderData.dividerTabs > 0 ? `Divider Tabs: ${orderData.dividerTabs}` : null,
     '',
     `Quantity: ${orderData.quantity || 1}`,
     `Estimated Weight: ${orderData.shippingWeightGrams ? (orderData.shippingWeightGrams / 453.592).toFixed(2) + ' lbs' : 'Not calculated'}`,
     '',
+    '=== PDF FILE ===',
+    orderData.pdfFileKey ? `R2 Key: ${orderData.pdfFileKey}` : 'PDF not uploaded',
+    orderData.pdfFileKey ? `Bucket: print-essco-storage` : '',
+    '',
     'Submitted from: print.esscoaircraft.com',
   ].filter(Boolean).join('\n');
 
-  // GraphQL mutation with weight field
+  // GraphQL mutation
   const mutation = `
     mutation draftOrderCreate($input: DraftOrderInput!) {
       draftOrderCreate(input: $input) {
@@ -170,7 +159,6 @@ async function createShopifyDraftOrder(orderData, env) {
           id
           name
           invoiceUrl
-          totalWeight
           totalPriceSet {
             shopMoney {
               amount
@@ -186,117 +174,89 @@ async function createShopifyDraftOrder(orderData, env) {
     }
   `;
 
-  const addr = orderData.shippingAddress;
-  
-  // Build line item with weight for carrier-calculated shipping
+  // Build line item
   const lineItem = {
     title: lineItemTitle,
     quantity: orderData.quantity || 1,
     originalUnitPrice: String(orderData.totalPrice),
-    requiresShipping: true, // CRITICAL: Enables shipping calculation
+    requiresShipping: true,
     taxable: true,
     customAttributes: customAttributes,
   };
 
-  // Add weight if provided (for carrier-calculated shipping)
-  if (orderData.shippingWeightGrams && orderData.shippingWeightGrams > 0) {
-    lineItem.weight = {
-      unit: 'GRAMS',
-      value: Math.ceil(orderData.shippingWeightGrams)
+  // Build input for GraphQL
+  const input = {
+    lineItems: [lineItem],
+    note: orderNote,
+    tags: ['pod-calculator', 'print-esscoaircraft-com'],
+    customAttributes: [
+      { key: '_source', value: 'print.esscoaircraft.com' },
+      { key: '_pdfFileKey', value: orderData.pdfFileKey || '' },
+    ],
+  };
+
+  // Add email if provided
+  if (orderData.email) {
+    input.email = orderData.email;
+  }
+
+  // Add shipping address if provided
+  if (orderData.shippingAddress) {
+    const addr = orderData.shippingAddress;
+    input.shippingAddress = {
+      firstName: addr.firstName || '',
+      lastName: addr.lastName || '',
+      address1: addr.address1 || '',
+      address2: addr.address2 || '',
+      city: addr.city || '',
+      province: addr.province || '',
+      zip: addr.zip || '',
+      country: addr.country || 'US',
+      phone: addr.phone || '',
     };
   }
 
-  const variables = {
-    input: {
-      email: orderData.email,
-      note: orderNote,
-      shippingAddress: {
-        firstName: addr.firstName,
-        lastName: addr.lastName,
-        company: addr.company || null,
-        address1: addr.address1,
-        address2: addr.address2 || null,
-        city: addr.city,
-        province: addr.province,
-        zip: addr.zip,
-        country: addr.country || 'US', // Default to US (US-only shipping)
-        phone: addr.phone || null,
-      },
-      billingAddress: {
-        firstName: addr.firstName,
-        lastName: addr.lastName,
-        company: addr.company || null,
-        address1: addr.address1,
-        address2: addr.address2 || null,
-        city: addr.city,
-        province: addr.province,
-        zip: addr.zip,
-        country: addr.country || 'US',
-        phone: addr.phone || null,
-      },
-      lineItems: [lineItem],
-    }
-  };
-
-  try {
-    const response = await fetch(endpoint, {
+  // Make GraphQL request
+  const response = await fetch(
+    `https://${shopifyShop}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`,
+    {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Shopify-Access-Token': accessToken,
       },
-      body: JSON.stringify({ query: mutation, variables }),
-    });
-
-    if (!response.ok) {
-      const text = await response.text();
-      console.error('Shopify API error:', response.status, text);
-      return { error: `Shopify API returned ${response.status}` };
+      body: JSON.stringify({
+        query: mutation,
+        variables: { input },
+      }),
     }
+  );
 
-    const result = await response.json();
-
-    // Check for GraphQL errors
-    if (result.errors && result.errors.length > 0) {
-      console.error('GraphQL errors:', result.errors);
-      return { error: result.errors.map(e => e.message).join(', ') };
-    }
-
-    // Check for user errors
-    const userErrors = result.data?.draftOrderCreate?.userErrors;
-    if (userErrors && userErrors.length > 0) {
-      console.error('User errors:', userErrors);
-      return { error: userErrors.map(e => `${e.field}: ${e.message}`).join(', ') };
-    }
-
-    const draftOrder = result.data?.draftOrderCreate?.draftOrder;
-    if (!draftOrder) {
-      return { error: 'No draft order returned from Shopify' };
-    }
-
-    return {
-      id: draftOrder.id,
-      name: draftOrder.name,
-      invoiceUrl: draftOrder.invoiceUrl,
-      totalWeight: draftOrder.totalWeight,
-      total: draftOrder.totalPriceSet?.shopMoney?.amount,
-    };
-
-  } catch (error) {
-    console.error('Network error:', error);
-    return { error: `Network error: ${error.message}` };
+  if (!response.ok) {
+    console.error('Shopify API error:', response.status, await response.text());
+    return { success: false, error: 'Shopify API request failed' };
   }
-}
 
-/**
- * Helper to create JSON responses with CORS headers
- */
-function jsonResponse(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  });
+  const data = await response.json();
+
+  // Check for user errors
+  if (data.data?.draftOrderCreate?.userErrors?.length > 0) {
+    const errors = data.data.draftOrderCreate.userErrors;
+    console.error('Shopify user errors:', errors);
+    return { success: false, error: errors[0].message };
+  }
+
+  // Check for draft order
+  const draftOrder = data.data?.draftOrderCreate?.draftOrder;
+  if (!draftOrder) {
+    console.error('No draft order returned:', data);
+    return { success: false, error: 'Failed to create draft order' };
+  }
+
+  return {
+    success: true,
+    draftOrderId: draftOrder.id,
+    checkoutUrl: draftOrder.invoiceUrl,
+    orderName: draftOrder.name,
+  };
 }
