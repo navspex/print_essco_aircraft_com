@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V33 - Booklet size option (5.5" x 8.5") with saddle stitch ≤60 pages
+// V34 - Large file message, saddle stitch for letter ≤60pg, 3-hole $1, terms link fix
 
 import { useState, useCallback } from 'react';
 import { 
@@ -329,9 +329,17 @@ export default function Calculator() {
       <h3 className="text-xl font-semibold text-white mb-2">Analyzing Your PDF...</h3>
       <p className="text-slate-400">Counting pages, detecting colors, checking sizes</p>
       {file && (
-        <p className="text-slate-500 text-sm mt-4">
-          {file.name} • {formatFileSize(file.size)}
-        </p>
+        <>
+          <p className="text-slate-500 text-sm mt-4">
+            {file.name} • {formatFileSize(file.size)}
+          </p>
+          {file.size > 10 * 1024 * 1024 && (
+            <p className="text-amber-400 text-sm mt-2 flex items-center justify-center gap-1">
+              <Info size={14} />
+              Large file — this may take a moment, please stand by
+            </p>
+          )}
+        </>
       )}
     </div>
   );
@@ -491,23 +499,29 @@ export default function Calculator() {
                 Binding
               </label>
               <div className="space-y-2">
-                {(Object.entries(BINDING_OPTIONS) as [BindingType, typeof BINDING_OPTIONS[BindingType]][]).map(([key, opt]) => (
-                  <label key={key} className="flex items-center justify-between cursor-pointer p-2 rounded hover:bg-slate-700/50">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name="binding"
-                        checked={config.binding === key}
-                        onChange={() => handleConfigChange({ binding: key })}
-                        className="w-4 h-4 text-amber-500 focus:ring-amber-500"
-                      />
-                      <span className="text-white">{opt.label}</span>
-                    </div>
-                    <span className="text-slate-400 text-sm">
-                      {opt.price === 0 ? 'FREE' : formatPrice(opt.price)}
-                    </span>
-                  </label>
-                ))}
+                {(Object.entries(BINDING_OPTIONS) as [BindingType, typeof BINDING_OPTIONS[BindingType]][]).map(([key, opt]) => {
+                  // Hide saddle stitch for letter size docs over 60 pages
+                  if (key === 'saddle' && !config.isBooklet && analysis.totalPages > 60) {
+                    return null;
+                  }
+                  return (
+                    <label key={key} className="flex items-center justify-between cursor-pointer p-2 rounded hover:bg-slate-700/50">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="binding"
+                          checked={config.binding === key}
+                          onChange={() => handleConfigChange({ binding: key })}
+                          className="w-4 h-4 text-amber-500 focus:ring-amber-500"
+                        />
+                        <span className="text-white">{opt.label}</span>
+                      </div>
+                      <span className="text-slate-400 text-sm">
+                        {formatPrice(opt.price)}
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
@@ -655,7 +669,7 @@ export default function Calculator() {
 
             <p className="text-slate-500 text-xs mt-3 text-center">
               By proceeding, you agree to our{' '}
-              <a href="/pages/copyright-disclaimers" className="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">Terms</a>
+              <a href="https://www.esscoaircraft.com/policies/terms-of-service" className="text-amber-400 hover:underline" target="_blank" rel="noopener noreferrer">Terms</a>
             </p>
           </div>
         </div>
