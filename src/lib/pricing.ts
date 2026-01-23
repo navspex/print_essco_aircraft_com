@@ -15,10 +15,11 @@ export const PRICING_TIERS: PricingTier[] = [
   { min: 1001, max: Infinity, bwRate: 0.21, colorRate: 0.49 },
 ];
 
-// Updated binding options per user spec (Jan 22, 2026)
-// Spiral/Coil deferred to later
+// Updated binding options per user spec (Jan 23, 2026)
+// V34: Added saddle stitch for ≤60 pages, 3-hole punch now $1
 export const BINDING_OPTIONS = {
-  none: { label: '3-Ring Ready (No Binding)', price: 0.00, weightGrams: 0 },
+  none: { label: '3-Hole Punched (No Binding)', price: 1.00, weightGrams: 0 },
+  saddle: { label: 'Saddle Stitch (≤60 pages)', price: 1.00, weightGrams: 5 },
   comb: { label: 'Comb Binding', price: 2.50, weightGrams: 12 },
   perfect: { label: 'Perfect Binding (Glued Spine)', price: 8.00, weightGrams: 20 },
 } as const;
