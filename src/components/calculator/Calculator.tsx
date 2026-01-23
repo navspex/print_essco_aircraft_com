@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V32 - Checkout opened state shows quote summary + "Start New Quote" button
+// V33 - Booklet size option (5.5" x 8.5") with saddle stitch ≤60 pages
 
 import { useState, useCallback } from 'react';
 import { 
@@ -23,6 +23,8 @@ interface OrderConfig {
   cover: CoverType;
   hasTabs: boolean;
   printMode: 'single' | 'double';
+  isBooklet: boolean;
+  bookletBinding: 'saddle' | 'threeRing' | 'comb' | 'perfect';
 }
 
 export default function Calculator() {
@@ -36,6 +38,8 @@ export default function Calculator() {
     cover: 'none',
     hasTabs: false,
     printMode: 'double',
+    isBooklet: false,
+    bookletBinding: 'saddle',
   });
   const [pricing, setPricing] = useState<PricingBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -220,12 +224,21 @@ export default function Calculator() {
           pageCount: analysis.totalPages,
           bwPages: analysis.bwPages,
           colorPages: analysis.colorPages,
-          bindingType: BINDING_OPTIONS[config.binding].label,
+          bindingType: config.isBooklet 
+            ? (analysis.totalPages <= 60 
+                ? 'Saddle Stitch (Booklet)' 
+                : config.bookletBinding === 'threeRing' ? 'Half-Size 3-Ring Binder'
+                : config.bookletBinding === 'comb' ? 'Comb Binding (Booklet)'
+                : 'Perfect Binding (Booklet)')
+            : BINDING_OPTIONS[config.binding].label,
           coverType: COVER_OPTIONS[config.cover].label,
           hasTabs: config.hasTabs,
           foldoutCount: analysis.foldoutPages,
           printMode: config.printMode,
           shippingWeightGrams: pricing.totalWeightGrams,
+          // Booklet info
+          isBooklet: config.isBooklet,
+          pageSize: config.isBooklet ? '5.5" × 8.5"' : '8.5" × 11"',
           // R2 file key for production team
           pdfFileKey: uploadResult.fileKey,
         }),
@@ -264,6 +277,8 @@ export default function Calculator() {
       cover: 'none',
       hasTabs: false,
       printMode: 'double',
+      isBooklet: false,
+      bookletBinding: 'saddle',
     });
   }, []);
 
@@ -410,6 +425,64 @@ export default function Calculator() {
                 <Info size={12} />
                 Price is per PDF page regardless of print mode
               </p>
+            </div>
+
+            {/* Booklet Size Option */}
+            <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700">
+              <label className="flex items-center gap-2 cursor-pointer mb-2">
+                <input
+                  type="checkbox"
+                  checked={config.isBooklet}
+                  onChange={(e) => {
+                    const isBooklet = e.target.checked;
+                    // Auto-set binding based on page count
+                    const bookletBinding = analysis && analysis.totalPages > 60 ? 'threeRing' : 'saddle';
+                    handleConfigChange({ isBooklet, bookletBinding });
+                  }}
+                  className="w-4 h-4 text-amber-500 focus:ring-amber-500 rounded"
+                />
+                <span className="text-white">Print as booklet (5.5" × 8.5")</span>
+              </label>
+              <p className="text-slate-500 text-xs flex items-center gap-1 ml-6">
+                <Info size={12} />
+                Default is letter size (8.5" × 11")
+              </p>
+              
+              {/* Booklet binding options - only show if booklet checked AND >60 pages */}
+              {config.isBooklet && analysis && analysis.totalPages > 60 && (
+                <div className="mt-4 ml-6 p-3 bg-slate-700/50 rounded-lg border border-slate-600">
+                  <p className="text-amber-400 text-xs mb-2 flex items-center gap-1">
+                    <AlertTriangle size={12} />
+                    {analysis.totalPages} pages exceeds saddle stitch limit (60 pages). Select binding:
+                  </p>
+                  <div className="space-y-2">
+                    {([
+                      { key: 'threeRing', label: 'Half-Size 3-Ring Binder' },
+                      { key: 'comb', label: 'Comb Binding' },
+                      { key: 'perfect', label: 'Perfect Binding' },
+                    ] as const).map((opt) => (
+                      <label key={opt.key} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="bookletBinding"
+                          checked={config.bookletBinding === opt.key}
+                          onChange={() => handleConfigChange({ bookletBinding: opt.key })}
+                          className="w-4 h-4 text-amber-500 focus:ring-amber-500"
+                        />
+                        <span className="text-white text-sm">{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Show saddle stitch confirmation for ≤60 pages */}
+              {config.isBooklet && analysis && analysis.totalPages <= 60 && (
+                <p className="mt-2 ml-6 text-green-400 text-xs flex items-center gap-1">
+                  <CheckCircle size={12} />
+                  Saddle stitch binding (stapled spine) included
+                </p>
+              )}
             </div>
 
             {/* Binding */}
@@ -625,6 +698,10 @@ export default function Calculator() {
             <div className="flex justify-between">
               <span className="text-slate-400">Pages:</span>
               <span className="text-white">{analysis.totalPages} ({analysis.bwPages} B&W, {analysis.colorPages} color)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Size:</span>
+              <span className="text-white">{config.isBooklet ? '5.5" × 8.5" (Booklet)' : '8.5" × 11" (Letter)'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Copies:</span>
