@@ -111,7 +111,9 @@ const Header: FC = () => {
             {/* Right Side: Cart */}
             <div className="flex items-center">
               <a
-                href="#cart"
+                href="https://www.esscoaircraft.com/cart"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-essco-dark-gray hover:text-essco-maroon transition-colors p-2"
                 aria-label="Cart"
               >
@@ -320,6 +322,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
 
