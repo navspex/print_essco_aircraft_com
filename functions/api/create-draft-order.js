@@ -8,9 +8,10 @@
  * - Customer email and shipping address
  * - R2 PDF file key for production team
  * 
- * Updated: January 22, 2026
- * - Added pdfFileKey for R2 storage reference
- * - Updated cover/binding options
+ * Updated: February 5, 2026
+ * - Added Page Size to custom attributes and order note (Letter default)
+ * - Previous: Added pdfFileKey for R2 storage reference
+ * - Previous: Updated cover/binding options
  * 
  * API Version: 2025-10 (latest stable)
  */
@@ -117,6 +118,7 @@ async function createDraftOrder(orderData, env) {
     { key: 'Total Pages', value: String(orderData.pageCount || 0) },
     { key: 'B&W Pages', value: String(orderData.bwPages || 0) },
     { key: 'Color Pages', value: String(orderData.colorPages || 0) },
+    { key: 'Page Size', value: orderData.pageSize || 'Letter (8.5" × 11")' },
     { key: 'Binding', value: orderData.bindingType || 'None' },
     { key: 'Cover', value: orderData.coverType || 'None' },
     { key: 'Tabs', value: orderData.hasTabs ? 'Yes (5-tab set)' : 'No' },
@@ -133,6 +135,7 @@ async function createDraftOrder(orderData, env) {
     '=== PRINT SPECIFICATIONS ===',
     `Document: ${orderData.documentName || 'Not specified'}`,
     `Total Pages: ${orderData.pageCount || 0}`,
+    `Page Size: ${orderData.pageSize || 'Letter (8.5" × 11")'}`,
     `B&W Pages: ${orderData.bwPages || 0}`,
     `Color Pages: ${orderData.colorPages || 0}`,
     `Binding: ${orderData.bindingType || 'None'}`,
@@ -260,3 +263,4 @@ async function createDraftOrder(orderData, env) {
     orderName: draftOrder.name,
   };
 }
+
