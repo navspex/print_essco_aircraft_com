@@ -373,6 +373,12 @@ export default function Calculator() {
                   <span className="text-slate-500">Color Pages</span>
                   <p className="text-white font-semibold">{analysis.colorPages}</p>
                 </div>
+                <div>
+                  <span className="text-slate-500">Page Size</span>
+                  <p className={`font-semibold ${config.isBooklet ? 'text-amber-400' : 'text-white'}`}>
+                    {config.isBooklet ? '5.5" × 8.5"' : '8.5" × 11"'}
+                  </p>
+                </div>
                 {analysis.foldoutPages > 0 && (
                   <div>
                     <span className="text-slate-500">Fold-outs (11×17)</span>
@@ -658,13 +664,23 @@ export default function Calculator() {
                 </div>
               </div>
             ) : (
-              <button
-                onClick={handleSubmit}
-                className="w-full mt-6 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <Package size={20} />
-                Proceed to Checkout
-              </button>
+              <>
+                {/* Page Size Confirmation */}
+                <div className={`mt-6 mb-3 py-2 px-4 rounded-lg text-sm font-medium text-center ${
+                  config.isBooklet 
+                    ? 'bg-amber-500/15 border border-amber-500/40 text-amber-300' 
+                    : 'bg-slate-700/60 border border-slate-600 text-slate-300'
+                }`}>
+                  📄 Printing at <span className="font-bold text-white">{config.isBooklet ? '5.5" × 8.5" (Booklet)' : '8.5" × 11" (Letter)'}</span>
+                </div>
+                <button
+                  onClick={handleSubmit}
+                  className="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <Package size={20} />
+                  Proceed to Checkout
+                </button>
+              </>
             )}
 
             <p className="text-slate-500 text-xs mt-3 text-center">
@@ -774,3 +790,4 @@ export default function Calculator() {
     </div>
   );
 }
+
