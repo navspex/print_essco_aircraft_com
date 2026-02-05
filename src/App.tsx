@@ -193,7 +193,7 @@ function App() {
           </div>
           
           <div className="mt-8 text-center">
-            <p className="text-slate-400 flex items-center justify-center gap-2"><HelpCircle className="w-5 h-5" /><span><strong>Need Help?</strong> Our team is available Monday-Friday 8am-5pm EST at <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> or email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a>. We're happy to answer questions about file preparation, paper options, or anything else.</span></p>
+            <p className="text-slate-400 flex items-center justify-center gap-2"><HelpCircle className="w-5 h-5" /><span><strong>Need Help?</strong> Our team is available Monday-Friday 8am-5pm EST at <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> or email <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:underline">esscosupport@aol.com</a>. We're happy to answer questions about file preparation, paper options, or anything else.</span></p>
           </div>
         </div>
       </section>
@@ -497,7 +497,7 @@ function App() {
             <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               START YOUR ORDER NOW →
             </a>
-            <p className="mt-4 text-slate-500 text-sm">Questions? Call <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> • Email <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:underline">dale@esscoaircraft.com</a></p>
+            <p className="mt-4 text-slate-500 text-sm">Questions? Call <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> • Email <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:underline">esscosupport@aol.com</a></p>
             <p className="mt-2 text-slate-600 text-xs">Monday-Friday 8am-4pm EST</p>
           </div>
           
@@ -570,7 +570,7 @@ function App() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm">
                 <a href="tel:877-318-1555" className="flex items-center gap-2 hover:text-amber-400 transition-colors"><Phone className="w-4 h-4" />877-318-1555</a>
-                <a href="mailto:dale@esscoaircraft.com" className="flex items-center gap-2 hover:text-amber-400 transition-colors"><Mail className="w-4 h-4" />dale@esscoaircraft.com</a>
+                <a href="mailto:esscosupport@aol.com" className="flex items-center gap-2 hover:text-amber-400 transition-colors"><Mail className="w-4 h-4" />esscosupport@aol.com</a>
                 <span className="flex items-center gap-2"><Clock className="w-4 h-4" />Monday-Friday, 9am-4pm</span>
               </div>
             </div>
@@ -635,3 +635,4 @@ function App() {
 }
 
 export default App;
+
