@@ -85,7 +85,7 @@ const Header: FC = () => {
 
             {/* Logo - Centered */}
             <div className="flex-shrink-0 absolute left-1/2 transform -translate-x-1/2 lg:relative lg:left-0 lg:transform-none">
-              <a href="https://www.esscoaircraft.com">
+              <a href="https://www.esscoaircraft.com" target="_blank" rel="noopener noreferrer">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0502/8275/8324/files/Untitled-7_743913a9-5f01-4883-bce7-85fad72c34cf.png?v=1615221053"
                   alt="ESSCO Aircraft"
@@ -322,6 +322,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
 
