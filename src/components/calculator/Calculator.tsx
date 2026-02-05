@@ -656,8 +656,8 @@ export default function Calculator() {
                       <a href="tel:877-318-1555" className="text-amber-400 hover:text-amber-300 text-sm flex items-center gap-1">
                         <Phone size={14} /> 877-318-1555
                       </a>
-                      <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:text-amber-300 text-sm flex items-center gap-1">
-                        <Mail size={14} /> dale@esscoaircraft.com
+                      <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:text-amber-300 text-sm flex items-center gap-1">
+                        <Mail size={14} /> esscosupport@aol.com
                       </a>
                     </div>
                   </div>
@@ -772,7 +772,7 @@ export default function Calculator() {
         <p className="text-slate-500 text-sm mb-2">Need help? Contact us:</p>
         <div className="flex justify-center gap-4">
           <a href="tel:877-318-1555" className="text-amber-400 hover:text-amber-300">877-318-1555</a>
-          <a href="mailto:dale@esscoaircraft.com" className="text-amber-400 hover:text-amber-300">dale@esscoaircraft.com</a>
+          <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:text-amber-300">esscosupport@aol.com</a>
         </div>
       </div>
     </div>
@@ -790,4 +790,5 @@ export default function Calculator() {
     </div>
   );
 }
+
 
