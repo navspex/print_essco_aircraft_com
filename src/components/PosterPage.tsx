@@ -263,8 +263,9 @@ export default function PostersPage() {
             </div>
 
             {/* Cross-link inline */}
-            <div className="mt-8 text-center">
-              <p className="text-slate-400 text-sm mb-3">Have a multi-page document, training guide, or operations manual instead?</p>
+            <div className="mt-8 text-center space-y-3">
+              <p className="text-slate-300 text-sm">Looking for ready-made cockpit posters? <a href="https://www.esscoaircraft.com/collections/cockpit-posters" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2 transition-colors">Browse our Cockpit Poster Collection →</a></p>
+              <p className="text-slate-400 text-sm">Have a multi-page document, training guide, or operations manual instead?</p>
               <a href="/" className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold transition-colors">
                 <FileText size={16} />
                 Use our Print-On-Demand Calculator for instant document pricing →
@@ -471,6 +472,7 @@ export default function PostersPage() {
                 <ul className="space-y-2 text-sm">
                   <li><a href="/" className="hover:text-amber-400 transition-colors">Print-On-Demand Calculator</a></li>
                   <li><a href="/posters" className="text-amber-400">Posters & Large Format</a></li>
+                  <li><a href="https://www.esscoaircraft.com/collections/cockpit-posters" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Cockpit Poster Collection</a></li>
                   <li><a href="https://www.esscoaircraft.com/collections/aircraft-manuals" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Shop All Manuals →</a></li>
                   <li><a href="https://www.esscoaircraft.com/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Refund Policy</a></li>
                 </ul>
