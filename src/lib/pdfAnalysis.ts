@@ -1,11 +1,10 @@
 // ESSCO POD Calculator - PDF Analysis Module
-// Uses PDF.js for automatic page counting, size detection, and color analysis
-// V36 - Large file color detection via getOperatorList() (no canvas rendering)
-// Small files (≤25MB): browser PDF.js canvas pixel sampling (accurate)
-// Large files (>25MB): browser PDF.js operator list scanning (fast, no crash)
-// Both paths are 100% browser-side, zero server dependencies
+// V36 - Large files use PDF.js getOperatorList() for color detection (no canvas rendering)
+// Small files (≤25MB): browser PDF.js pixel sampling via canvas (proven, accurate)
+// Large files (>25MB): browser PDF.js operator list scanning (no canvas, no memory explosion)
+// Both paths: same library (pdfjs-dist), same result shape, zero server dependency
 
-import { getDocument, OPS, GlobalWorkerOptions } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions, OPS } from 'pdfjs-dist';
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 
 // Configure PDF.js worker - use CDN for reliability
@@ -54,23 +53,54 @@ const PAGE_SIZES = {
   TOLERANCE: 10,       // Allow small variations
 };
 
+// PDF.js OPS that indicate color content (not grayscale)
+// These are the operator constants from pdfjs-dist
+const COLOR_OPS = new Set([
+  OPS.setFillRGBColor,       // rg - RGB fill
+  OPS.setStrokeRGBColor,     // RG - RGB stroke
+  OPS.setFillCMYKColor,      // k  - CMYK fill
+  OPS.setStrokeCMYKColor,    // K  - CMYK stroke
+]);
+
+// OPS that MAY indicate color depending on their arguments
+// setFillColorN / setStrokeColorN use the current color space
+// setFillColorSpace / setStrokeColorSpace declare which space is active
+const COLOR_SPACE_OPS = new Set([
+  OPS.setFillColorSpace,     // cs
+  OPS.setStrokeColorSpace,   // CS
+]);
+
+const GENERIC_COLOR_OPS = new Set([
+  OPS.setFillColor,          // sc  (uses current color space)
+  OPS.setFillColorN,         // scn (uses current color space, pattern)
+  OPS.setStrokeColor,        // SC
+  OPS.setStrokeColorN,       // SCN
+]);
+
+/**
+ * Determine if a page is a foldout (11x17 tabloid)
+ */
 function isFoldoutPage(width: number, height: number): boolean {
   const maxDim = Math.max(width, height);
   return maxDim > PAGE_SIZES.LETTER_HEIGHT + PAGE_SIZES.TOLERANCE;
 }
 
+/**
+ * Determine if a page is oversized (larger than 11x17)
+ */
 function isOversizedPage(width: number, height: number): boolean {
   const maxDim = Math.max(width, height);
   return maxDim > PAGE_SIZES.TABLOID_HEIGHT + PAGE_SIZES.TOLERANCE;
 }
 
-// ============================================================
-// COLOR DETECTION METHOD 1: Canvas pixel sampling (small files)
-// Renders each page at low res, samples pixels for color
-// Accurate but memory-heavy — crashes on 100MB+ scanned PDFs
-// ============================================================
+// ─── SMALL FILE PATH: Canvas pixel sampling ────────────────────────────
 
-async function analyzePageColorByCanvas(page: PDFPageProxy): Promise<boolean> {
+/**
+ * Analyze a single page for color content via canvas pixel sampling.
+ * Renders page at 0.3x scale and samples pixels for RGB channel divergence.
+ * Accurate but memory-intensive — only used for files ≤25MB.
+ */
+async function analyzePageColorByPixels(page: PDFPageProxy): Promise<boolean> {
   try {
     const scale = 0.3;
     const viewport = page.getViewport({ scale });
@@ -110,70 +140,90 @@ async function analyzePageColorByCanvas(page: PDFPageProxy): Promise<boolean> {
       if (maxChannel - minChannel > threshold) {
         colorPixelCount++;
         if (colorPixelCount > 3) {
-          canvas.width = 0;
-          canvas.height = 0;
           return true;
         }
       }
     }
     
-    canvas.width = 0;
-    canvas.height = 0;
     return false;
   } catch (err) {
-    console.warn('Canvas color detection failed for page, assuming B&W:', err);
+    console.warn('Pixel color detection failed for page, assuming B&W:', err);
     return false;
   }
 }
 
-// ============================================================
-// COLOR DETECTION METHOD 2: Operator list scanning (large files)
-// Reads PDF drawing commands without rendering to canvas
-// Looks for RGB/CMYK color operators in the page stream
-// Fast, lightweight, no memory explosion on huge files
-// ============================================================
+// ─── LARGE FILE PATH: Operator list scanning ───────────────────────────
 
-const COLOR_OPS = new Set([
-  OPS.setFillRGBColor,      // rg - RGB fill
-  OPS.setStrokeRGBColor,    // RG - RGB stroke
-  OPS.setFillCMYKColor,     // k  - CMYK fill
-  OPS.setStrokeCMYKColor,   // K  - CMYK stroke
-]);
-
+/**
+ * Detect color on a page by scanning its operator list.
+ * No canvas, no rendering, no pixel buffers — just reads the PDF drawing commands.
+ * 
+ * Checks for:
+ * 1. Direct color operators (setFillRGBColor, setFillCMYKColor, etc.)
+ * 2. Color space declarations followed by generic color set commands
+ * 3. Filters out pure grayscale values from RGB operators (r===g===b)
+ * 
+ * Conservative: assumes B&W if unable to parse. Won't overcharge the customer.
+ */
 async function analyzePageColorByOperators(page: PDFPageProxy): Promise<boolean> {
   try {
     const opList = await page.getOperatorList();
-    const fnArray = opList.fnArray;
-    const argsArray = opList.argsArray;
-
+    const { fnArray, argsArray } = opList;
+    
+    // Track whether the active fill/stroke color space is a color one
+    let fillSpaceIsColor = false;
+    let strokeSpaceIsColor = false;
+    
     for (let i = 0; i < fnArray.length; i++) {
       const op = fnArray[i];
-
+      const args = argsArray[i];
+      
+      // Direct RGB/CMYK operators — definite color indicators
       if (COLOR_OPS.has(op)) {
-        // For RGB ops, verify it's not gray (r==g==b)
+        // For RGB ops, check if it's actually a gray value (r === g === b)
         if (op === OPS.setFillRGBColor || op === OPS.setStrokeRGBColor) {
-          const args = argsArray[i];
           if (args && args.length >= 3) {
             const r = args[0], g = args[1], b = args[2];
-            if (r === g && g === b) continue; // Gray via RGB — skip
+            // If all channels are equal (or very close), it's grayscale expressed as RGB
+            if (Math.abs(r - g) < 0.01 && Math.abs(g - b) < 0.01) {
+              continue; // Gray value, not color
+            }
           }
+          return true; // Non-gray RGB = color page
         }
+        // CMYK ops are always color
         return true;
       }
-
-      // setFillColorN / setStrokeColorN with 3+ different args = color
-      if ((op === OPS.setFillColorN || op === OPS.setStrokeColorN) && argsArray[i]) {
-        const args = argsArray[i];
-        if (args.length >= 3) {
-          const nums = args.filter((v: any) => typeof v === 'number');
-          if (nums.length >= 3) {
-            const allSame = nums.slice(0, 3).every((v: number) => v === nums[0]);
-            if (!allSame) return true;
+      
+      // Color space declarations — track which space is active
+      if (COLOR_SPACE_OPS.has(op)) {
+        if (args && args.length > 0) {
+          const spaceName = String(args[0] || '');
+          const isColorSpace = spaceName.includes('RGB') || 
+                               spaceName.includes('CMYK') ||
+                               spaceName.includes('Lab') ||
+                               spaceName.includes('CalRGB') ||
+                               spaceName.includes('ICCBased'); // could be gray but usually color
+          
+          if (op === OPS.setFillColorSpace) {
+            fillSpaceIsColor = isColorSpace;
+          } else {
+            strokeSpaceIsColor = isColorSpace;
           }
+        }
+      }
+      
+      // Generic color ops — only color if the active space is a color space
+      if (GENERIC_COLOR_OPS.has(op)) {
+        if (op === OPS.setFillColor || op === OPS.setFillColorN) {
+          if (fillSpaceIsColor) return true;
+        }
+        if (op === OPS.setStrokeColor || op === OPS.setStrokeColorN) {
+          if (strokeSpaceIsColor) return true;
         }
       }
     }
-
+    
     return false;
   } catch (err) {
     console.warn('Operator color detection failed for page, assuming B&W:', err);
@@ -181,18 +231,17 @@ async function analyzePageColorByOperators(page: PDFPageProxy): Promise<boolean>
   }
 }
 
-// ============================================================
-// MAIN ANALYSIS FUNCTION
-// ============================================================
+// ─── MAIN ANALYSIS FUNCTION ─────────────────────────────────────────────
 
 /**
- * Analyze PDF — auto-picks color detection method by file size
- * ≤25MB: canvas pixel sampling (most accurate)
- * >25MB: operator list scanning (fast, no crash)
+ * Analyze a PDF file for printing.
+ * Automatically picks the right color detection method based on file size:
+ *   ≤25MB → canvas pixel sampling (accurate, needs DOM/canvas)
+ *   >25MB → operator list scanning (fast, no rendering, no memory explosion)
+ * 
+ * Both paths produce identical PDFAnalysisResult shape.
  */
 export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
-  const useFastMethod = file.size > LARGE_FILE_THRESHOLD;
-  
   const result: PDFAnalysisResult = {
     success: false,
     fileName: file.name,
@@ -213,15 +262,16 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
       return result;
     }
     
-    const MAX_SIZE = 500 * 1024 * 1024;
+    const MAX_SIZE = 500 * 1024 * 1024; // 500MB
     if (file.size > MAX_SIZE) {
       result.error = 'File size exceeds 500MB limit';
       return result;
     }
     
-    if (useFastMethod) {
-      console.log(`Large file (${(file.size / 1024 / 1024).toFixed(1)}MB) — using operator list color detection`);
-    }
+    const isLargeFile = file.size > LARGE_FILE_THRESHOLD;
+    const colorMethod = isLargeFile ? 'operators' : 'pixels';
+    
+    console.log(`PDF analysis: ${(file.size / 1024 / 1024).toFixed(1)}MB — using ${colorMethod} color detection`);
     
     const arrayBuffer = await file.arrayBuffer();
     const pdf: PDFDocumentProxy = await getDocument({ data: arrayBuffer }).promise;
@@ -237,25 +287,39 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
       const foldout = isFoldoutPage(width, height);
       const oversized = isOversizedPage(width, height);
       
-      const isColor = useFastMethod
+      // Pick color detection method based on file size
+      const isColor = isLargeFile 
         ? await analyzePageColorByOperators(page)
-        : await analyzePageColorByCanvas(page);
+        : await analyzePageColorByPixels(page);
       
-      result.pages.push({
+      const pageAnalysis: PageAnalysis = {
         pageNumber: pageNum,
         width,
         height,
         isColor,
         isFoldout: foldout,
-      });
+      };
       
-      if (isColor) { result.colorPages++; } else { result.bwPages++; }
-      if (foldout) { result.foldoutPages++; } else { result.standardPages++; }
+      result.pages.push(pageAnalysis);
+      
+      if (isColor) {
+        result.colorPages++;
+      } else {
+        result.bwPages++;
+      }
+      
+      if (foldout) {
+        result.foldoutPages++;
+      } else {
+        result.standardPages++;
+      }
+      
       if (oversized) {
         result.hasOversizedPages = true;
         result.oversizedPageNumbers.push(pageNum);
       }
       
+      // Clean up page resources to prevent memory buildup on large documents
       page.cleanup();
     }
     
@@ -270,16 +334,19 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
 }
 
 /**
- * Quick page count only
+ * Quick page count only (faster, for initial upload feedback)
  */
 export async function getPageCount(file: File): Promise<{ success: boolean; pageCount: number; error?: string }> {
   try {
     if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       return { success: false, pageCount: 0, error: 'File must be a PDF' };
     }
+    
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await getDocument({ data: arrayBuffer }).promise;
+    
     return { success: true, pageCount: pdf.numPages };
+    
   } catch (error) {
     return { 
       success: false, 
