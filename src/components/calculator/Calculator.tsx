@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V35 - Server-side PDF analysis for large files, large file message, saddle stitch for letter ≤60pg, 3-hole $1, terms link fix
+// V36 - PDF.js operator list for large files, remove pdf-lib/server dependency
 
 import { useState, useCallback } from 'react';
 import { 
@@ -8,7 +8,7 @@ import {
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
   Phone, Mail
 } from 'lucide-react';
-import { smartAnalyzePDF, formatFileSize, SERVER_ANALYSIS_THRESHOLD, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
+import { analyzePDF, formatFileSize, LARGE_FILE_THRESHOLD, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
 import { 
   calculatePrice, formatPrice, getTierDescription,
   BINDING_OPTIONS, COVER_OPTIONS, TAB_SET_PRICE,
@@ -68,8 +68,7 @@ export default function Calculator() {
     setStep('analyzing');
 
     try {
-      // smartAnalyzePDF routes to browser (≤25MB) or server (>25MB)
-      const result = await smartAnalyzePDF(selectedFile);
+      const result = await analyzePDF(selectedFile);
       
       if (!result.success) {
         setError(result.error || 'Failed to analyze PDF');
@@ -87,19 +86,14 @@ export default function Calculator() {
       updatePricing(result, config);
       setStep('configure');
       
-      // If server analyzed, file is already in R2 — grab the key
-      if (result.serverAnalyzed && result.r2FileKey) {
-        setR2FileKey(result.r2FileKey);
-      } else {
-        // Upload to R2 immediately after browser analysis (non-blocking)
-        // File is "in the system" before customer finishes configuring
-        uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
-          if (uploadResult.success && uploadResult.fileKey) {
-            setR2FileKey(uploadResult.fileKey);
-          }
-          // Don't fail the flow if upload fails - we'll retry at checkout
-        });
-      }
+      // Upload to R2 immediately after analysis (non-blocking)
+      // File is "in the system" before customer finishes configuring
+      uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
+        if (uploadResult.success && uploadResult.fileKey) {
+          setR2FileKey(uploadResult.fileKey);
+        }
+        // Don't fail the flow if upload fails - we'll retry at checkout
+      });
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze PDF');
@@ -334,8 +328,8 @@ export default function Calculator() {
       <Loader2 className="w-12 h-12 text-amber-400 animate-spin mx-auto mb-4" />
       <h3 className="text-xl font-semibold text-white mb-2">Analyzing Your PDF...</h3>
       <p className="text-slate-400">
-        {file && file.size > SERVER_ANALYSIS_THRESHOLD
-          ? 'Uploading and analyzing on our server — large files welcome'
+        {file && file.size > LARGE_FILE_THRESHOLD
+          ? 'Large file — analyzing pages, this may take a moment'
           : 'Counting pages, detecting colors, checking sizes'}
       </p>
       {file && (
@@ -800,6 +794,7 @@ export default function Calculator() {
     </div>
   );
 }
+
 
 
 
