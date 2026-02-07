@@ -1,8 +1,12 @@
-import React from 'react';
-import { Calculator, Lock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calculator, Lock, Play } from 'lucide-react';
 import manualImage from '../assets/aviation-manual-spiral-binding-print-service.png';
 
+const YOUTUBE_VIDEO_ID = '2t8xmJP_ytU';
+
 const Hero: React.FC = () => {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <section
       className="relative overflow-hidden"
@@ -47,14 +51,16 @@ const Hero: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Text Overlay Content */}
+      {/* Hero Content — split layout: text left, video right */}
       <div
-        className="relative text-center px-5"
-        style={{ zIndex: 3, paddingTop: '40px', paddingBottom: '40px' }}
+        className="relative hero-content-grid"
+        style={{ zIndex: 3, paddingTop: '40px', paddingBottom: '40px', paddingLeft: '20px', paddingRight: '20px' }}
       >
+        {/* LEFT: Text + CTA */}
+        <div className="hero-text-col" style={{ textAlign: 'center' }}>
           {/* Main Headline */}
           <h1
-            className="mb-12"
+            className="mb-12 hero-headline"
             style={{
               color: '#FFFFFF',
               fontSize: '68px',
@@ -73,7 +79,7 @@ const Hero: React.FC = () => {
 
           {/* Subheadline */}
           <p
-            className="mx-auto mb-12"
+            className="mx-auto mb-12 hero-subheadline"
             style={{
               color: '#FFFFFF',
               fontSize: '24px',
@@ -138,6 +144,7 @@ const Hero: React.FC = () => {
 
           {/* Trust Line */}
           <p
+            className="hero-trust-line"
             style={{
               color: '#FFFFFF',
               fontSize: '17px',
@@ -163,56 +170,219 @@ const Hero: React.FC = () => {
           >
             *cutoff time 4PM for next day processing
           </p>
+        </div>
+
+        {/* RIGHT: Pitch Video */}
+        <div className="hero-video-col">
+          <div className="hero-video-wrapper">
+            {!videoLoaded ? (
+              <button
+                onClick={() => setVideoLoaded(true)}
+                className="hero-video-thumbnail"
+                aria-label="Play pitch video"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: `url(https://img.youtube.com/vi/${YOUTUBE_VIDEO_ID}/maxresdefault.jpg) center/cover no-repeat`,
+                  borderRadius: '12px',
+                  padding: 0,
+                }}
+              >
+                <div className="hero-video-overlay">
+                  <div className="hero-play-btn">
+                    <Play size={32} fill="#FFFFFF" color="#FFFFFF" style={{ marginLeft: '4px' }} />
+                  </div>
+                </div>
+                <div className="hero-video-label">Watch How It Works</div>
+              </button>
+            ) : (
+              <iframe
+                src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
+                title="ESSCO Print On Demand — How It Works"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '12px',
+                }}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Mobile Responsive Styles */}
+      {/* Responsive Styles */}
       <style>{`
-        @media (max-width: 768px) {
-          section > div:nth-child(3) {
-            padding-top: 40px !important;
-            padding-bottom: 40px !important;
+        .hero-content-grid {
+          display: grid;
+          grid-template-columns: 1fr 320px;
+          gap: 32px;
+          align-items: center;
+          max-width: 1160px;
+          margin: 0 auto;
+        }
+
+        .hero-text-col {
+          text-align: center;
+        }
+
+        .hero-video-col {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .hero-video-wrapper {
+          position: relative;
+          width: 280px;
+          aspect-ratio: 9 / 16;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.15);
+          background: #000;
+        }
+
+        .hero-video-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.25);
+          border-radius: 12px;
+          transition: background 0.3s;
+        }
+
+        .hero-play-btn {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: rgba(110, 75, 108, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hero-video-thumbnail:hover .hero-video-overlay {
+          background: rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-video-thumbnail:hover .hero-play-btn {
+          transform: scale(1.12);
+          box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-video-label {
+          position: absolute;
+          bottom: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.7);
+          color: #fff;
+          font-size: 13px;
+          font-weight: 600;
+          padding: 6px 16px;
+          border-radius: 20px;
+          white-space: nowrap;
+          font-family: 'Oswald', sans-serif;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+        }
+
+        /* Tablet: stack video above text */
+        @media (max-width: 960px) {
+          .hero-content-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
           }
-          section h1 {
+
+          .hero-video-col {
+            order: -1;
+          }
+
+          .hero-video-wrapper {
+            width: 220px;
+          }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+          .hero-content-grid {
+            padding-top: 24px !important;
+            padding-bottom: 24px !important;
+          }
+
+          .hero-headline {
             font-size: 36px !important;
             letter-spacing: 1.5px !important;
             line-height: 1.3 !important;
+            margin-bottom: 1.5rem !important;
           }
-          section p:nth-of-type(1) {
+
+          .hero-subheadline {
             font-size: 19px !important;
+            margin-bottom: 1.5rem !important;
           }
-          section p:nth-of-type(2) {
-            font-size: 22px !important;
-          }
-          section p:nth-of-type(3) {
-            font-size: 17px !important;
-          }
-          section button {
+
+          .hero-cta-button {
             padding: 18px 45px !important;
             font-size: 16px !important;
             margin-bottom: 16px !important;
           }
+
+          .hero-trust-line {
+            font-size: 15px !important;
+          }
+
+          .hero-video-wrapper {
+            width: 180px;
+          }
+
+          .hero-play-btn {
+            width: 56px;
+            height: 56px;
+          }
+
+          .hero-play-btn svg {
+            width: 24px;
+            height: 24px;
+          }
         }
 
-        /* Desktop optimization for larger viewports */
+        /* Large desktop */
         @media (min-width: 1920px) {
-          section > div:nth-child(3) {
-            padding-top: 40px !important;
-            padding-bottom: 40px !important;
+          .hero-content-grid {
+            padding-top: 50px !important;
+            padding-bottom: 50px !important;
           }
-          section h1 {
+
+          .hero-headline {
             font-size: 72px !important;
             line-height: 1.5 !important;
             margin-bottom: 3rem !important;
           }
+
+          .hero-video-wrapper {
+            width: 320px;
+          }
         }
 
-        /* Enhanced focus states for accessibility */
         .hero-cta-button:focus {
           outline: 3px solid #FFFFFF;
           outline-offset: 4px;
         }
 
-        /* Smooth transitions */
         .hero-cta-button {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
