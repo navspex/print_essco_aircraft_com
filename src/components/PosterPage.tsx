@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import ScrollReveal from './ScrollReveal';
-import { Image, Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart } from 'lucide-react';
+import { Image, Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart, FileText, Calculator } from 'lucide-react';
 
 // ==================== POSTER SIZE DATA ====================
 const posterSizes = [
@@ -102,6 +102,19 @@ export default function PostersPage() {
         </section>
       </ScrollReveal>
 
+      {/* ==================== CROSS-LINK BANNER: MANUAL PRINTING ==================== */}
+      <ScrollReveal delay={150}>
+        <section className="bg-amber-500/10 border-y border-amber-500/30 py-4 transition-all duration-500 hover:bg-amber-500/15">
+          <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+            <span className="text-slate-300 text-sm">Need manuals, training guides, or multi-page documents printed & bound?</span>
+            <a href="/" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm uppercase tracking-wide px-5 py-2 rounded-lg transition-all duration-300 hover:scale-[1.03] shadow-lg" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              <FileText size={16} strokeWidth={2.5} />
+              Upload PDF → Get Instant Quote
+            </a>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ==================== TRUST BAR (matches landing) ==================== */}
       <ScrollReveal delay={200}>
         <section className="py-8 bg-slate-900 border-y border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
@@ -173,6 +186,20 @@ export default function PostersPage() {
             <div className="max-w-4xl mx-auto bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
               <p className="text-slate-300 text-sm">All prices include full-color printing on premium glossy photo paper and free tube shipping. Volume discounts available — <a href="mailto:esscosupport@aol.com?subject=Poster%20Volume%20Quote" className="text-amber-400 hover:underline">contact us</a> for orders of 5+ posters.</p>
             </div>
+
+            {/* Cross-link to Calculator */}
+            <div className="max-w-4xl mx-auto mt-6 bg-slate-700/50 rounded-xl p-5 border border-slate-600 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10">
+              <div className="flex items-center gap-3">
+                <Calculator className="w-8 h-8 text-amber-400 flex-shrink-0" />
+                <div>
+                  <p className="text-white font-semibold text-sm">Printing a multi-page manual or document?</p>
+                  <p className="text-slate-400 text-xs">Upload any PDF and get an instant price — binding, color, B&W — all calculated automatically.</p>
+                </div>
+              </div>
+              <a href="/" className="flex-shrink-0 bg-slate-600 hover:bg-amber-500 hover:text-slate-900 text-white font-bold text-sm uppercase tracking-wide px-5 py-2.5 rounded-lg transition-all duration-300" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                Try the Calculator →
+              </a>
+            </div>
           </div>
         </section>
       </ScrollReveal>
@@ -233,6 +260,15 @@ export default function PostersPage() {
                   <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Cross-link inline */}
+            <div className="mt-8 text-center">
+              <p className="text-slate-400 text-sm mb-3">Have a multi-page document, training guide, or operations manual instead?</p>
+              <a href="/" className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+                <FileText size={16} />
+                Use our Print-On-Demand Calculator for instant document pricing →
+              </a>
             </div>
           </div>
         </section>
@@ -341,6 +377,19 @@ export default function PostersPage() {
         </section>
       </ScrollReveal>
 
+      {/* ==================== CROSS-LINK STRIP: DOCUMENT PRINTING ==================== */}
+      <ScrollReveal delay={150}>
+        <section className="bg-amber-500/10 border-y border-amber-500/30 py-4 transition-all duration-500 hover:bg-amber-500/15">
+          <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+            <Calculator size={18} className="text-amber-400" />
+            <span className="text-slate-300 text-sm">Looking for document & manual printing with binding?</span>
+            <a href="/" className="text-amber-400 hover:text-amber-300 font-bold text-sm underline underline-offset-2 transition-colors">
+              Use our Print-On-Demand Calculator →
+            </a>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ==================== CTA - ORDER NOW ==================== */}
       <ScrollReveal delay={100}>
         <section className="py-16 bg-slate-900 border-t border-slate-700 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
@@ -356,10 +405,22 @@ export default function PostersPage() {
             <p className="mt-6 text-slate-500 text-sm">Or call <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> • Email <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:underline">esscosupport@aol.com</a></p>
             <p className="mt-2 text-slate-600 text-xs">Monday-Friday 9am-4pm EST</p>
 
-            {/* Also link back to manual printing */}
+            {/* Cross-link to POD Calculator - prominent */}
             <div className="mt-10 pt-8 border-t border-slate-800">
-              <p className="text-slate-400 mb-3">Need manuals or documents printed instead?</p>
-              <a href="/" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors">← Back to Print-On-Demand Calculator</a>
+              <div className="bg-slate-800/80 rounded-xl p-6 border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-lg">Need Documents or Manuals Printed?</p>
+                    <p className="text-slate-400 text-sm">Upload any PDF → get instant pricing → printed & shipped in 24 hours. Binding options, volume discounts, same team.</p>
+                  </div>
+                </div>
+                <a href="/" className="flex-shrink-0 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-all duration-300 hover:scale-[1.03] shadow-lg" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                  Go to Calculator →
+                </a>
+              </div>
             </div>
 
             {/* Trust Badges */}
