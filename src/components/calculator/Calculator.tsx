@@ -8,7 +8,7 @@ import {
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
   Phone, Mail
 } from 'lucide-react';
-import { analyzePDF, formatFileSize, LARGE_FILE_THRESHOLD, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
+import { analyzePDF, formatFileSize, type PDFAnalysisResult, type AnalysisPhase } from '../../lib/pdfAnalysis';
 import { 
   calculatePrice, formatPrice, getTierDescription,
   BINDING_OPTIONS, COVER_OPTIONS, TAB_SET_PRICE,
@@ -46,6 +46,7 @@ export default function Calculator() {
   const [dragActive, setDragActive] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string>('');
   const [r2FileKey, setR2FileKey] = useState<string | null>(null);
+  const [analysisProgress, setAnalysisProgress] = useState<{ phase: AnalysisPhase; current: number; total: number } | null>(null);
 
   // Calculate pricing whenever config or analysis changes
   const updatePricing = useCallback((analysisData: PDFAnalysisResult, orderConfig: OrderConfig) => {
@@ -66,9 +67,12 @@ export default function Calculator() {
     setFile(selectedFile);
     setError(null);
     setStep('analyzing');
+    setAnalysisProgress(null);
 
     try {
-      const result = await analyzePDF(selectedFile);
+      const result = await analyzePDF(selectedFile, (phase, current, total) => {
+        setAnalysisProgress({ phase, current, total });
+      });
       
       if (!result.success) {
         setError(result.error || 'Failed to analyze PDF');
@@ -323,30 +327,45 @@ export default function Calculator() {
   );
 
   // Analyzing Step
-  const renderAnalyzing = () => (
-    <div className="text-center py-12">
-      <Loader2 className="w-12 h-12 text-amber-400 animate-spin mx-auto mb-4" />
-      <h3 className="text-xl font-semibold text-white mb-2">Analyzing Your PDF...</h3>
-      <p className="text-slate-400">
-        {file && file.size > LARGE_FILE_THRESHOLD
-          ? 'Large file — analyzing pages, this may take a moment'
-          : 'Counting pages, detecting colors, checking sizes'}
-      </p>
-      {file && (
-        <>
+  const renderAnalyzing = () => {
+    const phase = analysisProgress?.phase || 'loading';
+    const current = analysisProgress?.current || 0;
+    const total = analysisProgress?.total || 0;
+    const pct = phase === 'loading'
+      ? (total > 0 ? Math.round((current / total) * 20) : 0)  // Loading = 0-20%
+      : (total > 0 ? 20 + Math.round((current / total) * 80) : 20);  // Analyzing = 20-100%
+
+    const statusText = phase === 'loading'
+      ? 'Loading PDF into browser...'
+      : total > 0
+        ? `Analyzing page ${current} of ${total}`
+        : 'Preparing analysis...';
+
+    return (
+      <div className="text-center py-12">
+        <Loader2 className="w-12 h-12 text-amber-400 animate-spin mx-auto mb-4" />
+        <h3 className="text-xl font-semibold text-white mb-2">Analyzing Your PDF...</h3>
+        <p className="text-slate-400 mb-4">{statusText}</p>
+        {/* Progress bar */}
+        <div className="max-w-md mx-auto">
+          <div className="w-full bg-slate-700 rounded-full h-2.5 mb-2">
+            <div
+              className="bg-amber-400 h-2.5 rounded-full transition-all duration-150 ease-out"
+              style={{ width: `${Math.max(pct, 2)}%` }}
+            />
+          </div>
+          {phase === 'analyzing' && total > 0 && (
+            <p className="text-slate-500 text-sm">{pct}%</p>
+          )}
+        </div>
+        {file && (
           <p className="text-slate-500 text-sm mt-4">
             {file.name} • {formatFileSize(file.size)}
           </p>
-          {file.size > 10 * 1024 * 1024 && (
-            <p className="text-amber-400 text-sm mt-2 flex items-center justify-center gap-1">
-              <Info size={14} />
-              Large file — this may take a moment, please stand by
-            </p>
-          )}
-        </>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   // Configure Step
   const renderConfigure = () => {
@@ -794,6 +813,7 @@ export default function Calculator() {
     </div>
   );
 }
+
 
 
 
