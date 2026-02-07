@@ -7,11 +7,13 @@
  * - Calculated shipping weight (for carrier-calculated rates)
  * - Customer email and shipping address
  * - R2 PDF file key for production team
+ * - Optional shipping line for poster tube shipping
  * 
- * Updated: February 5, 2026
- * - Added Page Size to custom attributes and order note (Letter default)
+ * Updated: February 7, 2026
+ * - Added shippingLine support for poster tube shipping charges
+ * - Added poster-specific note formatting and custom attributes
+ * - Previous: Added Page Size to custom attributes and order note
  * - Previous: Added pdfFileKey for R2 storage reference
- * - Previous: Updated cover/binding options
  * 
  * API Version: 2025-10 (latest stable)
  */
@@ -98,22 +100,67 @@ function validateOrderData(orderData) {
 }
 
 /**
- * Create Shopify Draft Order via GraphQL API
+ * Detect if this is a poster order based on request fields
  */
-async function createDraftOrder(orderData, env) {
-  const shopifyShop = env.SHOPIFY_SHOP || 'essco-aircraft.myshopify.com';
-  const accessToken = env.SHOPIFY_ACCESS_TOKEN;
+function isPosterOrder(orderData) {
+  return orderData.bindingType === 'Poster Print' || !!orderData.posterSize;
+}
 
-  if (!accessToken) {
-    console.error('SHOPIFY_ACCESS_TOKEN not configured');
-    return { success: false, error: 'Shopify configuration error' };
-  }
+/**
+ * Build custom attributes for poster orders
+ */
+function buildPosterAttributes(orderData) {
+  return [
+    { key: 'Product Type', value: 'Poster Print' },
+    { key: 'Poster Size', value: orderData.posterSize || orderData.pageSize || 'Not specified' },
+    { key: 'Quantity', value: String(orderData.quantity || 1) },
+    { key: 'Lamination', value: orderData.lamination === 'Yes' ? 'Yes ($15)' : 'No' },
+    { key: 'Foam Board', value: orderData.foamBoard === 'Yes' ? 'Yes ($20)' : 'No' },
+    { key: 'Add-Ons', value: orderData.addOns || 'None' },
+    { key: 'Shipping Tube', value: orderData.shippingTube || 'Standard' },
+    { key: 'Image Dimensions', value: `${orderData.imageWidth || 'N/A'} × ${orderData.imageHeight || 'N/A'} px` },
+    { key: 'File Name', value: orderData.documentName || 'Not specified' },
+    { key: 'File Key', value: orderData.pdfFileKey || 'Not uploaded' },
+    { key: 'Weight (grams)', value: String(orderData.shippingWeightGrams || 0) },
+    { key: 'Source', value: 'print.esscoaircraft.com' },
+  ];
+}
 
-  // Build line item title
-  const lineItemTitle = `Custom Print Job - ${orderData.documentName || 'Document'}`;
+/**
+ * Build order note for poster orders (production team reference)
+ */
+function buildPosterNote(orderData) {
+  return [
+    '=== POSTER PRINT SPECIFICATIONS ===',
+    `File: ${orderData.documentName || 'Not specified'}`,
+    `Poster Size: ${orderData.posterSize || orderData.pageSize || 'Not specified'}`,
+    `Quantity: ${orderData.quantity || 1}`,
+    '',
+    '--- Add-Ons ---',
+    `Lamination: ${orderData.lamination === 'Yes' ? 'YES — Gloss Lamination ($15/ea)' : 'No'}`,
+    `Foam Board: ${orderData.foamBoard === 'Yes' ? 'YES — 3/16" Foam Core Mount ($20/ea)' : 'No'}`,
+    '',
+    '--- Shipping ---',
+    `Tube: ${orderData.shippingTube || 'Standard'}`,
+    `Tube Price: $${orderData.shippingTubePrice || '0.00'}`,
+    `Est. Weight: ${orderData.shippingWeightGrams ? (orderData.shippingWeightGrams / 453.592).toFixed(2) + ' lbs' : 'Not calculated'}`,
+    '',
+    '--- Image Info ---',
+    `Dimensions: ${orderData.imageWidth || 'N/A'} × ${orderData.imageHeight || 'N/A'} px`,
+    '',
+    '=== FILE STORAGE ===',
+    orderData.pdfFileKey ? `R2 Key: ${orderData.pdfFileKey}` : 'File not uploaded',
+    orderData.pdfFileKey ? `Bucket: print-essco-storage` : '',
+    '',
+    'Submitted from: print.esscoaircraft.com',
+  ].filter(Boolean).join('\\n');
+}
 
-  // Build custom attributes for order metadata
-  const customAttributes = [
+/**
+ * Build custom attributes for PDF/document orders (original behavior)
+ */
+function buildPrintAttributes(orderData) {
+  return [
     { key: 'Document Name', value: orderData.documentName || 'Not specified' },
     { key: 'Total Pages', value: String(orderData.pageCount || 0) },
     { key: 'B&W Pages', value: String(orderData.bwPages || 0) },
@@ -129,9 +176,13 @@ async function createDraftOrder(orderData, env) {
     { key: 'PDF File Key', value: orderData.pdfFileKey || 'Not uploaded' },
     { key: 'Source', value: 'print.esscoaircraft.com' },
   ];
+}
 
-  // Build order note with all specs for production team
-  const orderNote = [
+/**
+ * Build order note for PDF/document orders (original behavior)
+ */
+function buildPrintNote(orderData) {
+  return [
     '=== PRINT SPECIFICATIONS ===',
     `Document: ${orderData.documentName || 'Not specified'}`,
     `Total Pages: ${orderData.pageCount || 0}`,
@@ -152,7 +203,35 @@ async function createDraftOrder(orderData, env) {
     orderData.pdfFileKey ? `Bucket: print-essco-storage` : '',
     '',
     'Submitted from: print.esscoaircraft.com',
-  ].filter(Boolean).join('\n');
+  ].filter(Boolean).join('\\n');
+}
+
+/**
+ * Create Shopify Draft Order via GraphQL API
+ */
+async function createDraftOrder(orderData, env) {
+  const shopifyShop = env.SHOPIFY_SHOP || 'essco-aircraft.myshopify.com';
+  const accessToken = env.SHOPIFY_ACCESS_TOKEN;
+
+  if (!accessToken) {
+    console.error('SHOPIFY_ACCESS_TOKEN not configured');
+    return { success: false, error: 'Shopify configuration error' };
+  }
+
+  // Detect order type and build appropriate metadata
+  const isPoster = isPosterOrder(orderData);
+  const customAttributes = isPoster ? buildPosterAttributes(orderData) : buildPrintAttributes(orderData);
+  const orderNote = isPoster ? buildPosterNote(orderData) : buildPrintNote(orderData);
+
+  // Build line item title
+  const lineItemTitle = isPoster
+    ? `Poster Print — ${orderData.posterSize || orderData.pageSize || 'Custom'}`
+    : `Custom Print Job - ${orderData.documentName || 'Document'}`;
+
+  // Determine tags
+  const tags = isPoster
+    ? ['poster-calculator', 'print-esscoaircraft-com']
+    : ['pod-calculator', 'print-esscoaircraft-com'];
 
   // GraphQL mutation
   const mutation = `
@@ -191,12 +270,21 @@ async function createDraftOrder(orderData, env) {
   const input = {
     lineItems: [lineItem],
     note: orderNote,
-    tags: ['pod-calculator', 'print-esscoaircraft-com'],
+    tags: tags,
     customAttributes: [
       { key: '_source', value: 'print.esscoaircraft.com' },
       { key: '_pdfFileKey', value: orderData.pdfFileKey || '' },
+      { key: '_orderType', value: isPoster ? 'poster' : 'print' },
     ],
   };
+
+  // Add shipping line if provided (used for poster tube shipping)
+  if (orderData.shippingTitle && orderData.shippingCost && orderData.shippingCost > 0) {
+    input.shippingLine = {
+      title: orderData.shippingTitle,
+      price: String(orderData.shippingCost),
+    };
+  }
 
   // Add email if provided
   if (orderData.email) {
@@ -263,4 +351,3 @@ async function createDraftOrder(orderData, env) {
     orderName: draftOrder.name,
   };
 }
-
