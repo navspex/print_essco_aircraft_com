@@ -1,6 +1,6 @@
 // ESSCO POD Calculator - Main Component
 // Orchestrates PDF upload, analysis, pricing, and order submission
-// V34 - Large file message, saddle stitch for letter ≤60pg, 3-hole $1, terms link fix
+// V35 - Server-side PDF analysis for large files, large file message, saddle stitch for letter ≤60pg, 3-hole $1, terms link fix
 
 import { useState, useCallback } from 'react';
 import { 
@@ -8,7 +8,7 @@ import {
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
   Phone, Mail
 } from 'lucide-react';
-import { analyzePDF, formatFileSize, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
+import { smartAnalyzePDF, formatFileSize, SERVER_ANALYSIS_THRESHOLD, type PDFAnalysisResult } from '../../lib/pdfAnalysis';
 import { 
   calculatePrice, formatPrice, getTierDescription,
   BINDING_OPTIONS, COVER_OPTIONS, TAB_SET_PRICE,
@@ -68,7 +68,8 @@ export default function Calculator() {
     setStep('analyzing');
 
     try {
-      const result = await analyzePDF(selectedFile);
+      // smartAnalyzePDF routes to browser (≤25MB) or server (>25MB)
+      const result = await smartAnalyzePDF(selectedFile);
       
       if (!result.success) {
         setError(result.error || 'Failed to analyze PDF');
@@ -86,14 +87,19 @@ export default function Calculator() {
       updatePricing(result, config);
       setStep('configure');
       
-      // Upload to R2 immediately after analysis (non-blocking)
-      // File is "in the system" before customer finishes configuring
-      uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
-        if (uploadResult.success && uploadResult.fileKey) {
-          setR2FileKey(uploadResult.fileKey);
-        }
-        // Don't fail the flow if upload fails - we'll retry at checkout
-      });
+      // If server analyzed, file is already in R2 — grab the key
+      if (result.serverAnalyzed && result.r2FileKey) {
+        setR2FileKey(result.r2FileKey);
+      } else {
+        // Upload to R2 immediately after browser analysis (non-blocking)
+        // File is "in the system" before customer finishes configuring
+        uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
+          if (uploadResult.success && uploadResult.fileKey) {
+            setR2FileKey(uploadResult.fileKey);
+          }
+          // Don't fail the flow if upload fails - we'll retry at checkout
+        });
+      }
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze PDF');
@@ -327,7 +333,11 @@ export default function Calculator() {
     <div className="text-center py-12">
       <Loader2 className="w-12 h-12 text-amber-400 animate-spin mx-auto mb-4" />
       <h3 className="text-xl font-semibold text-white mb-2">Analyzing Your PDF...</h3>
-      <p className="text-slate-400">Counting pages, detecting colors, checking sizes</p>
+      <p className="text-slate-400">
+        {file && file.size > SERVER_ANALYSIS_THRESHOLD
+          ? 'Uploading and analyzing on our server — large files welcome'
+          : 'Counting pages, detecting colors, checking sizes'}
+      </p>
       {file && (
         <>
           <p className="text-slate-500 text-sm mt-4">
@@ -790,5 +800,6 @@ export default function Calculator() {
     </div>
   );
 }
+
 
 
