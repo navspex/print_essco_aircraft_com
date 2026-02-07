@@ -1,12 +1,17 @@
 // ESSCO POD Calculator - PDF Analysis Module
 // Uses PDF.js for automatic page counting, size detection, and color analysis
-// This is the MANDATORY auto-detection that V1-29 lacked
+// V35 - Added server-side analysis for large files (>25MB)
+// Small files: browser PDF.js with pixel-level color detection (existing)
+// Large files: server Worker with color space metadata detection (new)
 
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 
 // Configure PDF.js worker - use CDN for reliability
 GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+
+// Files larger than this route to server-side analysis
+export const SERVER_ANALYSIS_THRESHOLD = 25 * 1024 * 1024; // 25MB
 
 export interface PageAnalysis {
   pageNumber: number;
@@ -37,6 +42,11 @@ export interface PDFAnalysisResult {
   // Validation
   hasOversizedPages: boolean; // Larger than 11x17
   oversizedPageNumbers: number[];
+
+  // Server-side analysis metadata
+  serverAnalyzed?: boolean;  // true if analyzed by Cloudflare Worker
+  r2FileKey?: string;        // file already in R2 (skip duplicate upload)
+  partial?: boolean;         // true if server couldn't fully parse
 }
 
 // Standard page sizes in points (72 points = 1 inch)
@@ -53,7 +63,6 @@ const PAGE_SIZES = {
  */
 function isFoldoutPage(width: number, height: number): boolean {
   const maxDim = Math.max(width, height);
-  // If longest side > 11" (792pt), it's a foldout
   return maxDim > PAGE_SIZES.LETTER_HEIGHT + PAGE_SIZES.TOLERANCE;
 }
 
@@ -134,8 +143,8 @@ async function analyzePageForColor(page: PDFPageProxy): Promise<boolean> {
 }
 
 /**
- * Main PDF analysis function
- * Analyzes uploaded PDF for page count, sizes, and color content
+ * Browser-side PDF analysis (files ≤25MB)
+ * Full pixel-level color detection via canvas rendering
  */
 export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
   const result: PDFAnalysisResult = {
@@ -150,6 +159,7 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
     foldoutPages: 0,
     hasOversizedPages: false,
     oversizedPageNumbers: [],
+    serverAnalyzed: false,
   };
   
   try {
@@ -222,6 +232,92 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
   }
   
   return result;
+}
+
+/**
+ * Server-side PDF analysis (files >25MB)
+ * Sends file to Cloudflare Worker for analysis + R2 upload in one request
+ * Worker uses pdf-lib color space metadata detection (no rendering needed)
+ * Returns same PDFAnalysisResult shape as browser analysis
+ */
+export async function analyzeServerSide(file: File): Promise<PDFAnalysisResult> {
+  const emptyResult: PDFAnalysisResult = {
+    success: false,
+    fileName: file.name,
+    fileSize: file.size,
+    totalPages: 0,
+    pages: [],
+    bwPages: 0,
+    colorPages: 0,
+    standardPages: 0,
+    foldoutPages: 0,
+    hasOversizedPages: false,
+    oversizedPageNumbers: [],
+    serverAnalyzed: true,
+  };
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/api/analyze-pdf', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      return { ...emptyResult, error: `Server error: ${response.status}` };
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      return { ...emptyResult, error: data.error || 'Server analysis failed' };
+    }
+
+    return {
+      success: true,
+      fileName: file.name,
+      fileSize: file.size,
+      totalPages: data.totalPages || 0,
+      pages: (data.pages || []).map((p: any) => ({
+        pageNumber: p.pageNumber,
+        width: p.width,
+        height: p.height,
+        isColor: p.isColor || false,
+        isFoldout: p.isFoldout || false,
+      })),
+      bwPages: data.bwPages || 0,
+      colorPages: data.colorPages || 0,
+      standardPages: data.standardPages || 0,
+      foldoutPages: data.foldoutPages || 0,
+      hasOversizedPages: data.hasOversizedPages || false,
+      oversizedPageNumbers: data.oversizedPageNumbers || [],
+      serverAnalyzed: true,
+      r2FileKey: data.fileKey,
+      partial: data.partial || false,
+    };
+  } catch (error) {
+    console.error('Server-side analysis error:', error);
+    return {
+      ...emptyResult,
+      error: error instanceof Error ? error.message : 'Network error during analysis',
+    };
+  }
+}
+
+/**
+ * Smart router — picks browser or server analysis based on file size
+ * ≤25MB: browser PDF.js (pixel-level color detection)
+ * >25MB: server Worker (color space metadata detection)
+ */
+export async function smartAnalyzePDF(file: File): Promise<PDFAnalysisResult> {
+  if (file.size > SERVER_ANALYSIS_THRESHOLD) {
+    console.log(`Large file (${(file.size / 1024 / 1024).toFixed(1)}MB) — routing to server`);
+    return analyzeServerSide(file);
+  }
+  console.log(`File (${(file.size / 1024 / 1024).toFixed(1)}MB) — using browser analysis`);
+  return analyzePDF(file);
 }
 
 /**
