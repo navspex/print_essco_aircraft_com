@@ -1,14 +1,31 @@
 /**
- * ESSCO POD Calculator - PDF Upload API
+ * ESSCO Print Calculator - File Upload API
  * Cloudflare Pages Function with R2 native bindings
- * Stores PDF for production team access
+ * Stores files for production team access
  * 
+ * Accepts: PDF, JPEG, PNG, TIFF, WebP
  * R2 Bucket: print-essco-storage
  * Binding: PRINT_ESSCO_STORAGE
+ * 
+ * Updated: February 7, 2026
+ * - Accept image uploads (JPEG, PNG, TIFF, WebP) for poster calculator
+ * - Previous: PDF-only uploads
  */
 
 // Maximum file size: 500MB
 const MAX_FILE_SIZE = 500 * 1024 * 1024;
+
+// Accepted file types
+const ACCEPTED_TYPES = new Set([
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/tiff',
+  'image/webp',
+]);
+
+// Accepted extensions (fallback if MIME type is missing)
+const ACCEPTED_EXTENSIONS = /\.(pdf|jpe?g|png|tiff?|webp)$/i;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -40,11 +57,11 @@ export async function onRequestPost(context) {
       );
     }
     
-    // Validate file type
-    const isPDF = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
-    if (!isPDF) {
+    // Validate file type (accept PDFs and images)
+    const isAcceptedType = ACCEPTED_TYPES.has(file.type) || ACCEPTED_EXTENSIONS.test(file.name);
+    if (!isAcceptedType) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Only PDF files are allowed' }),
+        JSON.stringify({ success: false, error: 'File type not accepted. Allowed: PDF, JPEG, PNG, TIFF, WebP' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -66,10 +83,13 @@ export async function onRequestPost(context) {
     // Get file content
     const fileContent = await file.arrayBuffer();
     
+    // Determine content type for R2 metadata
+    const contentType = file.type || 'application/octet-stream';
+    
     // Upload to R2
     await env.PRINT_ESSCO_STORAGE.put(fileKey, fileContent, {
       httpMetadata: {
-        contentType: 'application/pdf',
+        contentType: contentType,
       },
       customMetadata: {
         originalName: file.name,
