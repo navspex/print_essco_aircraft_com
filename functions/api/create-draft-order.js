@@ -15,10 +15,10 @@
  * - Previous: Added Page Size to custom attributes and order note
  * - Previous: Added pdfFileKey for R2 storage reference
  * 
- * API Version: 2025-10 (latest stable)
+ * API Version: 2026-01 (latest stable)
  */
 
-const SHOPIFY_API_VERSION = '2025-10';
+const SHOPIFY_API_VERSION = '2026-01';
 
 /**
  * Cloudflare Pages Function handler
