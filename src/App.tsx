@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ScrollReveal from './components/ScrollReveal';
 import PODCalculator from './components/calculator/Calculator';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X, Image } from 'lucide-react';
 
 // ==================== MAIN APP ====================
 function App() {
@@ -249,6 +249,28 @@ function App() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
+
+      {/* ==================== POSTER PRINTING CROSS-LINK ==================== */}
+      <ScrollReveal delay={150}>
+        <section className="py-8 bg-slate-900 transition-all duration-500 hover:bg-slate-800">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="bg-amber-500/10 rounded-xl p-6 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Image className="w-6 h-6 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-white font-bold text-lg">Need a Poster or Large Format Print?</p>
+                  <p className="text-slate-400 text-sm">Cockpit diagrams, schematics, training aids, banners — printed on premium glossy photo paper. Starting at $12.</p>
+                </div>
+              </div>
+              <a href="/posters" className="flex-shrink-0 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-all duration-300 hover:scale-[1.03] shadow-lg" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                View Poster Sizes →
+              </a>
+            </div>
+          </div>
+        </section>
       </ScrollReveal>
 
       {/* ==================== PROFESSIONAL EQUIPMENT SECTION ==================== */}
@@ -560,6 +582,7 @@ function App() {
                 <li><a href="https://www.esscoaircraft.com/pages/about-us" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">About Us</a></li>
                 <li><a href="https://www.esscoaircraft.com/pages/faqs" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">FAQs</a></li>
                 <li><a href="#faq" className="hover:text-amber-400 transition-colors">Print Calculator FAQs</a></li>
+                <li><a href="/posters" className="hover:text-amber-400 transition-colors">Posters & Large Format Prints</a></li>
                 <li><a href="https://www.esscoaircraft.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Shop All Manuals →</a></li>
               </ul>
             </div>
@@ -635,4 +658,5 @@ function App() {
 }
 
 export default App;
+
 
