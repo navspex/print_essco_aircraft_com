@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Calculator, Lock, Play } from 'lucide-react';
 import manualImage from '../assets/aviation-manual-spiral-binding-print-service.png';
 
-const YOUTUBE_VIDEO_ID = '2t8xmJP_ytU';
+const YOUTUBE_VIDEO_ID = 'f38Db1XeIQM';
+const YOUTUBE_THUMB_ID = '2t8xmJP_ytU'; // original pitch thumb
 
 const Hero: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -172,7 +173,7 @@ const Hero: React.FC = () => {
           </p>
         </div>
 
-        {/* RIGHT: Pitch Video */}
+        {/* RIGHT: Pitch Video (16:9) */}
         <div className="hero-video-col">
           <div className="hero-video-wrapper">
             {!videoLoaded ? (
@@ -187,7 +188,7 @@ const Hero: React.FC = () => {
                   height: '100%',
                   border: 'none',
                   cursor: 'pointer',
-                  background: `url(https://img.youtube.com/vi/${YOUTUBE_VIDEO_ID}/maxresdefault.jpg) center/cover no-repeat`,
+                  background: `url(https://img.youtube.com/vi/${YOUTUBE_THUMB_ID}/maxresdefault.jpg) center/cover no-repeat`,
                   borderRadius: '12px',
                   padding: 0,
                 }}
@@ -197,7 +198,7 @@ const Hero: React.FC = () => {
                     <Play size={32} fill="#FFFFFF" color="#FFFFFF" style={{ marginLeft: '4px' }} />
                   </div>
                 </div>
-                <div className="hero-video-label">Watch How It Works</div>
+                <div className="hero-video-label">See How It Works</div>
               </button>
             ) : (
               <iframe
@@ -224,7 +225,7 @@ const Hero: React.FC = () => {
       <style>{`
         .hero-content-grid {
           display: grid;
-          grid-template-columns: 1fr 320px;
+          grid-template-columns: 1fr 400px;
           gap: 32px;
           align-items: center;
           max-width: 1160px;
@@ -241,10 +242,11 @@ const Hero: React.FC = () => {
           justify-content: center;
         }
 
+        /* 16:9 aspect ratio wrapper */
         .hero-video-wrapper {
           position: relative;
-          width: 280px;
-          aspect-ratio: 9 / 16;
+          width: 100%;
+          aspect-ratio: 16 / 9;
           border-radius: 12px;
           overflow: hidden;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.15);
@@ -275,7 +277,7 @@ const Hero: React.FC = () => {
         }
 
         .hero-video-thumbnail:hover .hero-video-overlay {
-          background: rgba(0, 0, 0, 0.15);
+          background: rgba(0, 0, 0, 0.12);
         }
 
         .hero-video-thumbnail:hover .hero-play-btn {
@@ -285,14 +287,14 @@ const Hero: React.FC = () => {
 
         .hero-video-label {
           position: absolute;
-          bottom: 12px;
+          bottom: 10px;
           left: 50%;
           transform: translateX(-50%);
           background: rgba(0, 0, 0, 0.7);
           color: #fff;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
-          padding: 6px 16px;
+          padding: 5px 14px;
           border-radius: 20px;
           white-space: nowrap;
           font-family: 'Oswald', sans-serif;
@@ -304,15 +306,14 @@ const Hero: React.FC = () => {
         @media (max-width: 960px) {
           .hero-content-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 20px;
           }
 
           .hero-video-col {
             order: -1;
-          }
-
-          .hero-video-wrapper {
-            width: 220px;
+            max-width: 420px;
+            margin: 0 auto;
+            width: 100%;
           }
         }
 
@@ -345,8 +346,8 @@ const Hero: React.FC = () => {
             font-size: 15px !important;
           }
 
-          .hero-video-wrapper {
-            width: 180px;
+          .hero-video-col {
+            max-width: 340px;
           }
 
           .hero-play-btn {
@@ -365,16 +366,13 @@ const Hero: React.FC = () => {
           .hero-content-grid {
             padding-top: 50px !important;
             padding-bottom: 50px !important;
+            grid-template-columns: 1fr 460px;
           }
 
           .hero-headline {
             font-size: 72px !important;
             line-height: 1.5 !important;
             margin-bottom: 3rem !important;
-          }
-
-          .hero-video-wrapper {
-            width: 320px;
           }
         }
 
