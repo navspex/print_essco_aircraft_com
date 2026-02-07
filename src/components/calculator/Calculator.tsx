@@ -138,8 +138,48 @@ export default function Calculator() {
     }
   }, [config, analysis, updatePricing]);
 
-  // Upload PDF to R2 storage (early - called right after analysis)
+  // Upload PDF to R2 storage via presigned URL (bypasses 100MB CDN limit)
+  // Browser PUTs directly to R2's S3 endpoint — no size restriction
   const uploadPdfToStorageEarly = async (fileToUpload: File): Promise<{ success: boolean; fileKey?: string; error?: string }> => {
+    try {
+      // Step 1: Get presigned PUT URL from our lightweight endpoint (tiny request)
+      const urlResponse = await fetch('/api/get-upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileName: fileToUpload.name,
+          fileSize: fileToUpload.size,
+          contentType: 'application/pdf',
+        }),
+      });
+
+      const urlData = await urlResponse.json();
+      if (!urlData.success || !urlData.uploadUrl) {
+        // Fallback to legacy upload endpoint for smaller files
+        return await uploadPdfViaWorker(fileToUpload);
+      }
+
+      // Step 2: PUT file directly to R2 (bypasses Cloudflare CDN 100MB limit)
+      const uploadResponse = await fetch(urlData.uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/pdf' },
+        body: fileToUpload,
+      });
+
+      if (uploadResponse.ok) {
+        return { success: true, fileKey: urlData.fileKey };
+      } else {
+        // Fallback to legacy upload for smaller files
+        return await uploadPdfViaWorker(fileToUpload);
+      }
+    } catch (err) {
+      // Fallback to legacy upload endpoint
+      return await uploadPdfViaWorker(fileToUpload);
+    }
+  };
+
+  // Legacy upload via Pages Function (works for files < 100MB)
+  const uploadPdfViaWorker = async (fileToUpload: File): Promise<{ success: boolean; fileKey?: string; error?: string }> => {
     try {
       const formData = new FormData();
       formData.append('file', fileToUpload);
@@ -172,25 +212,8 @@ export default function Calculator() {
     
     setUploadProgress('Uploading PDF...');
     
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const response = await fetch('/api/upload-pdf', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        return { success: true, fileKey: data.fileKey };
-      } else {
-        return { success: false, error: data.error || 'Upload failed' };
-      }
-    } catch (err) {
-      return { success: false, error: 'Network error during upload' };
-    }
+    // Try presigned URL first, then legacy worker
+    return await uploadPdfToStorageEarly(file);
   };
 
   // Submit to Shopify Draft Order
