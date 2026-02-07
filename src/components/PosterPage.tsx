@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import ScrollReveal from './ScrollReveal';
-import { Image, Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart } from 'lucide-react';
+import { Image, Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart } from 'lucide-react';
 
 // ==================== POSTER SIZE DATA ====================
 const posterSizes = [
