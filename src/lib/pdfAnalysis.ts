@@ -241,7 +241,10 @@ async function analyzePageColorByOperators(page: PDFPageProxy): Promise<boolean>
  * 
  * Both paths produce identical PDFAnalysisResult shape.
  */
-export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
+export type AnalysisPhase = 'loading' | 'analyzing';
+export type ProgressCallback = (phase: AnalysisPhase, current: number, total: number) => void;
+
+export async function analyzePDF(file: File, onProgress?: ProgressCallback): Promise<PDFAnalysisResult> {
   const result: PDFAnalysisResult = {
     success: false,
     fileName: file.name,
@@ -273,12 +276,16 @@ export async function analyzePDF(file: File): Promise<PDFAnalysisResult> {
     
     console.log(`PDF analysis: ${(file.size / 1024 / 1024).toFixed(1)}MB — using ${colorMethod} color detection`);
     
+    onProgress?.('loading', 0, 0);
     const arrayBuffer = await file.arrayBuffer();
+    onProgress?.('loading', 1, 2);
     const pdf: PDFDocumentProxy = await getDocument({ data: arrayBuffer }).promise;
+    onProgress?.('loading', 2, 2);
     
     result.totalPages = pdf.numPages;
     
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      onProgress?.('analyzing', pageNum, pdf.numPages);
       const page = await pdf.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1.0 });
       
@@ -364,3 +371,4 @@ export function formatFileSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
+
