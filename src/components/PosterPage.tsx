@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import ScrollReveal from './ScrollReveal';
-import { Image, Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart, FileText, Calculator } from 'lucide-react';
+import { Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCircle, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Maximize2, Frame, Sparkles, ShoppingCart, FileText, Calculator, Upload } from 'lucide-react';
 
 // ==================== POSTER SIZE DATA ====================
 const posterSizes = [
@@ -93,10 +93,15 @@ export default function PostersPage() {
                 Cockpit diagrams, training aids, safety procedures, aircraft schematics, and custom banners — printed on premium glossy photo paper with vibrant, fade-resistant inks.
               </p>
             </div>
-            <a href="#poster-pricing" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
-              <Image size={24} strokeWidth={2.5} />
-              <span>View Sizes & Pricing →</span>
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="/posters/calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                <Upload size={24} strokeWidth={2.5} />
+                <span>Upload Image & Get Price →</span>
+              </a>
+              <a href="#poster-pricing" className="text-amber-400 hover:text-amber-300 font-semibold text-sm underline underline-offset-4 transition-colors">
+                View all sizes & pricing ↓
+              </a>
+            </div>
             <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>Same quality. Same team. Same 24-hour turnaround.</span></p>
           </div>
         </section>
@@ -167,7 +172,7 @@ export default function PostersPage() {
                     </div>
                     <p className="text-slate-400 text-sm leading-relaxed mb-6">{poster.description}</p>
                     <a
-                      href="mailto:esscosupport@aol.com?subject=Poster%20Order%20-%20" 
+                      href="/posters/calculator"
                       className={`block w-full py-3 rounded-lg font-bold uppercase tracking-wide text-sm transition-all duration-300 hover:scale-[1.02] ${
                         poster.popular
                           ? 'bg-amber-500 hover:bg-amber-400 text-slate-900'
@@ -175,7 +180,7 @@ export default function PostersPage() {
                       }`}
                       style={{ fontFamily: "'Oswald', sans-serif" }}
                     >
-                      Order This Size
+                      Start Your Order →
                     </a>
                   </div>
                 </div>
@@ -289,8 +294,8 @@ export default function PostersPage() {
                 <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/40">
                   <span className="text-slate-900 font-bold text-2xl" style={{ fontFamily: "'Oswald', sans-serif" }}>1</span>
                 </div>
-                <h3 className="text-white font-bold text-lg mb-2">Send Us Your File</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Email your high-resolution image, PDF, or design file to <a href="mailto:esscosupport@aol.com?subject=Poster%20Order" className="text-amber-400 hover:underline">esscosupport@aol.com</a>. We accept PDF, PNG, JPG, and TIFF formats.</p>
+                <h3 className="text-white font-bold text-lg mb-2">Upload Your Image</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Use our <a href="/posters/calculator" className="text-amber-400 hover:underline">Poster Calculator</a> to upload your high-resolution image. We accept PNG, JPG, TIFF, WebP, and PDF formats. We'll check quality before printing.</p>
               </div>
 
               <div className="text-center">
@@ -398,9 +403,9 @@ export default function PostersPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Ready to Order Your Poster?</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-8">Email your file to us with your size selection and any add-ons. We'll confirm your order and have it printed within 24 hours.</p>
 
-            <a href="mailto:esscosupport@aol.com?subject=Poster%20Order&body=Hi%20ESSCO%2C%0A%0AI'd%20like%20to%20order%20a%20poster.%0A%0ASize%3A%20%0AQuantity%3A%20%0ALamination%3A%20Yes%2FNo%0AFoam%20Board%3A%20Yes%2FNo%0A%0A(Please%20attach%20your%20file)" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
+            <a href="/posters/calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               <ShoppingCart size={24} strokeWidth={2.5} />
-              ORDER YOUR POSTER →
+              BUILD YOUR POSTER ORDER →
             </a>
 
             <p className="mt-6 text-slate-500 text-sm">Or call <a href="tel:877-318-1555" className="text-amber-400 hover:underline">877-318-1555</a> • Email <a href="mailto:esscosupport@aol.com" className="text-amber-400 hover:underline">esscosupport@aol.com</a></p>
