@@ -199,8 +199,9 @@ export default function PosterCalculator() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          totalPrice: orderTotal,
-          quantity: 1,
+          // Line item: per-unit price × quantity (shipping separate)
+          totalPrice: unitPrintPrice,
+          quantity: quantity,
           documentName: file.name,
           pageCount: 1,
           bwPages: 0,
@@ -213,17 +214,20 @@ export default function PosterCalculator() {
           isBooklet: false,
           pdfFileKey: uploadResult.fileKey,
           shippingWeightGrams: Math.round(quantity * 200 + tube.lengthIn * 10),
+          // Poster-specific metadata
           posterSize: sizeData.label,
           posterSizeId: sizeData.id,
-          posterQuantity: quantity,
-          posterUnitPrice: sizeData.price,
-          lamination: addOns.lamination,
-          foamBoard: addOns.foamboard,
-          tubeSize: tube.label,
-          tubePrice: tube.price,
+          addOns: addOnsList.join(', ') || 'None',
+          lamination: addOns.lamination ? 'Yes' : 'No',
+          foamBoard: addOns.foamboard ? 'Yes' : 'No',
+          shippingTube: `${tube.label} (${tube.lengthIn}" tube)`,
+          shippingTubePrice: tube.price,
           imageWidth: imageNaturalSize?.w || 0,
           imageHeight: imageNaturalSize?.h || 0,
           dpiEstimate: imageNaturalSize ? Math.round(Math.min(imageNaturalSize.w / sizeData.width, imageNaturalSize.h / sizeData.height)) : 0,
+          // Shopify shippingLine — creates actual shipping charge in checkout
+          shippingTitle: `Shipping — ${tube.label}`,
+          shippingCost: tube.price,
         }),
       });
 
@@ -240,7 +244,7 @@ export default function PosterCalculator() {
       setError('Network error. Please try again.');
       setStep('error');
     }
-  }, [file, ensureUploaded, orderTotal, sizeData, quantity, addOns, tube, imageNaturalSize]);
+  }, [file, ensureUploaded, unitPrintPrice, sizeData, quantity, addOns, tube, imageNaturalSize]);
 
   // ==================== RENDER HELPERS ====================
   const renderUpload = () => (
