@@ -1,5 +1,5 @@
 # ESSCO PRINT CALCULATOR - SESSION ROLLOVER MASTER DOCUMENT
-## Last Updated: 2026-01-05 Session 21 (Post-Mortem)
+## Last Updated: 2026-02-07 Session 35
 
 ---
 
@@ -218,23 +218,73 @@ curl -s -X PUT \
 
 ---
 
-# 🎯 CURRENT OBJECTIVE (Session 21 Incomplete)
+# 🎯 SESSION 35 HANDOFF — February 7, 2026
 
-## Goal: Add checkout flow to calculator WITHOUT destroying marketing page
+### Completed This Session:
+- Regenerated and verified all credentials (GitHub PAT, Cloudflare token, Shopify token)
+- Confirmed page size bug was already fixed (Feb 5)
+- Upgraded to Cloudflare Workers Paid ($5/mo) for 30-second CPU limit
+- Built server-side PDF analysis Worker (analyze-pdf.js) with pdf-lib — THEN discovered:
+  - pdf-lib is abandoned (last publish 4 years ago)
+  - Cloudflare Pages Functions have 100MB request body limit (OH-58 manual is 104MB → 413 error)
+  - Server-side approach was wrong direction
+- **V36 FINAL FIX:** Replaced entire approach with PDF.js `getOperatorList()` for large files
+  - ≤25MB: existing canvas pixel-level color detection (unchanged, proven)
+  - \>25MB: PDF.js operator list scanning — reads drawing commands for color ops, no canvas, no rendering, no memory explosion
+  - Same library (pdfjs-dist v5.4.624, actively maintained, published 4 days ago)
+  - Zero new dependencies, removed dead pdf-lib
+  - `page.cleanup()` added after each page to prevent memory buildup
+  - Everything browser-side, no server roundtrip for analysis
+- Deploy successful, site live at print.esscoaircraft.com
 
-## Recommended Approach:
-1. Update `src/components/PrintCalculator.tsx` (separate file)
-2. Add KISS pricing, email/shipping form, weight calc, API integration
-3. Update App.tsx to import PrintCalculator instead of inline
-4. Two commits: first PrintCalculator.tsx (safe), then App.tsx import change
+### NOT Completed / NOT Tested:
+- **Large PDF test (critical):** OH-58 manual (104MB, 468 pages) needs live test with V36
+  - Previous version crashed browser (canvas rendering) or hit 413 (server upload)
+  - V36 should work — operator list scanning uses no canvas — but NEEDS CUSTOMER-SIDE VERIFICATION
+- **Resend email notifications:** RESEND_API_KEY not set in Cloudflare env. Blocker #3.
+- **Marketing execution:** Mailchimp blast, SEO per Editorial Review
+- **Server Worker cleanup:** `functions/api/analyze-pdf.js` is still deployed but no longer called by frontend. Can be removed or kept as fallback.
 
-## Alternative Approach:
-1. Fetch current App.tsx from GitHub
-2. Modify ONLY the PrintCalculator component section
-3. Verify hover effects still present
-4. Push single commit
+### Current Live State:
+- Latest deploy: ab53a203 (Feb 7 2026 15:30 UTC) — deploy:success
+- `src/lib/pdfAnalysis.ts` — V36, dual-path color detection (pixels / operators)
+- `src/components/calculator/Calculator.tsx` — V36, calls `analyzePDF()` which auto-routes by file size
+- `functions/api/analyze-pdf.js` — exists but orphaned (frontend no longer calls it)
+- `functions/api/create-draft-order.js` — working, page size fix confirmed
+- `functions/api/upload-pdf.js` — working, R2 upload for production files
 
-## Quote Threshold: >$500 OR >25 lbs
+### Key Architecture Decisions (CONFIRMED BY DALE):
+- **Auto color detection stays** — no customer declarations on BW vs color. Ever.
+- Customer declares foldout pages (Section 9, Editorial Review)
+- Single/double-sided doesn't affect price
+- R2 native bindings (not AWS SDK)
+- Shopify Draft Orders API
+- Orders >$500 or >25 lbs → manual quote
+
+### Prime Directive (NEW — Session 35):
+- **Dale is the boss of the build.** Claude is technical support.
+- **Never assume design/UX changes** — verify with Dale before implementing
+- **Always verify tools are current** before installing (/V protocol)
+- **Never rely on training data alone** for tools, libraries, or approaches
+
+### Credentials (verified working Feb 7 2026):
+- GitHub PAT: stored locally, 90-day expiry, repo scope — regenerate if expired
+- Cloudflare Token: stored locally — verify via `/client/v4/user/tokens/verify`
+- Cloudflare Account ID: `13d315bc593c7c736ee2324525b2b15d`
+- Shopify token: encrypted in Cloudflare env, verified working via API
+- RESEND_API_KEY: ❌ NOT SET — next session blocker
+- **All tokens verified via live API calls Feb 7 2026. Ask Dale for current values if needed.**
+
+### Next Session Must:
+1. **Test V36 with OH-58 manual** (104MB PDF) — verify operator list color detection works on real large file
+2. If V36 fails on large file: investigate whether `getOperatorList()` chokes on 468 scanned pages, consider batching or streaming
+3. Clean up orphaned `functions/api/analyze-pdf.js` if V36 confirmed working
+4. Set up Resend email notifications (blocker #3)
+5. Marketing execution per Editorial Review
+
+### Rollback Point If Needed:
+- SHA: b74a7854 (V35 deploy, Feb 7, before V36)
+- Reason: Last known working deploy before operator list changes
 
 ---
 
@@ -294,3 +344,4 @@ Destroyed features cost recovery time.
 Trust is hard to rebuild.
 
 **Do it right. Verify first. Every time.**
+
