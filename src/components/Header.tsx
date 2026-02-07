@@ -9,6 +9,7 @@ const Header: FC = () => {
     { label: 'MANUALS', href: 'https://www.esscoaircraft.com/collections/aircraft-manuals', external: true },
     { label: 'BRANDS', href: 'https://www.esscoaircraft.com/collections/brand', external: true },
     { label: 'COCKPIT POSTERS', href: 'https://www.esscoaircraft.com/collections/cockpit-posters', external: true },
+    { label: 'POSTER PRINTING', href: '/posters', external: false },
     { label: 'CONTACT US', href: 'https://www.esscoaircraft.com/pages/contact-us', external: true },
     { label: 'WE BUY MANUALS!', href: 'https://www.esscoaircraft.com/pages/we-buy-manuals-1', external: true },
     { label: 'NEWS', href: 'https://www.esscoaircraft.com/blogs/news-1', external: true },
@@ -322,6 +323,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
 
