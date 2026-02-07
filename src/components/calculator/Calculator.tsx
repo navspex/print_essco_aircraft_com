@@ -69,6 +69,15 @@ export default function Calculator() {
     setStep('analyzing');
     setAnalysisProgress(null);
 
+    // Fire R2 upload IMMEDIATELY — runs in parallel with analysis
+    // File is "in the system" the moment customer uploads, regardless of analysis outcome
+    uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
+      if (uploadResult.success && uploadResult.fileKey) {
+        setR2FileKey(uploadResult.fileKey);
+      }
+      // Don't fail the flow if upload fails - we'll retry at checkout
+    });
+
     try {
       const result = await analyzePDF(selectedFile, (phase, current, total) => {
         setAnalysisProgress({ phase, current, total });
@@ -89,15 +98,6 @@ export default function Calculator() {
       setAnalysis(result);
       updatePricing(result, config);
       setStep('configure');
-      
-      // Upload to R2 immediately after analysis (non-blocking)
-      // File is "in the system" before customer finishes configuring
-      uploadPdfToStorageEarly(selectedFile).then(uploadResult => {
-        if (uploadResult.success && uploadResult.fileKey) {
-          setR2FileKey(uploadResult.fileKey);
-        }
-        // Don't fail the flow if upload fails - we'll retry at checkout
-      });
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze PDF');
@@ -813,6 +813,7 @@ export default function Calculator() {
     </div>
   );
 }
+
 
 
 
