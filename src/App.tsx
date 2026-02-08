@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import ScrollReveal from './components/ScrollReveal';
 import PODCalculator from './components/calculator/Calculator';
-import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Play, X, Image } from 'lucide-react';
+import { Calculator, Lock, ShieldCheck, Star, Package, Zap, Plane, CheckCircle, FileText, Link2, Phone, Mail, Clock, CreditCard, Award, HelpCircle, Printer, ChevronUp, Upload, Truck, Archive, MapPin, Image } from 'lucide-react';
 
 // ==================== MAIN APP ====================
 function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -62,38 +61,30 @@ function App() {
               Training guides, service docs, operations manuals, and more - we've been printing them since 1955. Professional binding, fast turnaround.
             </p>
           </div>
-          {/* CTA Row: Button + Emma Video Tile */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+          {/* CTA Row: Button + Inline Emma Video */}
+          <div className="flex flex-col items-center justify-center gap-6">
             {/* Primary CTA */}
             <a href="#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               <Calculator size={24} strokeWidth={2.5} />
               <span className="flex flex-col items-center gap-0 leading-tight"><span>Upload any Document</span><span>For an Instant Quote →</span></span>
             </a>
             
-            {/* Emma Video Thumbnail Tile */}
-            <button 
-              onClick={() => setShowVideoModal(true)}
-              className="group relative overflow-hidden rounded-xl border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02]"
-              style={{ width: '220px', height: '240px' }}
-            >
-              <img 
-                src="/images/emma-video-thumb.png" 
-                alt="Watch Emma explain how ESSCO printing works" 
-                className="w-full h-full object-cover"
-              />
-              {/* Play button - positioned in top third */}
-              <div className="absolute top-4 right-4">
-                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400 transition-all duration-300 shadow-lg shadow-black/50">
-                  <Play size={24} className="text-slate-900 ml-1" fill="currentColor" />
-                </div>
+            {/* Emma Video — Inline Player */}
+            <div className="w-full max-w-2xl mx-auto">
+              <div className="relative rounded-xl overflow-hidden border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-amber-500/30">
+                <video
+                  className="w-full rounded-xl"
+                  src="https://pub-49f06b38f2104f9eb2171b107b7a8359.r2.dev/video/CTA%20Take%2002%201080p.mp4"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/images/emma-video-thumb.png"
+                >
+                  Your browser does not support the video tag.
+                </video>
               </div>
-              {/* Dark overlay - only bottom strip */}
-              <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-900 to-transparent"></div>
-              {/* Text overlay */}
-              <div className="absolute bottom-2 left-0 right-0 text-center">
-                <span className="text-white text-sm font-semibold drop-shadow-lg">See How It Works</span>
-              </div>
-            </button>
+              <p className="text-center text-slate-400 text-sm mt-2">▶ See How It Works — 81 seconds</p>
+            </div>
           </div>
           
           <p className="flex items-center justify-center gap-2 mt-4 text-sm text-slate-400"><Lock size={14} /><span>No credit card required - Takes 30 seconds</span></p>
@@ -619,42 +610,6 @@ function App() {
         </button>
       )}
 
-      {/* Video Modal - Emma Explainer */}
-      {showVideoModal && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
-          onClick={() => setShowVideoModal(false)}
-        >
-          {/* Close button */}
-          <button 
-            onClick={() => setShowVideoModal(false)}
-            className="absolute top-4 right-4 p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-            aria-label="Close video"
-          >
-            <X size={32} />
-          </button>
-          
-          {/* Video container - 16:9 landscape */}
-          <div 
-            className="relative w-full max-w-3xl mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative pb-[56.25%]"> {/* 16:9 aspect ratio */}
-              <video
-                className="absolute inset-0 w-full h-full rounded-xl shadow-2xl"
-                src="https://pub-49f06b38f2104f9eb2171b107b7a8359.r2.dev/video/CTA%20Take%2002%201080p.mp4"
-                autoPlay
-                controls
-                playsInline
-                preload="metadata"
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <p className="text-center text-white/70 text-sm mt-4">Click anywhere outside to close</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
