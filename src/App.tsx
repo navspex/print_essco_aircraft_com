@@ -640,14 +640,16 @@ function App() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative pb-[56.25%]"> {/* 16:9 aspect ratio */}
-              <iframe
+              <video
                 className="absolute inset-0 w-full h-full rounded-xl shadow-2xl"
-                src="https://www.youtube.com/embed/f38Db1XeIQM?autoplay=1&rel=0"
-                title="ESSCO Print-On-Demand - How It Works"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+                src="https://pub-49f06b38f2104f9eb2171b107b7a8359.r2.dev/video/CTA%20Take%2002%201080p.mp4"
+                autoPlay
+                controls
+                playsInline
+                preload="metadata"
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
             <p className="text-center text-white/70 text-sm mt-4">Click anywhere outside to close</p>
           </div>
@@ -658,5 +660,6 @@ function App() {
 }
 
 export default App;
+
 
 
