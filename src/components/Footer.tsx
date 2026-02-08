@@ -1,39 +1,40 @@
 import { Phone, Mail, Clock, ShieldCheck, CreditCard, Award } from 'lucide-react';
 
+const SHOPIFY_STORE = 'https://www.esscoaircraft.com';
+
 const footerSections = [
   {
     title: 'Customer Service',
     links: [
-      { label: 'Contact Us', href: '#contact' },
-      { label: 'Order Status', href: '#orders' },
-      { label: 'My Account', href: '#account' },
-      { label: 'Privacy Policy', href: '#privacy' },
+      { label: 'Contact Us', href: `${SHOPIFY_STORE}/pages/contact-us` },
+      { label: 'My Account', href: `${SHOPIFY_STORE}/account` },
+      { label: 'Order Status', href: `${SHOPIFY_STORE}/account` },
+      { label: 'Privacy Policy', href: `${SHOPIFY_STORE}/policies/privacy-policy` },
     ],
   },
   {
     title: 'Store Policies & Info',
     links: [
-      { label: 'Shipping Policy', href: '#shipping' },
-      { label: 'Terms of Service', href: '#terms' },
-      { label: 'Refund Policy', href: '#refunds' },
+      { label: 'Shipping Policy', href: `${SHOPIFY_STORE}/policies/shipping-policy` },
+      { label: 'Terms of Service', href: `${SHOPIFY_STORE}/policies/terms-of-service` },
+      { label: 'Refund Policy', href: `${SHOPIFY_STORE}/policies/refund-policy` },
     ],
   },
   {
     title: 'Helpful Links',
     links: [
-      { label: 'About Us', href: '#about' },
-      { label: 'FAQs', href: '#faqs' },
-      { label: 'We Buy Manuals', href: '#buy-manuals' },
-      { label: 'Shop All', href: '#shop' },
+      { label: 'About Us', href: `${SHOPIFY_STORE}/pages/about-us` },
+      { label: 'FAQs', href: `${SHOPIFY_STORE}/pages/faqs` },
+      { label: 'Shop All', href: `${SHOPIFY_STORE}/collections/all` },
     ],
   },
 ];
 
 const socialLinks = [
-  { label: 'Twitter', href: '#twitter' },
-  { label: 'Pinterest', href: '#pinterest' },
-  { label: 'Instagram', href: '#instagram' },
-  { label: 'YouTube', href: '#youtube' },
+  { label: 'Twitter', href: 'https://twitter.com/esscoaircraft' },
+  { label: 'Pinterest', href: 'https://www.pinterest.com/esscoaircraft/' },
+  { label: 'Instagram', href: 'https://instagram.com/esscoaircraft' },
+  { label: 'YouTube', href: 'https://www.youtube.com/user/esscoaircraft/' },
 ];
 
 export default function Footer() {
@@ -52,6 +53,8 @@ export default function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors text-sm"
                   aria-label={link.label}
                 >
@@ -69,6 +72,8 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-sm hover:text-white transition-colors"
                     >
                       {link.label}
