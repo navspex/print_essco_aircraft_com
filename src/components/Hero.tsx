@@ -3,7 +3,7 @@ import { Calculator, Lock, Play } from 'lucide-react';
 import manualImage from '../assets/aviation-manual-spiral-binding-print-service.png';
 
 const YOUTUBE_VIDEO_ID = 'f38Db1XeIQM';
-const YOUTUBE_THUMB_ID = '2t8xmJP_ytU'; // original pitch thumb
+const YOUTUBE_THUMB_ID = 'f38Db1XeIQM';
 
 const Hero: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
