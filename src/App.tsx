@@ -634,15 +634,15 @@ function App() {
             <X size={32} />
           </button>
           
-          {/* Video container - optimized for vertical YouTube Shorts */}
+          {/* Video container - 16:9 landscape */}
           <div 
-            className="relative w-full max-w-sm mx-4"
+            className="relative w-full max-w-3xl mx-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative pb-[177.78%]"> {/* 9:16 aspect ratio */}
+            <div className="relative pb-[56.25%]"> {/* 16:9 aspect ratio */}
               <iframe
                 className="absolute inset-0 w-full h-full rounded-xl shadow-2xl"
-                src="https://www.youtube.com/embed/HDmPUf_A_Dc?autoplay=1&rel=0"
+                src="https://www.youtube.com/embed/f38Db1XeIQM?autoplay=1&rel=0"
                 title="ESSCO Print-On-Demand - How It Works"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
