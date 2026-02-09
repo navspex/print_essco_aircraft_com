@@ -7,18 +7,61 @@
  * - Calculated shipping weight (for carrier-calculated rates)
  * - Customer email and shipping address
  * - R2 PDF file key for production team
+ * - Presigned download URL (7-day expiry) for production team
  * - Optional shipping line for poster tube shipping
  * 
- * Updated: February 7, 2026
- * - Added shippingLine support for poster tube shipping charges
- * - Added poster-specific note formatting and custom attributes
+ * Updated: February 9, 2026
+ * - Added presigned R2 download URL in order notes (7-day expiry)
+ * - Production team gets clickable link instead of raw R2 key
+ * - Previous: Added shippingLine support for poster tube shipping charges
+ * - Previous: Added poster-specific note formatting and custom attributes
  * - Previous: Added Page Size to custom attributes and order note
  * - Previous: Added pdfFileKey for R2 storage reference
  * 
  * API Version: 2026-01 (latest stable)
  */
 
+import { AwsClient } from 'aws4fetch';
+
 const SHOPIFY_API_VERSION = '2026-01';
+const R2_ACCOUNT_ID = '13d315bc593c7c736ee2324525b2b15d';
+
+/**
+ * Generate a presigned GET URL for R2 file download
+ * Expires in 7 days (604800 seconds) — production team has a full week
+ */
+async function generateDownloadUrl(fileKey, env) {
+  if (!fileKey || !env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY) {
+    return null;
+  }
+
+  try {
+    const r2 = new AwsClient({
+      accessKeyId: env.R2_ACCESS_KEY_ID,
+      secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+    });
+
+    const bucketName = env.R2_BUCKET_NAME || 'print-essco-storage';
+    const r2Endpoint = `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
+
+    const objectUrl = new URL(`${r2Endpoint}/${bucketName}/${fileKey}`);
+    objectUrl.searchParams.set('X-Amz-Expires', '604800'); // 7 days
+
+    const signed = await r2.sign(
+      new Request(objectUrl.toString(), {
+        method: 'GET',
+      }),
+      {
+        aws: { signQuery: true },
+      }
+    );
+
+    return signed.url;
+  } catch (error) {
+    console.error('Failed to generate download URL:', error);
+    return null;
+  }
+}
 
 /**
  * Cloudflare Pages Function handler
@@ -109,7 +152,7 @@ function isPosterOrder(orderData) {
 /**
  * Build custom attributes for poster orders
  */
-function buildPosterAttributes(orderData) {
+function buildPosterAttributes(orderData, downloadUrl) {
   return [
     { key: 'Product Type', value: 'Poster Print' },
     { key: 'Poster Size', value: orderData.posterSize || orderData.pageSize || 'Not specified' },
@@ -121,6 +164,7 @@ function buildPosterAttributes(orderData) {
     { key: 'Image Dimensions', value: `${orderData.imageWidth || 'N/A'} × ${orderData.imageHeight || 'N/A'} px` },
     { key: 'File Name', value: orderData.documentName || 'Not specified' },
     { key: 'File Key', value: orderData.pdfFileKey || 'Not uploaded' },
+    { key: 'Download Link', value: downloadUrl || 'Not available' },
     { key: 'Weight (grams)', value: String(orderData.shippingWeightGrams || 0) },
     { key: 'Source', value: 'print.esscoaircraft.com' },
   ];
@@ -129,7 +173,7 @@ function buildPosterAttributes(orderData) {
 /**
  * Build order note for poster orders (production team reference)
  */
-function buildPosterNote(orderData) {
+function buildPosterNote(orderData, downloadUrl) {
   return [
     '=== POSTER PRINT SPECIFICATIONS ===',
     `File: ${orderData.documentName || 'Not specified'}`,
@@ -148,7 +192,11 @@ function buildPosterNote(orderData) {
     '--- Image Info ---',
     `Dimensions: ${orderData.imageWidth || 'N/A'} × ${orderData.imageHeight || 'N/A'} px`,
     '',
-    '=== FILE STORAGE ===',
+    '=== DOWNLOAD FILE ===',
+    downloadUrl ? `>>> CLICK TO DOWNLOAD: ${downloadUrl}` : 'Download link not available',
+    downloadUrl ? '>>> Link expires in 7 days from order creation' : '',
+    '',
+    '=== FILE STORAGE (backup) ===',
     orderData.pdfFileKey ? `R2 Key: ${orderData.pdfFileKey}` : 'File not uploaded',
     orderData.pdfFileKey ? `Bucket: print-essco-storage` : '',
     '',
@@ -159,7 +207,7 @@ function buildPosterNote(orderData) {
 /**
  * Build custom attributes for PDF/document orders (original behavior)
  */
-function buildPrintAttributes(orderData) {
+function buildPrintAttributes(orderData, downloadUrl) {
   return [
     { key: 'Document Name', value: orderData.documentName || 'Not specified' },
     { key: 'Total Pages', value: String(orderData.pageCount || 0) },
@@ -174,6 +222,7 @@ function buildPrintAttributes(orderData) {
     { key: 'Quantity', value: String(orderData.quantity || 1) },
     { key: 'Weight (grams)', value: String(orderData.shippingWeightGrams || 0) },
     { key: 'PDF File Key', value: orderData.pdfFileKey || 'Not uploaded' },
+    { key: 'Download Link', value: downloadUrl || 'Not available' },
     { key: 'Source', value: 'print.esscoaircraft.com' },
   ];
 }
@@ -181,7 +230,7 @@ function buildPrintAttributes(orderData) {
 /**
  * Build order note for PDF/document orders (original behavior)
  */
-function buildPrintNote(orderData) {
+function buildPrintNote(orderData, downloadUrl) {
   return [
     '=== PRINT SPECIFICATIONS ===',
     `Document: ${orderData.documentName || 'Not specified'}`,
@@ -198,7 +247,11 @@ function buildPrintNote(orderData) {
     `Quantity: ${orderData.quantity || 1}`,
     `Estimated Weight: ${orderData.shippingWeightGrams ? (orderData.shippingWeightGrams / 453.592).toFixed(2) + ' lbs' : 'Not calculated'}`,
     '',
-    '=== PDF FILE ===',
+    '=== DOWNLOAD FILE ===',
+    downloadUrl ? `>>> CLICK TO DOWNLOAD: ${downloadUrl}` : 'Download link not available',
+    downloadUrl ? '>>> Link expires in 7 days from order creation' : '',
+    '',
+    '=== FILE STORAGE (backup) ===',
     orderData.pdfFileKey ? `R2 Key: ${orderData.pdfFileKey}` : 'PDF not uploaded',
     orderData.pdfFileKey ? `Bucket: print-essco-storage` : '',
     '',
@@ -218,10 +271,15 @@ async function createDraftOrder(orderData, env) {
     return { success: false, error: 'Shopify configuration error' };
   }
 
+  // Generate presigned download URL for production team
+  const downloadUrl = orderData.pdfFileKey
+    ? await generateDownloadUrl(orderData.pdfFileKey, env)
+    : null;
+
   // Detect order type and build appropriate metadata
   const isPoster = isPosterOrder(orderData);
-  const customAttributes = isPoster ? buildPosterAttributes(orderData) : buildPrintAttributes(orderData);
-  const orderNote = isPoster ? buildPosterNote(orderData) : buildPrintNote(orderData);
+  const customAttributes = isPoster ? buildPosterAttributes(orderData, downloadUrl) : buildPrintAttributes(orderData, downloadUrl);
+  const orderNote = isPoster ? buildPosterNote(orderData, downloadUrl) : buildPrintNote(orderData, downloadUrl);
 
   // Build line item title
   const lineItemTitle = isPoster
@@ -274,6 +332,7 @@ async function createDraftOrder(orderData, env) {
     customAttributes: [
       { key: '_source', value: 'print.esscoaircraft.com' },
       { key: '_pdfFileKey', value: orderData.pdfFileKey || '' },
+      { key: '_downloadUrl', value: downloadUrl || '' },
       { key: '_orderType', value: isPoster ? 'poster' : 'print' },
     ],
   };
