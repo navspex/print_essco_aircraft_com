@@ -74,7 +74,7 @@ function App() {
               <div className="relative rounded-xl overflow-hidden border-2 border-slate-600 hover:border-amber-500 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-amber-500/30">
                 <video
                   className="w-full rounded-xl"
-                  src="https://pub-49f06b38f2104f9eb2171b107b7a8359.r2.dev/video/CTA%20Take%2002%201080p.mp4"
+                  src="https://pub-628845eacb534e6492bffe473c1aaf94.r2.dev/video/CTA%20Take%2002%201080p.mp4"
                   controls
                   playsInline
                   preload="metadata"
@@ -615,6 +615,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
