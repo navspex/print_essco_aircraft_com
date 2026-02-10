@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import PosterPage from './components/PosterPage';
 import PosterCalculator from './components/PosterCalculator';
+import AviationManualPrinting from './components/AviationManualPrinting';
+import ChecklistPrinting from './components/ChecklistPrinting';
+import LargeFormatPrinting from './components/LargeFormatPrinting';
 import './index.css';
 
 // Per-route SEO metadata
@@ -18,6 +21,18 @@ const routeMeta: Record<string, { title: string; description: string }> = {
   '/posters/calculator': {
     title: 'Poster Pricing Calculator | Instant Quotes | ESSCO Aircraft',
     description: 'Get instant pricing for aviation poster printing. Select your size, quantity, and finish. No account required. Ships next business day.',
+  },
+  '/aviation-manual-printing': {
+    title: 'Aviation Manual Printing | POH, AFM, Maintenance Manuals | ESSCO Aircraft',
+    description: 'Professional aviation manual printing for POH, AFM, maintenance manuals, and STC supplements. Upload your PDF for instant pricing. 70 years trusted, same-day production.',
+  },
+  '/checklist-printing': {
+    title: 'Aviation Checklist Printing | Custom Cockpit Checklists | ESSCO Aircraft',
+    description: 'Custom aviation checklist printing. Emergency procedures, normal ops, quick-reference cards. Laminated, coil-bound, cockpit-ready. Upload your PDF for instant pricing.',
+  },
+  '/large-format-printing': {
+    title: 'Large Format Aviation Printing | Schematics & Blueprints | ESSCO Aircraft',
+    description: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60" wide on HP DesignJet. Upload your file for instant pricing.',
   },
 };
 
@@ -56,6 +71,18 @@ function Router() {
 
   if (path === '/posters') {
     return <PosterPage />;
+  }
+
+  if (path === '/aviation-manual-printing') {
+    return <AviationManualPrinting />;
+  }
+
+  if (path === '/checklist-printing') {
+    return <ChecklistPrinting />;
+  }
+
+  if (path === '/large-format-printing') {
+    return <LargeFormatPrinting />;
   }
 
   // Default: landing page (manual printing)
