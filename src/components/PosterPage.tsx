@@ -473,13 +473,14 @@ export default function PostersPage() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Our Services</h3>
+                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Print Services</h3>
                 <ul className="space-y-2 text-sm">
                   <li><a href="/" className="hover:text-amber-400 transition-colors">Print-On-Demand Calculator</a></li>
-                  <li><a href="/posters" className="text-amber-400">Posters & Large Format</a></li>
-                  <li><a href="https://www.esscoaircraft.com/collections/cockpit-posters" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Cockpit Poster Collection</a></li>
+                  <li><a href="/aviation-manual-printing" className="hover:text-amber-400 transition-colors">Aviation Manual Printing</a></li>
+                  <li><a href="/checklist-printing" className="hover:text-amber-400 transition-colors">Checklist Printing</a></li>
+                  <li><a href="/large-format-printing" className="hover:text-amber-400 transition-colors">Large Format Printing</a></li>
+                  <li><a href="/posters" className="text-amber-400">Poster Printing</a></li>
                   <li><a href="https://www.esscoaircraft.com/collections/aircraft-manuals" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Shop All Manuals →</a></li>
-                  <li><a href="https://www.esscoaircraft.com/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Refund Policy</a></li>
                 </ul>
               </div>
               <div>
@@ -526,3 +527,4 @@ export default function PostersPage() {
     </div>
   );
 }
+

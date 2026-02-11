@@ -568,12 +568,13 @@ function App() {
               </ul>
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Helpful Links</h3>
+              <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Print Services</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="https://www.esscoaircraft.com/pages/about-us" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">About Us</a></li>
-                <li><a href="https://www.esscoaircraft.com/pages/faqs" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">FAQs</a></li>
-                <li><a href="#faq" className="hover:text-amber-400 transition-colors">Print Calculator FAQs</a></li>
-                <li><a href="/posters" className="hover:text-amber-400 transition-colors">Posters & Large Format Prints</a></li>
+                <li><a href="/#calculator" className="hover:text-amber-400 transition-colors">Print-On-Demand Calculator</a></li>
+                <li><a href="/aviation-manual-printing" className="hover:text-amber-400 transition-colors">Aviation Manual Printing</a></li>
+                <li><a href="/checklist-printing" className="hover:text-amber-400 transition-colors">Checklist Printing</a></li>
+                <li><a href="/large-format-printing" className="hover:text-amber-400 transition-colors">Large Format Printing</a></li>
+                <li><a href="/posters" className="hover:text-amber-400 transition-colors">Poster Printing</a></li>
                 <li><a href="https://www.esscoaircraft.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Shop All Manuals →</a></li>
               </ul>
             </div>
@@ -615,6 +616,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

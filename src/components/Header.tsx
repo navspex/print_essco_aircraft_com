@@ -1,14 +1,34 @@
-import { useState, FC } from 'react';
-import { Printer, DollarSign, Phone, Mail, Clock } from 'lucide-react';
+import { useState, FC, useRef, useEffect } from 'react';
+import { Printer, DollarSign, Phone, Mail, Clock, ChevronDown } from 'lucide-react';
 
 const Header: FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setServicesOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const printServices = [
+    { label: 'Aviation Manual Printing', href: '/aviation-manual-printing' },
+    { label: 'Checklist Printing', href: '/checklist-printing' },
+    { label: 'Large Format Printing', href: '/large-format-printing' },
+    { label: 'Poster Printing', href: '/posters' },
+  ];
 
   const navItems = [
     { label: 'MANUALS', href: 'https://www.esscoaircraft.com/collections/aircraft-manuals', external: true },
     { label: 'BRANDS', href: 'https://www.esscoaircraft.com/collections/brand', external: true },
-    { label: 'POSTER PRINTING', href: '/posters', external: false },
     { label: 'CONTACT US', href: 'https://www.esscoaircraft.com/pages/contact-us', external: true },
     { label: 'WE BUY MANUALS!', href: 'https://www.esscoaircraft.com/pages/we-buy-manuals-1', external: true },
     { label: 'NEWS', href: 'https://www.esscoaircraft.com/blogs/news-1', external: true },
@@ -96,6 +116,39 @@ const Header: FC = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
+              {/* PRINT SERVICES Dropdown */}
+              <div
+                ref={dropdownRef}
+                className="relative"
+                onMouseEnter={() => setServicesOpen(true)}
+                onMouseLeave={() => setServicesOpen(false)}
+              >
+                <button
+                  className="font-oswald font-semibold text-sm tracking-wider text-essco-dark-gray hover:text-essco-maroon transition-colors uppercase flex items-center gap-1"
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                >
+                  PRINT SERVICES
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {servicesOpen && (
+                  <div className="absolute top-full left-0 mt-0 pt-2 z-50">
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-xl py-2 min-w-[240px]">
+                      {printServices.map((service) => (
+                        <a
+                          key={service.href}
+                          href={service.href}
+                          className="block px-5 py-2.5 text-sm text-essco-dark-gray hover:bg-gray-100 hover:text-essco-maroon transition-colors font-medium"
+                        >
+                          {service.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Standard nav items */}
               {navItems.map((item, index) => (
                 <a
                   key={index}
@@ -197,6 +250,32 @@ const Header: FC = () => {
 
               {/* Navigation Links */}
               <nav className="mt-8 flex flex-col space-y-4">
+                {/* PRINT SERVICES expandable section */}
+                <div>
+                  <button
+                    onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                    className="w-full flex items-center justify-between font-oswald font-semibold text-lg text-essco-dark-gray hover:text-essco-maroon transition-colors uppercase py-2 border-b border-gray-200"
+                  >
+                    PRINT SERVICES
+                    <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileServicesOpen && (
+                    <div className="pl-4 pt-2 pb-1 space-y-3">
+                      {printServices.map((service) => (
+                        <a
+                          key={service.href}
+                          href={service.href}
+                          className="block text-base text-essco-dark-gray hover:text-essco-maroon transition-colors py-1"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {service.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Standard nav items */}
                 {navItems.map((item, index) => (
                   <a
                     key={index}
@@ -322,11 +401,3 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
-
-
-
-
-
-
-
-
