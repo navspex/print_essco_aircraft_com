@@ -20,7 +20,7 @@ const Header: FC = () => {
       icon: <Printer className="w-full h-full" />, 
       heading: 'Print On Demand', 
       text: 'Upload your PDF', 
-      href: '#calculator' 
+      href: '/#calculator' 
     },
     { 
       icon: <DollarSign className="w-full h-full" />, 
@@ -322,6 +322,7 @@ const BannerBlock: FC<BannerBlockProps> = ({ block, isMobile }) => {
 };
 
 export default Header;
+
 
 
 
