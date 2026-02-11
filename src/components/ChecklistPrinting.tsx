@@ -47,6 +47,20 @@ export default function ChecklistPrinting() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-300">
       <Header />
+      <style>{`
+        .bg-zoom-container { position: relative; overflow: hidden; }
+        .bg-zoom-layer {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          transition: transform 8s ease-out;
+          z-index: 0;
+        }
+        .bg-zoom-container:hover .bg-zoom-layer {
+          transform: scale(1.10);
+        }
+      `}</style>
 
       {/* ==================== HERO ==================== */}
       <ScrollReveal>
