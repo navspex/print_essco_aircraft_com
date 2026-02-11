@@ -18,9 +18,9 @@ const Header: FC = () => {
   const bannerBlocks = [
     { 
       icon: <Printer className="w-full h-full" />, 
-      heading: 'Print On Demand', 
-      text: 'Upload your PDF', 
-      href: '/#calculator' 
+      heading: 'Upload Your File', 
+      text: 'Get instant pricing', 
+      href: typeof window !== 'undefined' && window.location.pathname.startsWith('/posters') ? '/posters/calculator' : '/#calculator' 
     },
     { 
       icon: <DollarSign className="w-full h-full" />, 
