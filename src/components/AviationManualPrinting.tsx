@@ -21,7 +21,8 @@ const schemaData = {
     "@type": "Country",
     "name": "United States"
   },
-  "serviceType": "Aviation Document Printing"
+  "serviceType": "Aviation Document Printing",
+  "image": "https://print.esscoaircraft.com/images/aviation-manual-hero.jpg"
 };
 
 export default function AviationManualPrinting() {
@@ -32,6 +33,29 @@ export default function AviationManualPrinting() {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
 
+    // SEO: Set document title and meta tags
+    document.title = 'Aviation Manual Printing Services | POH, AFM, Maintenance Manuals | ESSCO Aircraft';
+    const metaTags = [
+      { property: 'og:title', content: 'Aviation Manual Printing Services' },
+      { property: 'og:description', content: 'Professional aviation manual printing — POH, AFM, maintenance manuals, and STC supplements. Upload your PDF for instant pricing. Since 1955.' },
+      { property: 'og:image', content: 'https://print.esscoaircraft.com/images/aviation-manual-hero.jpg' },
+      { property: 'og:url', content: 'https://print.esscoaircraft.com/aviation-manual-printing' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Aviation Manual Printing Services' },
+      { name: 'twitter:description', content: 'Professional aviation manual printing — POH, AFM, maintenance manuals, and STC supplements. Upload your PDF for instant pricing. Since 1955.' },
+      { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/aviation-manual-hero.jpg' },
+    ];
+    const createdMetas: HTMLMetaElement[] = [];
+    metaTags.forEach(tag => {
+      const meta = document.createElement('meta');
+      if (tag.property) meta.setAttribute('property', tag.property);
+      if (tag.name) meta.setAttribute('name', tag.name);
+      meta.setAttribute('content', tag.content);
+      document.head.appendChild(meta);
+      createdMetas.push(meta);
+    });
+
     // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -41,6 +65,7 @@ export default function AviationManualPrinting() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
+      createdMetas.forEach(meta => document.head.removeChild(meta));
     };
   }, []);
 

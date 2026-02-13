@@ -20,7 +20,8 @@ const schemaData = {
     "@type": "Country",
     "name": "United States"
   },
-  "serviceType": "Aviation Checklist Printing"
+  "serviceType": "Aviation Checklist Printing",
+  "image": "https://print.esscoaircraft.com/images/checklist-hero.jpg"
 };
 
 export default function ChecklistPrinting() {
@@ -39,6 +40,7 @@ export default function ChecklistPrinting() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
+      createdMetas.forEach(meta => document.head.removeChild(meta));
     };
   }, []);
 

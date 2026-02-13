@@ -20,7 +20,8 @@ const schemaData = {
     "@type": "Country",
     "name": "United States"
   },
-  "serviceType": "Large Format Aviation Printing"
+  "serviceType": "Large Format Aviation Printing",
+  "image": "https://print.esscoaircraft.com/images/large-format-hero.jpg"
 };
 
 export default function LargeFormatPrinting() {
@@ -39,6 +40,7 @@ export default function LargeFormatPrinting() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
+      createdMetas.forEach(meta => document.head.removeChild(meta));
     };
   }, []);
 
