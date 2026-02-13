@@ -405,40 +405,31 @@ export default function BindingOptions() {
 
       {/* ==================== FOOTER ==================== */}
       <ScrollReveal delay={100}>
-        <footer className="bg-slate-950 text-slate-400 pt-12 pb-4">
+                <footer className="bg-slate-950 text-slate-400 pt-12 pb-4">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
                 <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>ESSCO Aircraft</h3>
                 <p className="text-sm leading-relaxed">Professional aviation document printing since 1955. Serving pilots, mechanics, flight schools, and corporate flight departments nationwide.</p>
+                <p className="text-sm leading-relaxed mt-3">250,000+ orders completed &middot; 180,000-title archive</p>
               </div>
               <div>
-                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Print Services</h3>
+                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Printing</h3>
                 <ul className="space-y-2 text-sm">
                   <li><a href="/" className="hover:text-amber-400 transition-colors">Print-On-Demand Calculator</a></li>
                   <li><a href="/aviation-manual-printing" className="hover:text-amber-400 transition-colors">Aviation Manual Printing</a></li>
                   <li><a href="/checklist-printing" className="hover:text-amber-400 transition-colors">Checklist Printing</a></li>
                   <li><a href="/large-format-printing" className="hover:text-amber-400 transition-colors">Large Format Printing</a></li>
                   <li><a href="/posters" className="hover:text-amber-400 transition-colors">Poster Printing</a></li>
-                  <li><a href="/binding-options" className="text-amber-400">Binding Options</a></li>
                 </ul>
               </div>
               <div>
                 <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Resources</h3>
                 <ul className="space-y-2 text-sm">
+                  <li><a href="/binding-options" className="text-amber-400">Binding Options</a></li>
                   <li><a href="/file-preparation-guide" className="hover:text-amber-400 transition-colors">File Preparation Guide</a></li>
                   <li><a href="/document-preservation" className="hover:text-amber-400 transition-colors">Document Preservation</a></li>
-                  <li><a href="https://www.esscoaircraft.com/pages/faqs" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">FAQs</a></li>
-                  <li><a href="https://www.esscoaircraft.com/pages/about-us" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">About Us</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Industries</h3>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="/flight-school-materials" className="hover:text-amber-400 transition-colors">Flight Schools</a></li>
-                  <li><a href="/corporate-flight-departments" className="hover:text-amber-400 transition-colors">Corporate Flight Departments</a></li>
-                  <li><a href="/aircraft-restoration" className="hover:text-amber-400 transition-colors">Aircraft Restoration</a></li>
-                  <li><a href="/military-aviation" className="hover:text-amber-400 transition-colors">Military Aviation</a></li>
+                  <li><a href="/flight-school-materials" className="hover:text-amber-400 transition-colors">Flight School Materials</a></li>
                 </ul>
               </div>
             </div>
@@ -459,7 +450,7 @@ export default function BindingOptions() {
             <div className="flex items-center gap-2 text-sm"><CreditCard size={20} className="text-blue-400" /><span>PayPal Accepted</span></div>
             <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>70 Years Trusted</span></div>
           </div>
-          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">© {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
+          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
         </footer>
       </ScrollReveal>
 
