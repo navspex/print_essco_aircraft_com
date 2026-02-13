@@ -74,6 +74,12 @@ export default function PostersPage() {
       createdMetas.push(meta);
     });
 
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/posters');
+    document.head.appendChild(canonicalLink);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       createdMetas.forEach(meta => document.head.removeChild(meta));
