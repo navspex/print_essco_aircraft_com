@@ -84,6 +84,7 @@ export default function DocumentPreservation() {
     // SEO: Set document title and meta tags
     document.title = 'Aviation Manual Reprints & Document Preservation | ESSCO Aircraft — Since 1955';
     const metaTags = [
+      { name: 'description', content: 'Preserve deteriorating aviation manuals with professional reprints. 180,000-title archive. Digital restoration, Xerox Versant printing. Upload your PDF or browse our catalog.' },
       { property: 'og:title', content: 'Aviation Manual Reprints & Document Preservation | ESSCO Aircraft' },
       { property: 'og:description', content: 'Preserve deteriorating aviation manuals with professional reprints. 180,000-title archive. Digital restoration, Xerox Versant printing. Upload your PDF or browse our catalog.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/document-preservation-hero.jpg' },
@@ -104,6 +105,13 @@ export default function DocumentPreservation() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/document-preservation');
+    document.head.appendChild(canonicalLink);
+
     // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -120,6 +128,7 @@ export default function DocumentPreservation() {
       document.head.removeChild(script);
       document.head.removeChild(faqScript);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

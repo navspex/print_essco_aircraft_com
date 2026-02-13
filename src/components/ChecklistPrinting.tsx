@@ -34,6 +34,7 @@ export default function ChecklistPrinting() {
 
     // SEO: OG and Twitter meta tags for social sharing
     const metaTags = [
+      { name: 'description', content: 'Custom aviation checklist printing. Emergency procedures, normal ops, quick-reference cards. Laminated, coil-bound, cockpit-ready. Upload your PDF for instant pricing.' },
       { property: 'og:title', content: 'Aviation Checklist Printing | Custom Cockpit Checklists' },
       { property: 'og:description', content: 'Custom aviation checklist printing. Emergency procedures, normal ops, quick-reference cards. Laminated, coil-bound, cockpit-ready. Upload your PDF for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/checklist-hero.jpg' },
@@ -54,6 +55,13 @@ export default function ChecklistPrinting() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/checklist-printing');
+    document.head.appendChild(canonicalLink);
+
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schemaData);
@@ -63,6 +71,7 @@ export default function ChecklistPrinting() {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

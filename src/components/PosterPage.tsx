@@ -53,6 +53,7 @@ export default function PostersPage() {
     // SEO: Set document title and meta tags
     document.title = 'Aviation Poster & Large Format Printing | Custom Sizes | ESSCO Aircraft';
     const metaTags = [
+      { name: 'description', content: 'Custom aviation poster printing — aircraft profiles, cockpit charts, safety procedures. Gloss lamination and foam board mounting available. Since 1955.' },
       { property: 'og:title', content: 'Aviation Poster & Large Format Printing' },
       { property: 'og:description', content: 'Custom aviation poster printing — aircraft profiles, cockpit charts, safety procedures. Gloss lamination and foam board mounting available. Since 1955.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/poster-hero-bg.jpg' },
@@ -76,6 +77,7 @@ export default function PostersPage() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

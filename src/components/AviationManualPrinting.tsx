@@ -36,6 +36,7 @@ export default function AviationManualPrinting() {
     // SEO: Set document title and meta tags
     document.title = 'Aviation Manual Printing Services | POH, AFM, Maintenance Manuals | ESSCO Aircraft';
     const metaTags = [
+      { name: 'description', content: 'Professional aviation manual printing — POH, AFM, maintenance manuals, and STC supplements. Upload your PDF for instant pricing. Since 1955.' },
       { property: 'og:title', content: 'Aviation Manual Printing Services' },
       { property: 'og:description', content: 'Professional aviation manual printing — POH, AFM, maintenance manuals, and STC supplements. Upload your PDF for instant pricing. Since 1955.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/aviation-manual-hero.jpg' },
@@ -56,6 +57,13 @@ export default function AviationManualPrinting() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/aviation-manual-printing');
+    document.head.appendChild(canonicalLink);
+
     // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -66,6 +74,7 @@ export default function AviationManualPrinting() {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

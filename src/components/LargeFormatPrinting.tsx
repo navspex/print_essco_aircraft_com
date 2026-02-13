@@ -34,6 +34,7 @@ export default function LargeFormatPrinting() {
 
     // SEO: OG and Twitter meta tags for social sharing
     const metaTags = [
+      { name: 'description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { property: 'og:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
       { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
@@ -54,6 +55,13 @@ export default function LargeFormatPrinting() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/large-format-printing');
+    document.head.appendChild(canonicalLink);
+
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schemaData);
@@ -63,6 +71,7 @@ export default function LargeFormatPrinting() {
       window.removeEventListener('scroll', handleScroll);
       document.head.removeChild(script);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

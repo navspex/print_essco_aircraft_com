@@ -82,6 +82,7 @@ export default function FilePreparationGuide() {
     // SEO: Set document title and meta tags
     document.title = 'Aviation PDF File Preparation Guide | Print-Ready Tips | ESSCO Aircraft';
     const metaTags = [
+      { name: 'description', content: 'How to prepare your aviation PDF for professional printing. Tips for scanned manuals, mixed page sizes, color detection, and resolution. Or just upload as-is — our system handles the rest.' },
       { property: 'og:title', content: 'Aviation PDF File Preparation Guide | ESSCO Aircraft' },
       { property: 'og:description', content: 'How to prepare your aviation PDF for professional printing. Tips for scanned manuals, mixed page sizes, color detection, and resolution. Or just upload as-is — our system handles the rest.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/file-prep-hero.jpg' },
@@ -102,6 +103,13 @@ export default function FilePreparationGuide() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/file-preparation-guide');
+    document.head.appendChild(canonicalLink);
+
     // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -118,6 +126,7 @@ export default function FilePreparationGuide() {
       document.head.removeChild(script);
       document.head.removeChild(faqScript);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 

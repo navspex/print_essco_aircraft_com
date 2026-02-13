@@ -84,6 +84,7 @@ export default function BindingOptions() {
     // SEO: Set document title and meta tags
     document.title = 'Aviation Manual Binding Options | Coil, Comb, Perfect Binding | ESSCO Aircraft';
     const metaTags = [
+      { name: 'description', content: 'Compare binding options for aviation manuals — coil, comb, 3-ring, perfect binding, and saddle stitch. See which binding works best for cockpit use, shelf storage, and field reference.' },
       { property: 'og:title', content: 'Aviation Manual Binding Options | ESSCO Aircraft' },
       { property: 'og:description', content: 'Compare binding options for aviation manuals — coil, comb, 3-ring, perfect binding, and saddle stitch. See which binding works best for cockpit use, shelf storage, and field reference.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/binding-options-hero.jpg' },
@@ -104,6 +105,13 @@ export default function BindingOptions() {
       createdMetas.push(meta);
     });
 
+
+    // Canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.setAttribute('rel', 'canonical');
+    canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/binding-options');
+    document.head.appendChild(canonicalLink);
+
     // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -120,6 +128,7 @@ export default function BindingOptions() {
       document.head.removeChild(script);
       document.head.removeChild(faqScript);
       createdMetas.forEach(meta => document.head.removeChild(meta));
+      document.head.removeChild(canonicalLink);
     };
   }, []);
 
