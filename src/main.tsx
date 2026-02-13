@@ -6,6 +6,10 @@ import PosterCalculator from './components/PosterCalculator';
 import AviationManualPrinting from './components/AviationManualPrinting';
 import ChecklistPrinting from './components/ChecklistPrinting';
 import LargeFormatPrinting from './components/LargeFormatPrinting';
+import BindingOptions from './components/BindingOptions';
+import FlightSchoolMaterials from './components/FlightSchoolMaterials';
+import DocumentPreservation from './components/DocumentPreservation';
+import FilePreparationGuide from './components/FilePreparationGuide';
 import './index.css';
 
 // Per-route SEO metadata
@@ -33,6 +37,22 @@ const routeMeta: Record<string, { title: string; description: string }> = {
   '/large-format-printing': {
     title: 'Large Format Aviation Printing | Schematics & Blueprints | ESSCO Aircraft',
     description: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60" wide on HP DesignJet. Upload your file for instant pricing.',
+  },
+  '/binding-options': {
+    title: 'Aviation Manual Binding Options | Coil, Comb, Perfect Binding | ESSCO Aircraft',
+    description: 'Compare binding options for aviation manuals — coil, comb, 3-ring, perfect binding, and saddle stitch. See which binding works best for cockpit use, shelf storage, and field reference.',
+  },
+  '/flight-school-materials': {
+    title: 'Flight School Printing Services | Training Materials & Syllabi | ESSCO Aircraft',
+    description: 'Print flight training materials, ground school packets, syllabi, and student pilot kits. No minimum order. Upload your PDF for instant pricing. Part 141 and Part 61 programs.',
+  },
+  '/document-preservation': {
+    title: 'Aviation Manual Reprints & Document Preservation | ESSCO Aircraft — Since 1955',
+    description: 'Preserve deteriorating aviation manuals with professional reprints. 180,000-title archive. Digital restoration, Xerox Versant printing. Upload your PDF or browse our catalog.',
+  },
+  '/file-preparation-guide': {
+    title: 'Aviation PDF File Preparation Guide | Print-Ready Tips | ESSCO Aircraft',
+    description: 'How to prepare your aviation PDF for professional printing. Tips for scanned manuals, mixed page sizes, color detection, and resolution. Or just upload as-is — our system handles the rest.',
   },
 };
 
@@ -85,6 +105,22 @@ function Router() {
     return <LargeFormatPrinting />;
   }
 
+  if (path === '/binding-options') {
+    return <BindingOptions />;
+  }
+
+  if (path === '/flight-school-materials') {
+    return <FlightSchoolMaterials />;
+  }
+
+  if (path === '/document-preservation') {
+    return <DocumentPreservation />;
+  }
+
+  if (path === '/file-preparation-guide') {
+    return <FilePreparationGuide />;
+  }
+
   // Default: landing page (manual printing)
   return <App />;
 }
@@ -94,4 +130,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Router />
   </React.StrictMode>,
 );
-
