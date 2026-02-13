@@ -19,15 +19,30 @@ const Header: FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const printServices = [
-    { label: 'Aviation Manual Printing', href: '/aviation-manual-printing' },
-    { label: 'Checklist Printing', href: '/checklist-printing' },
-    { label: 'Large Format Printing', href: '/large-format-printing' },
-    { label: 'Poster Printing', href: '/posters' },
-    { label: 'Binding Options', href: '/binding-options' },
-    { label: 'Flight School Materials', href: '/flight-school-materials' },
-    { label: 'Document Preservation', href: '/document-preservation' },
-    { label: 'File Preparation Guide', href: '/file-preparation-guide' },
+  const serviceCategories = [
+    {
+      heading: 'Printing',
+      items: [
+        { label: 'Aviation Manual Printing', href: '/aviation-manual-printing' },
+        { label: 'Checklist Printing', href: '/checklist-printing' },
+        { label: 'Large Format Printing', href: '/large-format-printing' },
+        { label: 'Poster Printing', href: '/posters' },
+      ],
+    },
+    {
+      heading: 'Resources',
+      items: [
+        { label: 'Binding Options', href: '/binding-options' },
+        { label: 'File Preparation Guide', href: '/file-preparation-guide' },
+        { label: 'Document Preservation', href: '/document-preservation' },
+      ],
+    },
+    {
+      heading: 'Industries',
+      items: [
+        { label: 'Flight School Materials', href: '/flight-school-materials' },
+      ],
+    },
   ];
 
   const navItems = [
@@ -137,15 +152,23 @@ const Header: FC = () => {
 
                 {servicesOpen && (
                   <div className="absolute top-full left-0 mt-0 pt-2 z-[999]">
-                    <div className="bg-white border border-gray-200 rounded-lg shadow-xl py-2 min-w-[240px]">
-                      {printServices.map((service) => (
-                        <a
-                          key={service.href}
-                          href={service.href}
-                          className="block px-5 py-2.5 text-sm text-essco-dark-gray hover:bg-gray-100 hover:text-essco-maroon transition-colors font-medium"
-                        >
-                          {service.label}
-                        </a>
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-xl p-5 flex gap-8">
+                      {serviceCategories.map((cat) => (
+                        <div key={cat.heading} className="min-w-[200px]">
+                          <h4 className="font-oswald font-semibold text-xs tracking-widest text-essco-maroon uppercase mb-2 pb-1.5 border-b border-gray-200">{cat.heading}</h4>
+                          <ul className="space-y-0.5">
+                            {cat.items.map((item) => (
+                              <li key={item.href}>
+                                <a
+                                  href={item.href}
+                                  className="block px-2 py-2 text-sm text-essco-dark-gray hover:bg-gray-100 hover:text-essco-maroon transition-colors font-medium rounded"
+                                >
+                                  {item.label}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -264,16 +287,23 @@ const Header: FC = () => {
                     <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {mobileServicesOpen && (
-                    <div className="pl-4 pt-2 pb-1 space-y-3">
-                      {printServices.map((service) => (
-                        <a
-                          key={service.href}
-                          href={service.href}
-                          className="block text-base text-essco-dark-gray hover:text-essco-maroon transition-colors py-1"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {service.label}
-                        </a>
+                    <div className="pl-4 pt-2 pb-1 space-y-4">
+                      {serviceCategories.map((cat) => (
+                        <div key={cat.heading}>
+                          <h4 className="text-xs font-bold tracking-widest text-essco-maroon uppercase mb-1">{cat.heading}</h4>
+                          <div className="space-y-2 pl-1">
+                            {cat.items.map((item) => (
+                              <a
+                                key={item.href}
+                                href={item.href}
+                                className="block text-base text-essco-dark-gray hover:text-essco-maroon transition-colors py-1"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {item.label}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   )}
