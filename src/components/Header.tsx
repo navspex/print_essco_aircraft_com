@@ -73,7 +73,7 @@ const Header: FC = () => {
   ];
 
   return (
-    <header className="w-full">
+    <header className="w-full relative z-[100]">
       {/* Main Header - Sticky */}
       <div className="sticky top-0 z-50 bg-[#EFF1F6] border-b border-gray-200 shadow-sm overflow-visible">
         <div className="max-w-7xl mx-auto px-4">
@@ -136,7 +136,7 @@ const Header: FC = () => {
                 </button>
 
                 {servicesOpen && (
-                  <div className="absolute top-full left-0 mt-0 pt-2 z-50">
+                  <div className="absolute top-full left-0 mt-0 pt-2 z-[999]">
                     <div className="bg-white border border-gray-200 rounded-lg shadow-xl py-2 min-w-[240px]">
                       {printServices.map((service) => (
                         <a
