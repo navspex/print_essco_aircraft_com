@@ -575,7 +575,10 @@ function App() {
                 <li><a href="/checklist-printing" className="hover:text-amber-400 transition-colors">Checklist Printing</a></li>
                 <li><a href="/large-format-printing" className="hover:text-amber-400 transition-colors">Large Format Printing</a></li>
                 <li><a href="/posters" className="hover:text-amber-400 transition-colors">Poster Printing</a></li>
-                <li><a href="https://www.esscoaircraft.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Shop All Manuals →</a></li>
+                <li><a href="/binding-options" className="hover:text-amber-400 transition-colors">Binding Options</a></li>
+                <li><a href="/flight-school-materials" className="hover:text-amber-400 transition-colors">Flight School Materials</a></li>
+                <li><a href="/file-preparation-guide" className="hover:text-amber-400 transition-colors">File Preparation Guide</a></li>
+                <li><a href="/document-preservation" className="hover:text-amber-400 transition-colors">Document Preservation</a></li>
               </ul>
             </div>
           </div>
