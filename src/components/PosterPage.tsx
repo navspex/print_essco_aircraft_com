@@ -49,7 +49,34 @@ export default function PostersPage() {
     window.scrollTo(0, 0);
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // SEO: Set document title and meta tags
+    document.title = 'Aviation Poster & Large Format Printing | Custom Sizes | ESSCO Aircraft';
+    const metaTags = [
+      { property: 'og:title', content: 'Aviation Poster & Large Format Printing' },
+      { property: 'og:description', content: 'Custom aviation poster printing — aircraft profiles, cockpit charts, safety procedures. Gloss lamination and foam board mounting available. Since 1955.' },
+      { property: 'og:image', content: 'https://print.esscoaircraft.com/images/poster-hero-bg.jpg' },
+      { property: 'og:url', content: 'https://print.esscoaircraft.com/posters' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Aviation Poster & Large Format Printing' },
+      { name: 'twitter:description', content: 'Custom aviation poster printing — aircraft profiles, cockpit charts, safety procedures. Gloss lamination and foam board mounting available. Since 1955.' },
+      { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/poster-hero-bg.jpg' },
+    ];
+    const createdMetas: HTMLMetaElement[] = [];
+    metaTags.forEach(tag => {
+      const meta = document.createElement('meta');
+      if (tag.property) meta.setAttribute('property', tag.property);
+      if (tag.name) meta.setAttribute('name', tag.name);
+      meta.setAttribute('content', tag.content);
+      document.head.appendChild(meta);
+      createdMetas.push(meta);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      createdMetas.forEach(meta => document.head.removeChild(meta));
+    };
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
