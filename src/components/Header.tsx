@@ -75,7 +75,7 @@ const Header: FC = () => {
   return (
     <header className="w-full">
       {/* Main Header - Sticky */}
-      <div className="sticky top-0 z-50 bg-[#EFF1F6] border-b border-gray-200 shadow-sm">
+      <div className="sticky top-0 z-50 bg-[#EFF1F6] border-b border-gray-200 shadow-sm overflow-visible">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-3 md:py-4">
             {/* Left Side: Mobile Menu + Search */}
@@ -206,7 +206,7 @@ const Header: FC = () => {
       </div>
 
       {/* Highlights Banners Bar - Horizontal scroll on mobile, 5-column on desktop */}
-      <div className="bg-slate-800 border-b border-slate-700 overflow-hidden">
+      <div className="relative z-10 bg-slate-800 border-b border-slate-700 overflow-hidden">
         {/* Mobile: Horizontal scroll carousel (< 1024px) */}
         <div 
           className="lg:hidden flex flex-row flex-nowrap overflow-x-auto py-4 px-4"
