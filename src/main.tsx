@@ -12,7 +12,7 @@ import './index.css';
 const routeMeta: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'Aviation Manual Printing Services | ESSCO Aircraft - Since 1955',
-    description: 'Professional aviation manual printing. Upload your PDF, get instant pricing. 70 years experience, 34,000+ orders, 100% positive feedback. Same-day production available.',
+    description: 'Professional aviation manual printing. Upload your PDF, get instant pricing. 70 years experience, 250,000+ orders, 100% positive feedback. Same-day production available.',
   },
   '/posters': {
     title: 'Aviation Poster Printing | Large Format | ESSCO Aircraft',
@@ -94,3 +94,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Router />
   </React.StrictMode>,
 );
+

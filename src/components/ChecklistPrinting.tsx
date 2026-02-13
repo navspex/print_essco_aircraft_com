@@ -32,6 +32,28 @@ export default function ChecklistPrinting() {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
 
+    // SEO: OG and Twitter meta tags for social sharing
+    const metaTags = [
+      { property: 'og:title', content: 'Aviation Checklist Printing | Custom Cockpit Checklists' },
+      { property: 'og:description', content: 'Custom aviation checklist printing. Emergency procedures, normal ops, quick-reference cards. Laminated, coil-bound, cockpit-ready. Upload your PDF for instant pricing.' },
+      { property: 'og:image', content: 'https://print.esscoaircraft.com/images/checklist-hero.jpg' },
+      { property: 'og:url', content: 'https://print.esscoaircraft.com/checklist-printing' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Aviation Checklist Printing | Custom Cockpit Checklists' },
+      { name: 'twitter:description', content: 'Custom aviation checklist printing. Emergency procedures, normal ops, quick-reference cards. Laminated, coil-bound, cockpit-ready. Upload your PDF for instant pricing.' },
+      { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/checklist-hero.jpg' },
+    ];
+    const createdMetas: HTMLMetaElement[] = [];
+    metaTags.forEach(tag => {
+      const meta = document.createElement('meta');
+      if (tag.property) meta.setAttribute('property', tag.property);
+      if (tag.name) meta.setAttribute('name', tag.name);
+      meta.setAttribute('content', tag.content);
+      document.head.appendChild(meta);
+      createdMetas.push(meta);
+    });
+
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schemaData);
@@ -343,3 +365,4 @@ export default function ChecklistPrinting() {
     </div>
   );
 }
+

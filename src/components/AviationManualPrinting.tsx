@@ -102,7 +102,7 @@ export default function AviationManualPrinting() {
           <div className="absolute inset-0 bg-slate-900/70 z-[1]"></div>
           <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
             <div className="bg-slate-700/85 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
-              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Since 1955 — 34,000+ Orders Completed</p>
+              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Since 1955 — 250,000+ Orders Completed</p>
               <h1 className="mb-6 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
                 Aviation Manual<br />Printing Services
               </h1>
@@ -171,7 +171,7 @@ export default function AviationManualPrinting() {
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 { label: '70 Years in Aviation', detail: 'Founded in 1955, we\'ve printed manuals for virtually every general aviation aircraft in production. Our team understands aviation document standards inside and out.' },
-                { label: '34,000+ Orders', detail: 'With tens of thousands of completed orders and 100% positive feedback, our track record speaks for itself. Same quality whether you order one manual or one hundred.' },
+                { label: '250,000+ Orders', detail: 'With hundreds of thousands of completed orders and 100% positive feedback, our track record speaks for itself. Same quality whether you order one manual or one hundred.' },
                 { label: 'Multiple Binding Options', detail: 'Coil binding, comb binding, 3-ring punched, or perfect binding — we\'ll match your original manual\'s format or recommend the best option for cockpit use.' },
                 { label: 'Fast Turnaround', detail: 'Same-day production is available on most orders. Standard orders ship within 1-2 business days. We know a grounded aircraft costs money.' },
               ].map((item) => (
@@ -369,3 +369,4 @@ export default function AviationManualPrinting() {
     </div>
   );
 }
+

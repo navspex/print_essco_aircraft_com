@@ -32,6 +32,28 @@ export default function LargeFormatPrinting() {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
 
+    // SEO: OG and Twitter meta tags for social sharing
+    const metaTags = [
+      { property: 'og:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
+      { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { property: 'og:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
+      { property: 'og:url', content: 'https://print.esscoaircraft.com/large-format-printing' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
+      { name: 'twitter:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
+    ];
+    const createdMetas: HTMLMetaElement[] = [];
+    metaTags.forEach(tag => {
+      const meta = document.createElement('meta');
+      if (tag.property) meta.setAttribute('property', tag.property);
+      if (tag.name) meta.setAttribute('name', tag.name);
+      meta.setAttribute('content', tag.content);
+      document.head.appendChild(meta);
+      createdMetas.push(meta);
+    });
+
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schemaData);
@@ -347,3 +369,4 @@ export default function LargeFormatPrinting() {
     </div>
   );
 }
+
