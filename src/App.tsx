@@ -32,6 +32,10 @@ function App() {
         .bg-zoom-container:hover .bg-zoom-layer {
           transform: scale(1.10);
         }
+        .bg-zoom-container h1, .bg-zoom-container h2, .bg-zoom-container h3,
+        .bg-zoom-container p, .bg-zoom-container span {
+          text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
+        }
         .timeline-connector {
           position: absolute;
           top: 50%;
@@ -49,9 +53,8 @@ function App() {
       <ScrollReveal delay={100}>
       <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-900/50"></div>
-        <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
-          <div className="bg-slate-700/85 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
+                <div className="relative z-20 text-center px-5 py-16 md:py-20 max-w-5xl mx-auto">
+          <div className="bg-slate-900/30 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
             <h1 className="mb-6 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
               UPLOAD ANY PDF.<br />GET INSTANT PRICING.<br />PROCESSED IN 24 HOURS.
             </h1>
@@ -266,8 +269,7 @@ function App() {
       <ScrollReveal delay={200}>
       <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-800/75"></div>
-        <div className="relative z-20 max-w-7xl mx-auto px-4">
+                <div className="relative z-20 max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Professional Equipment, Professional Results</h2>
             <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our facility at KLPR Lorain County Regional Airport houses over $100,000 in commercial-grade printing and finishing equipment. We've invested in the same professional machinery used by commercial print shops and major publishers because aviation professionals deserve nothing less than exceptional quality.</p>
@@ -437,8 +439,7 @@ function App() {
       <ScrollReveal delay={200}>
       <section className="bg-zoom-container py-12 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/trust_background.png)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-900/55"></div>
-        <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
+                <div className="relative z-20 max-w-4xl mx-auto px-5 text-center">
           <img src="/images/ebay-feedback.jpg" alt="eBay verified seller with 17000 positive reviews" className="w-full max-w-2xl mx-auto rounded-lg" style={{ boxShadow: '0 3px 12px rgba(0, 0, 0, 0.4)' }} />
           <p className="italic text-slate-500 text-sm mt-4">Verified seller since 2006</p>
         </div>
@@ -449,8 +450,7 @@ function App() {
       <ScrollReveal delay={100}>
       <section id="faq" className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
         <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
-        <div className="absolute inset-0 z-10 bg-slate-800/65"></div>
-        <div className="relative z-20 max-w-4xl mx-auto px-4">
+                <div className="relative z-20 max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3"><HelpCircle className="w-10 h-10 text-amber-400" />Frequently Asked Questions</h2>
           </div>
@@ -465,7 +465,7 @@ function App() {
               { q: 'Is there a minimum order?', a: 'No minimums! We print single copies with the same care as bulk orders. Volume discounts apply automatically at 51+ and 1001+ pages.' },
               { q: 'What\'s your quality guarantee?', a: 'We stand behind every print job. If you\'re not satisfied, contact us within 7 days and we\'ll make it right. Our 100% positive eBay feedback speaks for itself.' },
             ].map((faq, idx) => (
-              <details key={idx} className="bg-slate-700/85 rounded-xl border border-slate-600">
+              <details key={idx} className="bg-slate-900/30 rounded-xl border border-slate-600">
                 <summary className="flex items-center justify-between p-5 cursor-pointer font-semibold text-white list-none rounded-xl">{faq.q}<svg className="w-5 h-5 text-slate-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></summary>
                 <div className="px-5 pb-5 text-slate-300">{faq.a}</div>
               </details>

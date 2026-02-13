@@ -105,6 +105,10 @@ export default function PostersPage() {
         .bg-zoom-container:hover .bg-zoom-layer {
           transform: scale(1.10);
         }
+        .bg-zoom-container h1, .bg-zoom-container h2, .bg-zoom-container h3,
+        .bg-zoom-container p, .bg-zoom-container span {
+          text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
+        }
       `}</style>
 
       <Header />
@@ -113,9 +117,8 @@ export default function PostersPage() {
       <ScrollReveal delay={100}>
         <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/poster-hero-bg.jpg)' }}></div>
-          <div className="absolute inset-0 z-10 bg-slate-900/60"></div>
-          <div className="relative z-20 text-center px-5 py-16 md:py-24 max-w-5xl mx-auto">
-            <div className="bg-slate-700/85 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
+                    <div className="relative z-20 text-center px-5 py-16 md:py-24 max-w-5xl mx-auto">
+            <div className="bg-slate-900/30 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-sm font-bold uppercase rounded-full tracking-wider border border-amber-500/30">New Service</span>
               </div>
@@ -277,8 +280,7 @@ export default function PostersPage() {
       <ScrollReveal delay={100}>
         <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/print_room.png)' }}></div>
-          <div className="absolute inset-0 z-10 bg-slate-800/80"></div>
-          <div className="relative z-20 max-w-6xl mx-auto px-4">
+                    <div className="relative z-20 max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>What We Print</h2>
               <p className="text-lg text-slate-300 max-w-3xl mx-auto">From the cockpit to the classroom, our large format prints serve aviation professionals across every discipline.</p>
@@ -392,8 +394,7 @@ export default function PostersPage() {
       <ScrollReveal delay={200}>
         <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/FAQ_background.jpg)' }}></div>
-          <div className="absolute inset-0 z-10 bg-slate-800/75"></div>
-          <div className="relative z-20 max-w-4xl mx-auto px-4">
+                    <div className="relative z-20 max-w-4xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}><HelpCircle className="w-10 h-10 text-amber-400" />Poster FAQs</h2>
             </div>
@@ -406,7 +407,7 @@ export default function PostersPage() {
                 { q: 'What\'s the maximum size you can print?', a: 'Our HP DesignJet XL 3800 prints up to 60 inches wide with virtually unlimited length. Standard sizes are 18×24, 24×36, and 36×48, but we can do any custom dimension within that width.' },
                 { q: 'Can I order multiple copies?', a: 'Absolutely. Volume discounts are available for orders of 5+ posters. Email us at esscosupport@aol.com with your quantity and we\'ll provide a custom quote.' },
               ].map((faq, idx) => (
-                <details key={idx} className="bg-slate-700/85 rounded-xl border border-slate-600">
+                <details key={idx} className="bg-slate-900/30 rounded-xl border border-slate-600">
                   <summary className="flex items-center justify-between p-5 cursor-pointer font-semibold text-white list-none rounded-xl">{faq.q}<svg className="w-5 h-5 text-slate-400 transition-transform duration-300 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></summary>
                   <div className="px-5 pb-5 text-slate-300">{faq.a}</div>
                 </details>

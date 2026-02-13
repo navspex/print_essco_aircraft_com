@@ -93,6 +93,10 @@ export default function LargeFormatPrinting() {
         .bg-zoom-container:hover .bg-zoom-layer {
           transform: scale(1.10);
         }
+        .bg-zoom-container h1, .bg-zoom-container h2, .bg-zoom-container h3,
+        .bg-zoom-container p, .bg-zoom-container span {
+          text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
+        }
       `}</style>
 
       {/* ==================== HERO ==================== */}
@@ -105,9 +109,8 @@ export default function LargeFormatPrinting() {
       <ScrollReveal delay={100}>
         <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/large-format-hero.jpg)' }}></div>
-          <div className="absolute inset-0 bg-slate-900/70 z-[1]"></div>
-          <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
-            <div className="bg-slate-700/85 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
+                    <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
+            <div className="bg-slate-900/30 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
               <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Wide Format — Up to 60" Wide, Any Length</p>
               <h1 className="mb-6 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
                 Large Format<br />Aviation Printing
@@ -167,8 +170,7 @@ export default function LargeFormatPrinting() {
       <ScrollReveal delay={100}>
         <section className="bg-zoom-container py-16 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/large-format-printer.jpg)' }}></div>
-          <div className="absolute inset-0 z-10 bg-slate-800/85"></div>
-          <div className="relative z-20 max-w-5xl mx-auto px-4">
+                    <div className="relative z-20 max-w-5xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Print Specifications & Capabilities</h2>
               <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our HP DesignJet XL 3800 wide-format press handles everything from quick black & white schematics to full-color training displays.</p>

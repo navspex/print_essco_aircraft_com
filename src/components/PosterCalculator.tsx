@@ -503,8 +503,7 @@ export default function PosterCalculator() {
       <ScrollReveal delay={100}>
         <section className="bg-zoom-container transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/poster-hero-bg.jpg)' }}></div>
-          <div className="absolute inset-0 z-10 bg-slate-900/65"></div>
-          <div className="relative z-20 text-center px-5 py-10 md:py-14 max-w-4xl mx-auto">
+                    <div className="relative z-20 text-center px-5 py-10 md:py-14 max-w-4xl mx-auto">
             <h1 className="mb-3 text-white text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
               POSTER CALCULATOR
             </h1>
