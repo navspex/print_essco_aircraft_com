@@ -43,9 +43,7 @@ function App() {
         }
       `}</style>
       
-      <ScrollReveal>
-        <Header />
-      </ScrollReveal>
+      <Header />
 
       {/* ==================== HERO with Background Image ==================== */}
       <ScrollReveal delay={100}>
