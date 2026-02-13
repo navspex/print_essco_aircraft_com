@@ -24,6 +24,10 @@ const Header: FC = () => {
     { label: 'Checklist Printing', href: '/checklist-printing' },
     { label: 'Large Format Printing', href: '/large-format-printing' },
     { label: 'Poster Printing', href: '/posters' },
+    { label: 'Binding Options', href: '/binding-options' },
+    { label: 'Flight School Materials', href: '/flight-school-materials' },
+    { label: 'Document Preservation', href: '/document-preservation' },
+    { label: 'File Preparation Guide', href: '/file-preparation-guide' },
   ];
 
   const navItems = [
