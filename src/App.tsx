@@ -111,8 +111,8 @@ function App() {
               <div className="text-slate-400 text-sm">Customer Reviews</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="inline-flex items-center font-bold text-3xl text-amber-400 mb-1"><Package size={28} className="text-blue-400 mr-2" />34,000+</div>
-              <div className="text-slate-400 text-sm">Orders Completed</div>
+              <div className="inline-flex items-center font-bold text-3xl text-amber-400 mb-1"><Package size={28} className="text-blue-400 mr-2" />250,000+</div>
+              <div className="text-slate-400 text-sm">Orders Since 1955</div>
             </div>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-slate-400">
@@ -397,7 +397,7 @@ function App() {
                 </div>
                 <div className="mt-8 text-center">
                   <h3 className="text-2xl font-bold text-amber-400">Today</h3>
-                  <p className="text-slate-300 text-sm mt-2 px-2">Completed 34,000+ orders with 100% positive feedback, maintaining our family's commitment to aviation excellence.</p>
+                  <p className="text-slate-300 text-sm mt-2 px-2">Completed 250,000+ orders since 1955 with 100% positive eBay feedback, maintaining our family's commitment to aviation excellence.</p>
                 </div>
               </div>
             </div>
@@ -409,7 +409,7 @@ function App() {
               { num: 1, year: '1955', text: 'ESSCO Aircraft founded as a family-owned aviation business serving the Northeast Ohio aviation community.' },
               { num: 2, year: '2006', text: 'Launched online printing services, becoming one of the first aviation specialists on eBay with verified seller status.' },
               { num: 3, year: '2015', text: 'Invested $100,000+ in commercial printing equipment to serve growing demand from aviation professionals nationwide.' },
-              { num: 4, year: 'Today', text: 'Completed 34,000+ orders with 100% positive feedback, maintaining our family\'s commitment to aviation excellence.' },
+              { num: 4, year: 'Today', text: 'Completed 250,000+ orders since 1955 with 100% positive eBay feedback, maintaining our family\'s commitment to aviation excellence.' },
             ].map((item) => (
               <div key={item.num} className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/40 flex-shrink-0">
@@ -481,7 +481,7 @@ function App() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Get Started?</h2>
-            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Join thousands of aviation professionals who trust ESSCO Aircraft for their documentation printing needs. From single manuals to fleet-wide documentation projects, we deliver the quality, service, and reliability that aviation professionals demand. Our 70-year track record speaks for itself—100% positive feedback from 17,000+ verified customers, 34,000+ orders completed, and a commitment to excellence that's been passed down through three generations of family ownership.</p>
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">Join thousands of aviation professionals who trust ESSCO Aircraft for their documentation printing needs. From single manuals to fleet-wide documentation projects, we deliver the quality, service, and reliability that aviation professionals demand. Our 70-year track record speaks for itself—250,000+ orders completed since 1955, 100% positive eBay feedback from 17,000+ verified online customers, and a commitment to excellence passed down through three generations of family ownership.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-6 mb-10">
