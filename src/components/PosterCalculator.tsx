@@ -11,25 +11,13 @@ import {
 // ==================== TYPES ====================
 type CalcStep = 'upload' | 'configure' | 'submitting' | 'checkout_opened' | 'error';
 
-interface ShippingTube {
-  id: string;
-  label: string;
-  lengthIn: number;
-  price: number;
-}
-
 // ==================== PRICING DATA ====================
-const SHIPPING_TUBES: Record<string, ShippingTube> = {
-  small:  { id: 'small',  label: '24" Shipping Tube',  lengthIn: 24, price: 9.95  },
-  medium: { id: 'medium', label: '36" Shipping Tube',  lengthIn: 36, price: 14.95 },
-  large:  { id: 'large',  label: '48" Shipping Tube',  lengthIn: 48, price: 19.95 },
-};
-
+// Tube shipping cost is now INCLUDED in poster base price
 const POSTER_SIZES = [
-  { id: '18x24', label: '18" × 24"', tag: 'Small Poster',   width: 18, height: 24, price: 12, tubeId: 'small' },
-  { id: '24x36', label: '24" × 36"', tag: 'Standard',       width: 24, height: 36, price: 25, popular: true, tubeId: 'medium' },
-  { id: '36x48', label: '36" × 48"', tag: 'Large Format',   width: 36, height: 48, price: 40, tubeId: 'large' },
-  { id: 'custom', label: 'Custom Size', tag: 'Up to 36" wide', width: 36, height: 80, price: 65, tubeId: 'large' },
+  { id: '11x17', label: '11" × 17"', tag: 'Ledger',         width: 11, height: 17, price: 7,  tubeId: 'small' },
+  { id: '18x24', label: '18" × 24"', tag: 'Small Poster',   width: 18, height: 24, price: 18, tubeId: 'small' },
+  { id: '24x36', label: '24" × 36"', tag: 'Standard',       width: 24, height: 36, price: 33, popular: true, tubeId: 'medium' },
+  { id: '36x48', label: '36" × 48"', tag: 'Large Format',   width: 36, height: 48, price: 68, tubeId: 'large' },
 ];
 
 const ADD_ONS = [
@@ -166,11 +154,10 @@ export default function PosterCalculator() {
 
   // ==================== PRICING ====================
   const sizeData = POSTER_SIZES.find((s) => s.id === selectedSize)!;
-  const tube = SHIPPING_TUBES[sizeData.tubeId];
   const addOnTotal = ADD_ONS.reduce((sum, a) => sum + (addOns[a.id] ? a.price : 0), 0);
   const unitPrintPrice = sizeData.price + addOnTotal;
   const printSubtotal = unitPrintPrice * quantity;
-  const orderTotal = printSubtotal + tube.price;
+  const orderTotal = printSubtotal; // Tube shipping included in base price
 
   // ==================== DPI CHECK ====================
   const getQuality = (): { level: 'good' | 'ok' | 'low'; msg: string } | null => {
@@ -199,7 +186,7 @@ export default function PosterCalculator() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          // Line item: per-unit price × quantity (shipping separate)
+          // Line item: per-unit price × quantity (tube shipping included in base price)
           totalPrice: unitPrintPrice,
           quantity: quantity,
           documentName: file.name,
@@ -213,21 +200,17 @@ export default function PosterCalculator() {
           pageSize: sizeData.label,
           isBooklet: false,
           pdfFileKey: uploadResult.fileKey,
-          shippingWeightGrams: Math.round(quantity * 200 + tube.lengthIn * 10),
+          shippingWeightGrams: Math.round(quantity * 200 + sizeData.width * 2),
           // Poster-specific metadata
           posterSize: sizeData.label,
           posterSizeId: sizeData.id,
           addOns: addOnsList.join(', ') || 'None',
           lamination: addOns.lamination ? 'Yes' : 'No',
           foamBoard: addOns.foamboard ? 'Yes' : 'No',
-          shippingTube: `${tube.label} (${tube.lengthIn}" tube)`,
-          shippingTubePrice: tube.price,
+          shippingNote: 'Tube shipping included in poster price',
           imageWidth: imageNaturalSize?.w || 0,
           imageHeight: imageNaturalSize?.h || 0,
           dpiEstimate: imageNaturalSize ? Math.round(Math.min(imageNaturalSize.w / sizeData.width, imageNaturalSize.h / sizeData.height)) : 0,
-          // Shopify shippingLine — creates actual shipping charge in checkout
-          shippingTitle: `Shipping — ${tube.label}`,
-          shippingCost: tube.price,
         }),
       });
 
@@ -391,17 +374,6 @@ export default function PosterCalculator() {
               ))}
             </div>
 
-            {/* SHIPPING — auto-selected tube */}
-            <div className="bg-slate-800/50 rounded-xl border border-slate-700 p-4 mb-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Truck size={20} className="text-blue-400" />
-                  <div><p className="text-white font-medium text-sm">{tube.label}</p><p className="text-slate-500 text-xs">Heavy-duty cardboard • USPS Priority Mail</p></div>
-                </div>
-                <span className="text-white font-bold text-sm">{fmt(tube.price)}</span>
-              </div>
-            </div>
-
             {/* PRICE SUMMARY */}
             <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
               <div className="p-5 space-y-3">
@@ -409,12 +381,12 @@ export default function PosterCalculator() {
                 {ADD_ONS.filter((a) => addOns[a.id]).map((a) => (
                   <div key={a.id} className="flex justify-between text-slate-300 text-sm"><span>{a.label}</span><span>{fmt(a.price)} × {quantity}</span></div>
                 ))}
-                <div className="flex justify-between text-slate-300 text-sm"><span>Shipping ({tube.label})</span><span>{fmt(tube.price)}</span></div>
                 <div className="border-t border-slate-600 pt-3 flex justify-between items-end">
                   <span className="text-white font-bold text-lg">Order Total</span>
                   <span className="text-amber-400 font-bold text-3xl">{fmt(orderTotal)}</span>
                 </div>
-                {quantity > 1 && <p className="text-slate-500 text-xs text-right">{fmt(unitPrintPrice)} each + {fmt(tube.price)} shipping</p>}
+                {quantity > 1 && <p className="text-slate-500 text-xs text-right">{fmt(unitPrintPrice)} each</p>}
+                <p className="text-slate-500 text-xs pt-2">Tube shipping included in poster price</p>
               </div>
               <div className="p-5 bg-slate-700/30 border-t border-slate-700">
                 <button onClick={handleSubmit} className="block w-full text-center py-4 rounded-xl font-bold uppercase tracking-wide text-lg transition-all duration-300 shadow-xl bg-amber-500 hover:bg-amber-400 text-slate-900 hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber-500/50" style={{ fontFamily: "'Oswald', sans-serif" }}>
@@ -462,8 +434,8 @@ export default function PosterCalculator() {
             {ADD_ONS.filter((a) => addOns[a.id]).map((a) => (
               <div key={a.id} className="flex justify-between"><span className="text-slate-400">{a.label}:</span><span className="text-white">{fmt(a.price)}/ea</span></div>
             ))}
-            <div className="flex justify-between"><span className="text-slate-400">Shipping:</span><span className="text-white">{tube.label} ({fmt(tube.price)})</span></div>
             <div className="flex justify-between border-t border-slate-700 pt-2 mt-2"><span className="text-slate-300 font-medium">Total:</span><span className="text-amber-400 font-bold">{fmt(orderTotal)}</span></div>
+            <p className="text-slate-500 text-xs pt-2">Tube shipping included</p>
           </div>
         </div>
         <button onClick={handleReset} className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 px-6 rounded-lg transition-all duration-300">Start New Order</button>

@@ -6,31 +6,31 @@ import { Ruler, Layers, Truck, ChevronUp, Lock, ShieldCheck, Zap, Plane, CheckCi
 // ==================== POSTER SIZE DATA ====================
 const posterSizes = [
   {
+    size: '11" × 17"',
+    price: 7,
+    label: 'Ledger Size',
+    description: 'Compact cockpit reference size. Perfect for checklist inserts and small displays.',
+    popular: false,
+  },
+  {
     size: '18" × 24"',
-    price: 12,
+    price: 18,
     label: 'Small Poster',
     description: 'Perfect for cockpit quick-reference charts, training aids, and office displays.',
     popular: false,
   },
   {
     size: '24" × 36"',
-    price: 25,
+    price: 33,
     label: 'Standard Poster',
     description: 'The go-to wall poster size. Ideal for safety procedures, checklists, and aircraft diagrams.',
     popular: true,
   },
   {
     size: '36" × 48"',
-    price: 40,
+    price: 68,
     label: 'Large Format',
     description: 'Training room size. Great for maintenance diagrams, schematics, and classroom visuals.',
-    popular: false,
-  },
-  {
-    size: 'Custom Size',
-    price: 65,
-    label: 'Oversized / Banner',
-    description: 'Any size up to 36" wide, any length. Banners, hangar displays, and custom dimensions.',
     popular: false,
   },
 ];
@@ -38,7 +38,6 @@ const posterSizes = [
 const addOns = [
   { name: 'Gloss Lamination', price: 15, description: 'Protective UV-resistant coating. Wipes clean. Resists hangar oils and fingerprints.' },
   { name: 'Foam Board Mount', price: 20, description: 'Rigid 3/16" foam core backing. Ready to hang or display on an easel. Professional presentation.' },
-  { name: 'Tube Shipping', price: 0, description: 'Heavy-duty cardboard tube protects your poster in transit. Always free.' },
 ];
 
 // ==================== POSTERS PAGE ====================
@@ -165,7 +164,7 @@ export default function PostersPage() {
             <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-slate-400">
               <span className="flex items-center gap-2"><Sparkles size={16} className="text-amber-400" />Premium Glossy Photo Paper</span>
               <span className="flex items-center gap-2"><Zap size={16} className="text-amber-400" />24-Hour Turnaround</span>
-              <span className="flex items-center gap-2"><Truck size={16} className="text-blue-400" />Free Tube Shipping</span>
+              <span className="flex items-center gap-2"><Truck size={16} className="text-blue-400" />Tube Shipping Included</span>
               <span className="flex items-center gap-2"><Plane size={16} className="text-blue-400" />Aviation Specialists Since 1955</span>
             </div>
           </div>
@@ -178,7 +177,7 @@ export default function PostersPage() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>Choose Your Poster Size</h2>
-              <p className="text-lg text-slate-400 max-w-2xl mx-auto">Professional large format printing on premium glossy photo paper. All posters include vibrant full-color printing and free protective tube shipping.</p>
+              <p className="text-lg text-slate-400 max-w-2xl mx-auto">Professional large format printing on premium glossy photo paper. All posters include vibrant full-color printing and protective tube shipping.</p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -227,7 +226,7 @@ export default function PostersPage() {
 
             {/* Pricing Notes */}
             <div className="max-w-4xl mx-auto bg-slate-800/50 rounded-xl p-6 border border-slate-700 text-center">
-              <p className="text-slate-300 text-sm">All prices include full-color printing on premium glossy photo paper and free tube shipping. Volume discounts available — <a href="mailto:esscosupport@aol.com?subject=Poster%20Volume%20Quote" className="text-amber-400 hover:underline">contact us</a> for orders of 5+ posters.</p>
+              <p className="text-slate-300 text-sm">All prices include full-color printing on premium glossy photo paper and protective tube shipping. Volume discounts available — <a href="mailto:esscosupport@aol.com?subject=Poster%20Volume%20Quote" className="text-amber-400 hover:underline">contact us</a> for orders of 5+ posters.</p>
             </div>
 
             {/* Cross-link to Calculator */}
