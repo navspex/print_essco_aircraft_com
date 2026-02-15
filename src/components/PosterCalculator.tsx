@@ -14,10 +14,10 @@ type CalcStep = 'upload' | 'configure' | 'submitting' | 'checkout_opened' | 'err
 // ==================== PRICING DATA ====================
 // Tube shipping cost is now INCLUDED in poster base price
 const POSTER_SIZES = [
-  { id: '11x17', label: '11" × 17"', tag: 'Ledger',         width: 11, height: 17, price: 7,  tubeId: 'small' },
-  { id: '18x24', label: '18" × 24"', tag: 'Small Poster',   width: 18, height: 24, price: 18, tubeId: 'small' },
-  { id: '24x36', label: '24" × 36"', tag: 'Standard',       width: 24, height: 36, price: 33, popular: true, tubeId: 'medium' },
-  { id: '36x48', label: '36" × 48"', tag: 'Large Format',   width: 36, height: 48, price: 68, tubeId: 'large' },
+  { id: '11x17', label: '11" × 17"', tag: 'Ledger',         width: 11, height: 17, price: 7 },
+  { id: '18x24', label: '18" × 24"', tag: 'Small Poster',   width: 18, height: 24, price: 18 },
+  { id: '24x36', label: '24" × 36"', tag: 'Standard',       width: 24, height: 36, price: 33, popular: true },
+  { id: '36x48', label: '36" × 48"', tag: 'Large Format',   width: 36, height: 48, price: 68 },
 ];
 
 const ADD_ONS = [
@@ -153,7 +153,7 @@ export default function PosterCalculator() {
   }, []);
 
   // ==================== PRICING ====================
-  const sizeData = POSTER_SIZES.find((s) => s.id === selectedSize)!;
+  const sizeData = POSTER_SIZES.find((s) => s.id === selectedSize) || POSTER_SIZES[2]; // Fallback to 24x36
   const addOnTotal = ADD_ONS.reduce((sum, a) => sum + (addOns[a.id] ? a.price : 0), 0);
   const unitPrintPrice = sizeData.price + addOnTotal;
   const printSubtotal = unitPrintPrice * quantity;
