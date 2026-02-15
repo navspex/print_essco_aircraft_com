@@ -29,7 +29,7 @@ const POSTER_SIZES = [
   { id: '18x24', label: '18" × 24"', tag: 'Small Poster',   width: 18, height: 24, price: 12, tubeId: 'small' },
   { id: '24x36', label: '24" × 36"', tag: 'Standard',       width: 24, height: 36, price: 25, popular: true, tubeId: 'medium' },
   { id: '36x48', label: '36" × 48"', tag: 'Large Format',   width: 36, height: 48, price: 40, tubeId: 'large' },
-  { id: 'custom', label: 'Custom Size', tag: 'Up to 60" wide', width: 60, height: 80, price: 65, tubeId: 'large' },
+  { id: 'custom', label: 'Custom Size', tag: 'Up to 36" wide', width: 36, height: 80, price: 65, tubeId: 'large' },
 ];
 
 const ADD_ONS = [

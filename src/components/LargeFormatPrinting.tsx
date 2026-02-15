@@ -7,7 +7,7 @@ const schemaData = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Large Format Aviation Printing",
-  "description": "Large format printing for aviation schematics, wiring diagrams, blueprints, CAD drawings, and fold-out pages. Up to 60 inches wide, any length.",
+  "description": "Large format printing for aviation schematics, wiring diagrams, blueprints, CAD drawings, and fold-out pages. Up to 36 inches wide, any length.",
   "provider": {
     "@type": "Organization",
     "name": "ESSCO Aircraft",
@@ -34,15 +34,15 @@ export default function LargeFormatPrinting() {
 
     // SEO: OG and Twitter meta tags for social sharing
     const metaTags = [
-      { name: 'description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { name: 'description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { property: 'og:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
-      { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
       { property: 'og:url', content: 'https://print.esscoaircraft.com/large-format-printing' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
-      { name: 'twitter:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { name: 'twitter:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
     ];
     const createdMetas: HTMLMetaElement[] = [];
@@ -111,7 +111,7 @@ export default function LargeFormatPrinting() {
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/large-format-hero.jpg)' }}></div>
                     <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
             <div className="bg-slate-900/30 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
-              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Wide Format — Up to 60" Wide, Any Length</p>
+              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Wide Format — Up to 36" Wide, Any Length</p>
               <h1 className="mb-6 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
                 Large Format<br />Aviation Printing
               </h1>
@@ -130,7 +130,7 @@ export default function LargeFormatPrinting() {
       <ScrollReveal delay={150}>
         <section className="bg-amber-500/10 border-y border-amber-500/30 py-4 transition-all duration-500 hover:bg-amber-500/15">
           <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-sm text-slate-300">
-            <span className="flex items-center gap-2"><Maximize2 className="w-4 h-4 text-blue-400" />Up to 60" Wide</span>
+            <span className="flex items-center gap-2"><Maximize2 className="w-4 h-4 text-blue-400" />Up to 36" Wide</span>
             <span className="flex items-center gap-2"><Printer className="w-4 h-4 text-amber-400" />HP DesignJet XL 3800</span>
             <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-500" />Same-Day Production Available</span>
           </div>
@@ -178,7 +178,7 @@ export default function LargeFormatPrinting() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {[
-                { label: 'Maximum Width: 60 Inches', detail: 'Any document up to 60" wide with unlimited length. Standard aviation drawing sizes (C, D, E, and custom) all supported.' },
+                { label: 'Maximum Width: 36 Inches', detail: 'Any document up to 36" wide with unlimited length. Standard aviation drawing sizes (C, D, E, and custom) all supported.' },
                 { label: 'Resolution: Up to 2400 × 1200 DPI', detail: 'Fine lines, small text callouts, and detailed schematics reproduce with razor sharpness. Wire labels and component numbers stay legible.' },
                 { label: 'Color & Black/White', detail: 'Full CMYK color for system diagrams with color-coded lines, or cost-effective black & white for standard engineering drawings. Our system auto-detects.' },
                 { label: 'Multiple Paper Options', detail: 'Standard bond, premium photo paper, or heavy card stock depending on the application. Lamination available for shop floor durability.' },
@@ -254,7 +254,7 @@ export default function LargeFormatPrinting() {
 
             <div className="space-y-6">
               {[
-                { q: 'What is the maximum print size?', a: 'Our HP DesignJet prints up to 60 inches wide with virtually unlimited length. Standard aviation drawing sizes (ANSI C at 17"×22", D at 22"×34", E at 34"×44") are all well within our capabilities.' },
+                { q: 'What is the maximum print size?', a: 'We print up to 36 inches wide with virtually unlimited length. Standard aviation drawing sizes (ANSI C at 17"×22", D at 22"×34", E at 34"×44") are all well within our capabilities.' },
                 { q: 'Can you print a fold-out page that inserts back into my existing manual?', a: 'Yes. We match the fold dimensions, paper weight, and hole-punch pattern of your existing manual so the fold-out integrates seamlessly. This is one of our most requested services.' },
                 { q: 'What file formats do you accept?', a: 'PDF is preferred for the best results. We also accept PNG, TIFF, and JPEG for rasterized drawings. If you have a DWF or DXF file, export it to PDF at the desired print size before uploading.' },
                 { q: 'Can you laminate large format prints?', a: 'Yes. Gloss lamination protects prints against moisture, oils, fingerprints, and UV fading — ideal for prints that will live on a hangar wall or shop floor.' },

@@ -30,7 +30,7 @@ const posterSizes = [
     size: 'Custom Size',
     price: 65,
     label: 'Oversized / Banner',
-    description: 'Any size up to 60" wide, any length. Banners, hangar displays, and custom dimensions.',
+    description: 'Any size up to 36" wide, any length. Banners, hangar displays, and custom dimensions.',
     popular: false,
   },
 ];
@@ -292,7 +292,7 @@ export default function PostersPage() {
                 { title: 'Safety & Emergency Procedures', desc: 'Evacuation routes, emergency checklists, and safety placards printed for durability and clarity.' },
                 { title: 'Aircraft Schematics', desc: 'Wiring diagrams, hydraulic systems, and structural layouts at full readable scale.' },
                 { title: 'Training Room Visuals', desc: 'Curriculum posters, regulatory reference charts, and instructional aids for flight schools.' },
-                { title: 'Hangar & Shop Banners', desc: 'Custom banners for FBOs, maintenance facilities, and aviation events up to 60" wide.' },
+                { title: 'Hangar & Shop Banners', desc: 'Custom banners for FBOs, maintenance facilities, and aviation events up to 36" wide.' },
                 { title: 'Custom Aviation Art', desc: 'Your own photos, illustrations, or graphics printed at poster scale on premium photo paper.' },
               ].map((item) => (
                 <div key={item.title} className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
@@ -370,7 +370,7 @@ export default function PostersPage() {
                   <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" /><span>HP DesignJet XL 3800 wide-format printer</span></li>
                   <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" /><span>Vivid, fade-resistant pigment inks</span></li>
                   <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" /><span>Up to 2400 × 1200 dpi resolution</span></li>
-                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" /><span>Maximum width: 60 inches, any length</span></li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" /><span>Maximum width: 36 inches, any length</span></li>
                 </ul>
               </div>
 
@@ -404,7 +404,7 @@ export default function PostersPage() {
                 { q: 'Can I send any image file?', a: 'We accept PDF, PNG, JPG, and TIFF files. For best results, provide images at 150 DPI or higher at your desired print size. We\'ll review every file before printing and contact you if there are any quality concerns.' },
                 { q: 'How long does shipping take?', a: 'Posters are printed within 24 hours and shipped in a protective tube via USPS or UPS. Domestic delivery typically takes 3-5 business days after shipment.' },
                 { q: 'Do you offer lamination?', a: 'Yes! Gloss lamination is available for $15 per poster. It adds a UV-resistant, wipe-clean protective layer — ideal for shop and hangar environments where posters encounter oils, dust, and handling.' },
-                { q: 'What\'s the maximum size you can print?', a: 'Our HP DesignJet XL 3800 prints up to 60 inches wide with virtually unlimited length. Standard sizes are 18×24, 24×36, and 36×48, but we can do any custom dimension within that width.' },
+                { q: 'What\'s the maximum size you can print?', a: 'Our HP DesignJet XL 3800 prints up to 36 inches wide with virtually unlimited length. Standard sizes are 18×24, 24×36, and 36×48, but we can do any custom dimension within that width.' },
                 { q: 'Can I order multiple copies?', a: 'Absolutely. Volume discounts are available for orders of 5+ posters. Email us at esscosupport@aol.com with your quantity and we\'ll provide a custom quote.' },
               ].map((faq, idx) => (
                 <details key={idx} className="bg-slate-900/30 rounded-xl border border-slate-600">

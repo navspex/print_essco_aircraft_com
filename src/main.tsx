@@ -36,7 +36,7 @@ const routeMeta: Record<string, { title: string; description: string }> = {
   },
   '/large-format-printing': {
     title: 'Large Format Aviation Printing | Schematics & Blueprints | ESSCO Aircraft',
-    description: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 60" wide on HP DesignJet. Upload your file for instant pricing.',
+    description: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36" wide on HP DesignJet. Upload your file for instant pricing.',
   },
   '/binding-options': {
     title: 'Aviation Manual Binding Options | Coil, Comb, Perfect Binding | ESSCO Aircraft',
