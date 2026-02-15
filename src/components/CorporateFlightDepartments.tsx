@@ -87,6 +87,8 @@ export default function CorporateFlightDepartments() {
       { property: 'og:title', content: 'Corporate Flight Department Printing | ESSCO Aircraft' },
       { property: 'og:description', content: 'Print Part 135 operations manuals, GOM documents, MEL binders, and compliance documentation. Veteran-owned, woman-owned. No minimum order. Upload your PDF for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/corporate-flight-hero.jpg' },
+      { property: 'og:image:width', content: '2000' },
+      { property: 'og:image:height', content: '1125' },
       { property: 'og:url', content: 'https://print.esscoaircraft.com/corporate-flight-departments' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },

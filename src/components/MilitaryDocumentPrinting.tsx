@@ -87,6 +87,8 @@ export default function MilitaryDocumentPrinting() {
       { property: 'og:title', content: 'Military Aviation Document Printing | ESSCO Aircraft' },
       { property: 'og:description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and warbird restoration docs. Veteran-owned, woman-owned. Upload your PDF for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/military-docs-hero.jpg' },
+      { property: 'og:image:width', content: '2000' },
+      { property: 'og:image:height', content: '1125' },
       { property: 'og:url', content: 'https://print.esscoaircraft.com/military-document-printing' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },

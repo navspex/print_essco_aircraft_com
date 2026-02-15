@@ -38,6 +38,8 @@ export default function LargeFormatPrinting() {
       { property: 'og:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
       { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
+      { property: 'og:image:width', content: '2000' },
+      { property: 'og:image:height', content: '1125' },
       { property: 'og:url', content: 'https://print.esscoaircraft.com/large-format-printing' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -368,9 +370,9 @@ export default function LargeFormatPrinting() {
           <div className="flex justify-center items-center gap-6 py-4 border-t border-slate-800">
             <div className="flex items-center gap-2 text-sm"><ShieldCheck size={20} className="text-green-500" /><span>Secure Checkout</span></div>
             <div className="flex items-center gap-2 text-sm"><CreditCard size={20} className="text-blue-400" /><span>PayPal Accepted</span></div>
-            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>70 Years Trusted</span></div>
+            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>Veteran-Owned & Woman-Owned</span></div>
           </div>
-          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
+          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. Veteran-Owned & Woman-Owned. All rights reserved.</p></div></div>
         </footer>
       </ScrollReveal>
 
