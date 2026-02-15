@@ -48,8 +48,9 @@ export interface PDFAnalysisResult {
 const PAGE_SIZES = {
   LETTER_WIDTH: 612,   // 8.5 inches
   LETTER_HEIGHT: 792,  // 11 inches
-  TABLOID_WIDTH: 792,  // 11 inches
+  TABLOID_WIDTH: 792,  // 11 inches (ledger/11x17)
   TABLOID_HEIGHT: 1224, // 17 inches
+  LARGE_FORMAT_MAX_WIDTH: 2592, // 36 inches (KIP 860 capability)
   TOLERANCE: 10,       // Allow small variations
 };
 
@@ -86,11 +87,11 @@ function isFoldoutPage(width: number, height: number): boolean {
 }
 
 /**
- * Determine if a page is oversized (larger than 11x17)
+ * Determine if a page is oversized (larger than KIP 860 can print: 36" wide)
  */
 function isOversizedPage(width: number, height: number): boolean {
   const maxDim = Math.max(width, height);
-  return maxDim > PAGE_SIZES.TABLOID_HEIGHT + PAGE_SIZES.TOLERANCE;
+  return maxDim > PAGE_SIZES.LARGE_FORMAT_MAX_WIDTH + PAGE_SIZES.TOLERANCE;
 }
 
 // ─── SMALL FILE PATH: Canvas pixel sampling ────────────────────────────

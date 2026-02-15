@@ -90,7 +90,7 @@ export default function Calculator() {
       }
 
       if (result.hasOversizedPages) {
-        setError(`Pages ${result.oversizedPageNumbers.join(', ')} exceed maximum size (11×17). Please contact us for oversized printing.`);
+        setError(`Pages ${result.oversizedPageNumbers.join(', ')} exceed maximum printable width (36 inches). Please contact us at 877-318-1555 for custom oversized printing.`);
         setStep('error');
         return;
       }

@@ -148,7 +148,10 @@ export function calculatePrice(input: PricingInput): PricingBreakdown {
   let requiresManualQuote = false;
   let quoteReason: string | undefined;
   
-  if (totalPrice > 500) {
+  if (input.foldoutPages && input.foldoutPages > 0) {
+    requiresManualQuote = true;
+    quoteReason = `Document contains ${input.foldoutPages} large format page(s) - please call 877-318-1555 for custom pricing`;
+  } else if (totalPrice > 500) {
     requiresManualQuote = true;
     quoteReason = 'Order exceeds $500 - manual quote required';
   } else if (weight.shippingLbs > 25) {
