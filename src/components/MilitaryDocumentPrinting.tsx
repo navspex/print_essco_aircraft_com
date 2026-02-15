@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import ScrollReveal from './ScrollReveal';
-import { ChevronUp, ShieldCheck, Clock, Phone, Mail, CreditCard, Award, CheckCircle, Layers, FileText, Printer, Upload, ArrowRight, Shield, Star, BookOpen, Wrench, ClipboardList, Package } from 'lucide-react';
+import { ChevronUp, ShieldCheck, Clock, Phone, Mail, CreditCard, Award, CheckCircle, FileText, Printer, Upload, ArrowRight, Shield, Star, BookOpen, Wrench, Layers, Package, ClipboardList, Archive } from 'lucide-react';
 
 // Schema.org structured data
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Military Aviation Document Printing Services",
-  "description": "Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and maintenance documentation. No minimum order. Upload your PDF for instant pricing. Serving military aviation since 1955.",
+  "description": "Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and warbird restoration documentation. Veteran-owned, woman-owned. No minimum order. Since 1955.",
   "provider": {
     "@type": "Organization",
     "name": "ESSCO Aircraft",
@@ -32,42 +32,42 @@ const faqSchema = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Can you print military technical manuals and technical orders?",
+      "name": "What types of military technical manuals can you print?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. We print Army TMs, Air Force Technical Orders, NAVAIR publications, and joint-service technical manuals. You provide the PDF and we produce exact reproductions. We handle documents from single-page work cards to 888-page inspection manuals like the TO 33B-1-1. Our system processes files up to 104MB."
+        "text": "Any military TM you have as a PDF — Army Technical Manuals, Air Force Technical Orders, NAVAIR publications, and joint-service manuals. From single work cards to 800+ page inspection manuals. Distribution Statement A documents only (approved for public release)."
       }
     },
     {
       "@type": "Question",
-      "name": "Do you handle classified or restricted documents?",
+      "name": "Can you print vintage or historical military aircraft manuals?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We print documents with Distribution Statement A (approved for public release, distribution unlimited). We do not handle classified materials. Many military technical manuals, historical TMs, and maintenance publications carry Distribution Statement A and can be printed through our standard upload process."
+        "text": "Yes — this is a significant part of our business. We regularly print WWII-era TMs, Korean War maintenance manuals, and Vietnam-era technical orders for warbird restorers and aviation museums. If you have the PDF, we print it. We also maintain a 180,000-title archive of aviation publications."
       }
     },
     {
       "@type": "Question",
-      "name": "What about documents with foldout pages or oversized diagrams?",
+      "name": "What about foldout pages and oversized schematics?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Military TMs frequently include foldout schematics and wiring diagrams. Our KIP 860 prints documents up to 36 inches wide on bond and film paper, handling the oversized pages common in aircraft maintenance manuals. Standard pages print on our Xerox Versant 4100. Both are priced automatically when you upload your PDF."
+        "text": "Our KIP 860 prints documents up to 36 inches wide on bond and film paper. Military TMs with foldout wiring diagrams and structural schematics are common orders for us. Standard pages print on our Xerox Versant 4100. Both are priced automatically when you upload."
       }
     },
     {
       "@type": "Question",
-      "name": "Can you print replacement pages for existing technical manuals?",
+      "name": "Can you print just replacement pages instead of a full manual?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Upload just the replacement pages as a PDF. Our calculator prices individual pages the same as complete manuals — no minimum page count. For 3-ring punched manuals, replacement pages drop right into your existing binder. This is the standard approach for interim changes between full manual revisions."
+        "text": "Yes. Upload only the pages you need — no minimum page count. Same per-page price whether you print 5 pages or 500. For 3-ring punched manuals, replacement pages drop right into your existing binder."
       }
     },
     {
       "@type": "Question",
-      "name": "What binding works best for military technical manuals?",
+      "name": "Are you a veteran-owned business?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "3-ring punched is the standard for military TMs that receive interim changes and page replacements. Coil binding works well for field reference copies that need to lay flat on a workbench or in a cockpit. For historical or archival copies, we offer hardcover binding that protects the document long-term."
+        "text": "Yes. ESSCO Aircraft is both veteran-owned and woman-owned, operating continuously since 1955. 70 years serving the aviation community with 250,000+ orders completed."
       }
     }
   ]
@@ -81,18 +81,17 @@ export default function MilitaryDocumentPrinting() {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
 
-    // SEO: Set document title and meta tags
     document.title = 'Military Aviation Document Printing | Technical Manuals & TOs | ESSCO Aircraft';
     const metaTags = [
-      { name: 'description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and maintenance documentation. No minimum order. Upload your PDF for instant pricing.' },
+      { name: 'description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and warbird restoration docs. Veteran-owned, woman-owned. Upload your PDF for instant pricing.' },
       { property: 'og:title', content: 'Military Aviation Document Printing | ESSCO Aircraft' },
-      { property: 'og:description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and maintenance documentation. No minimum order. Upload your PDF for instant pricing.' },
+      { property: 'og:description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and warbird restoration docs. Veteran-owned, woman-owned. Upload your PDF for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/military-docs-hero.jpg' },
       { property: 'og:url', content: 'https://print.esscoaircraft.com/military-document-printing' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: 'Military Aviation Document Printing | ESSCO Aircraft' },
-      { name: 'twitter:description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and maintenance documentation. No minimum order. Upload your PDF for instant pricing.' },
+      { name: 'twitter:description', content: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and warbird restoration docs. Veteran-owned, woman-owned. Upload your PDF for instant pricing.' },
       { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/military-docs-hero.jpg' },
     ];
     const createdMetas: HTMLMetaElement[] = [];
@@ -105,13 +104,11 @@ export default function MilitaryDocumentPrinting() {
       createdMetas.push(meta);
     });
 
-    // Canonical URL
     const canonicalLink = document.createElement('link');
     canonicalLink.setAttribute('rel', 'canonical');
     canonicalLink.setAttribute('href', 'https://print.esscoaircraft.com/military-document-printing');
     document.head.appendChild(canonicalLink);
 
-    // Inject schema
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schemaData);
@@ -139,23 +136,17 @@ export default function MilitaryDocumentPrinting() {
       <style>{`
         .bg-zoom-container { position: relative; overflow: hidden; }
         .bg-zoom-layer {
-          position: absolute;
-          inset: 0;
-          background-size: cover;
-          background-position: center;
-          transition: transform 8s ease-out;
-          z-index: 0;
+          position: absolute; inset: 0; background-size: cover; background-position: center;
+          transition: transform 8s ease-out; z-index: 0;
         }
-        .bg-zoom-container:hover .bg-zoom-layer {
-          transform: scale(1.10);
-        }
+        .bg-zoom-container:hover .bg-zoom-layer { transform: scale(1.10); }
         .bg-zoom-container h1, .bg-zoom-container h2, .bg-zoom-container h3,
         .bg-zoom-container p, .bg-zoom-container span {
           text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
         }
       `}</style>
 
-      {/* ==================== HERO SECTION ==================== */}
+      {/* ==================== HERO ==================== */}
       <ScrollReveal>
         <div className="pt-2 pb-1 px-4 max-w-7xl mx-auto">
           <p className="text-xs text-slate-500 tracking-wide"><a href="/" className="hover:text-amber-400 transition-colors">Home</a> / Military Document Printing</p>
@@ -167,15 +158,15 @@ export default function MilitaryDocumentPrinting() {
           <div className="bg-zoom-layer" style={{ backgroundImage: 'url(/images/military-docs-hero.jpg)' }}></div>
           <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
             <div className="bg-slate-900/30 rounded-xl p-8 md:p-10 border border-slate-600 mb-8">
-              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Since 1955 — 250,000+ Orders Completed</p>
+              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-3" style={{ fontFamily: "'Oswald', sans-serif" }}>Veteran-Owned • Woman-Owned • Since 1955</p>
               <h1 className="mb-6 text-white text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-tight" style={{ fontFamily: "'Oswald', sans-serif", textShadow: '2px 2px 8px rgba(0, 0, 0, 0.8)' }}>
-                Military Aviation<br />Document Printing
+                You Found the TM.<br />We'll Print It Right.
               </h1>
               <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-                Print Army TMs, Air Force Technical Orders, NAVAIR publications, and maintenance documentation. No minimum order, no setup fees. Upload your PDF and get instant pricing for any quantity.
+                Print Army Technical Manuals, Air Force Technical Orders, NAVAIR publications, and warbird restoration documentation. Upload your PDF, choose your binding, and we ship it. No minimum order.
               </p>
               <a href="/#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                <Upload className="w-5 h-5" /> Upload Your PDF — Get Instant Pricing
+                <Upload className="w-5 h-5" /> Upload Your TM — Instant Price
               </a>
             </div>
           </div>
@@ -186,63 +177,53 @@ export default function MilitaryDocumentPrinting() {
       <ScrollReveal delay={150}>
         <section className="bg-amber-500/10 border-y border-amber-500/30 py-4 transition-all duration-500 hover:bg-amber-500/15">
           <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-sm text-slate-300">
-            <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-green-500" />No Minimum Order</span>
-            <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-amber-400" />Same-Day Production Available</span>
-            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-blue-400" />Serving Military Aviation Since 1955</span>
+            <span className="flex items-center gap-2"><Star className="w-4 h-4 text-amber-400" />Veteran-Owned & Woman-Owned</span>
+            <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-green-500" />250,000+ Orders Since 1955</span>
+            <span className="flex items-center gap-2"><Archive className="w-4 h-4 text-blue-400" />180,000-Title Aviation Archive</span>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* ==================== CONTEXT — WHO THIS IS FOR ==================== */}
+      <ScrollReveal delay={200}>
+        <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-wider mb-6" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              For Restorers, Maintainers & Historians
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed mb-6 max-w-3xl mx-auto">
+              You tracked down the TM for a 1953 H-19 Chickasaw from a library archive. Or you need the TO 1-1A-1 structural repair manual reprinted for your shop floor. Or the museum wants a clean copy of the KC-97G maintenance manual for a new exhibit.
+            </p>
+            <p className="text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
+              You already did the hard part — finding the document. We do the rest. Upload the PDF, pick your binding, and a professional-grade reproduction ships to your hangar, shop, or museum.
+            </p>
           </div>
         </section>
       </ScrollReveal>
 
       {/* ==================== WHAT WE PRINT ==================== */}
       <ScrollReveal delay={200}>
-        <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+        <section className="py-16 bg-slate-800/50 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white text-center uppercase tracking-wider mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>
               Military Documents We Print
             </h2>
             <p className="text-center text-slate-400 mb-12 max-w-3xl mx-auto">
-              From single work cards to 888-page inspection manuals — we handle the full range of military aviation documentation with Distribution Statement A clearance.
+              Distribution Statement A documents — approved for public release. If you have the PDF, we print it.
             </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { icon: <BookOpen className="w-8 h-8 text-amber-400" />, title: 'Army Technical Manuals (TMs)', desc: 'Department of the Army TMs across all series — from TM 1 through TM 55. Maintenance manuals, operator manuals, parts catalogs, and inspection procedures.' },
-                { icon: <Star className="w-8 h-8 text-amber-400" />, title: 'Air Force Technical Orders', desc: 'USAF Technical Orders including aircraft maintenance, repair procedures, and inspection programs. TO 1-series flight manuals through TO 33-series NDI procedures.' },
-                { icon: <Shield className="w-8 h-8 text-amber-400" />, title: 'NAVAIR Publications', desc: 'Naval Air Systems Command technical manuals, NATOPS flight manuals, and maintenance procedures. Standard NAVAIR numbering system supported.' },
-                { icon: <Wrench className="w-8 h-8 text-amber-400" />, title: 'Maintenance & Repair Manuals', desc: 'Structural repair manuals, corrosion control procedures, NDI inspection guides, and weapons system-specific maintenance documentation.' },
-                { icon: <Layers className="w-8 h-8 text-amber-400" />, title: 'Oversized Schematics & Diagrams', desc: 'Wiring diagrams, aircraft system schematics, and foldout pages up to 36 inches wide. Printed on our KIP 860 on bond or film paper.' },
-                { icon: <ClipboardList className="w-8 h-8 text-amber-400" />, title: 'Historical & Restoration TMs', desc: 'Vintage military aircraft manuals for restoration projects. We regularly print WWII-era TMs, Korean War maintenance docs, and Vietnam-era technical orders for warbird restorers.' },
+                { icon: <BookOpen className="w-8 h-8 text-amber-400" />, title: 'Army Technical Manuals', desc: 'TM 1-series through TM 55-series. Operator manuals, maintenance procedures, parts catalogs, and inspection guides for every Army airframe.' },
+                { icon: <Star className="w-8 h-8 text-amber-400" />, title: 'Air Force Technical Orders', desc: 'TO 1-series flight manuals through TO 33-series NDI procedures. Including the 888-page TO 33B-1-1 — our system handles files up to 104MB.' },
+                { icon: <Shield className="w-8 h-8 text-amber-400" />, title: 'NAVAIR Publications', desc: 'NATOPS flight manuals, maintenance procedures, and technical directives. Standard NAVAIR numbering system — we know the format.' },
+                { icon: <Wrench className="w-8 h-8 text-amber-400" />, title: 'Warbird Restoration TMs', desc: 'WWII-era flight manuals, Korean War maintenance docs, Vietnam-era technical orders. The manuals that keep P-51s, Corsairs, and Hueys flying.' },
+                { icon: <Layers className="w-8 h-8 text-amber-400" />, title: 'Oversized Schematics', desc: 'Wiring diagrams, structural repair schematics, and foldout pages up to 36 inches wide on our KIP 860. Bond or film paper.' },
+                { icon: <ClipboardList className="w-8 h-8 text-amber-400" />, title: 'MRO Shop Documentation', desc: 'Structural repair manuals, corrosion control procedures, weight & balance documents, and inspection checklists for contract maintenance operations.' },
               ].map((item, i) => (
                 <div key={i} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 hover:border-amber-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10 hover:scale-[1.02]">
                   <div className="mb-4">{item.icon}</div>
                   <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </ScrollReveal>
-
-      {/* ==================== WHY ESSCO ==================== */}
-      <ScrollReveal delay={200}>
-        <section className="py-16 bg-slate-800/50 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
-          <div className="max-w-5xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center uppercase tracking-wider mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>
-              Why Military Professionals Choose ESSCO
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                { title: 'No Government Procurement Hassle', desc: 'Upload your PDF and order directly with a credit card or PayPal. No GPC card required, no contracting officer approval for orders under the micro-purchase threshold. Get your TMs printed today, not next quarter.' },
-                { title: 'Handles Massive Files', desc: 'Military TMs are big. Our system processes PDFs up to 104MB with page-by-page color detection. The 888-page TO 33B-1-1 NDI manual? We handle it. Automatic pricing for every page — color and B&W detected separately.' },
-                { title: '70 Years in Aviation', desc: 'ESSCO Aircraft has served the aviation community since 1955. We understand military documentation standards, page revision systems, and the formatting requirements that make TMs usable in the field and on the flight line.' },
-                { title: 'Replacement Pages & Partial Prints', desc: 'Need just the changed pages from the latest revision? Upload only those pages. No minimum page count, no minimum order value. One page or one thousand — same per-page price.' },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4">
-                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
                 </div>
               ))}
             </div>
@@ -259,10 +240,10 @@ export default function MilitaryDocumentPrinting() {
             </h2>
             <div className="grid md:grid-cols-4 gap-6">
               {[
-                { step: '01', icon: <Upload className="w-8 h-8 text-amber-400" />, title: 'Upload Your TM', desc: 'Drop your technical manual PDF into our calculator. Files up to 104MB — even your largest maintenance manuals.' },
-                { step: '02', icon: <Printer className="w-8 h-8 text-amber-400" />, title: 'Auto-Analyze', desc: 'Every page scanned for color vs B&W. Foldouts detected. Your exact price calculated in seconds.' },
-                { step: '03', icon: <Layers className="w-8 h-8 text-amber-400" />, title: 'Pick Binding', desc: '3-ring punched for field manuals with page changes. Coil for cockpit reference. Hardcover for archives.' },
-                { step: '04', icon: <Package className="w-8 h-8 text-amber-400" />, title: 'We Ship', desc: 'Secure checkout. Most orders ship next business day. Delivered to your unit, shop, or home address.' },
+                { step: '01', icon: <Upload className="w-8 h-8 text-amber-400" />, title: 'Upload Your TM', desc: 'Drop the PDF into our calculator. Files up to 104MB — even your largest maintenance manuals.' },
+                { step: '02', icon: <Printer className="w-8 h-8 text-amber-400" />, title: 'Auto-Analyze', desc: 'Every page scanned for color vs B&W. Diagrams and text priced separately. Exact total in seconds.' },
+                { step: '03', icon: <Layers className="w-8 h-8 text-amber-400" />, title: 'Pick Binding', desc: '3-ring for field manuals. Coil for the cockpit. Hardcover for archive copies. Your choice at checkout.' },
+                { step: '04', icon: <Package className="w-8 h-8 text-amber-400" />, title: 'We Ship', desc: 'Credit card or PayPal. Ships to your hangar, MRO shop, museum, or home. Most orders go out next business day.' },
               ].map((item, i) => (
                 <div key={i} className="text-center">
                   <div className="text-amber-500/30 text-5xl font-bold mb-2" style={{ fontFamily: "'Oswald', sans-serif" }}>{item.step}</div>
@@ -276,15 +257,42 @@ export default function MilitaryDocumentPrinting() {
         </section>
       </ScrollReveal>
 
-      {/* ==================== EQUIPMENT ==================== */}
+      {/* ==================== WHY ESSCO ==================== */}
       <ScrollReveal delay={200}>
         <section className="py-16 bg-slate-800/50 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+          <div className="max-w-5xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center uppercase tracking-wider mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              Why ESSCO for Military Documents
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                { title: 'Veteran-Owned & Woman-Owned', desc: 'ESSCO Aircraft has operated continuously since 1955. Veteran-owned and woman-owned — if your contract requires supplier diversity reporting, we qualify.' },
+                { title: '70 Years of Aviation Documents', desc: 'We have printed aviation documentation since Eisenhower was president. We understand military TM formatting, page revision systems, and the paper weight that survives a shop floor.' },
+                { title: '180,000-Title Archive', desc: 'Our parent company maintains one of the largest aviation publication inventories in the United States. If you need a TM you cannot find anywhere else, ask us.' },
+                { title: 'No Minimum, No Hassle', desc: 'Print one replacement page or an entire 800-page manual. Same per-page price. Credit card checkout — no GPC card required for orders under micro-purchase threshold.' },
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4">
+                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* ==================== EQUIPMENT ==================== */}
+      <ScrollReveal delay={200}>
+        <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="max-w-5xl mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-wider mb-8" style={{ fontFamily: "'Oswald', sans-serif" }}>
-              Professional Equipment
+              Built for Technical Documents
             </h2>
             <p className="text-slate-400 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Standard-size TM pages print on our <strong className="text-white">Xerox Versant 4100</strong> production press with automatic color detection — color diagrams and B&W text priced separately on every page. Oversized schematics, wiring diagrams, and foldout pages print on our <strong className="text-white">KIP 860</strong> at up to 36 inches wide using LED toner technology on bond and film paper.
+              Standard TM pages print on our <strong className="text-white">Xerox Versant 4100</strong> production press with automatic color detection — color diagrams and B&W text priced separately on every page. Oversized schematics, wiring diagrams, and foldout pages print on our <strong className="text-white">KIP 860</strong> at up to 36 inches wide using LED toner technology on bond and film paper.
             </p>
             <a href="/#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-8 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               <Upload className="w-5 h-5" /> Get Your Instant Quote
@@ -295,7 +303,7 @@ export default function MilitaryDocumentPrinting() {
 
       {/* ==================== FAQ ==================== */}
       <ScrollReveal delay={200}>
-        <section className="py-16 bg-slate-900 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
+        <section className="py-16 bg-slate-800/50 transition-all duration-500 hover:bg-slate-800 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white text-center uppercase tracking-wider mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>
               Frequently Asked Questions
@@ -317,10 +325,10 @@ export default function MilitaryDocumentPrinting() {
         <section className="py-16 bg-gradient-to-b from-slate-800/50 to-slate-900 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:scale-[1.01] origin-center">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-wider mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>
-              Ready to Print Your Technical Manuals?
+              Your TM Deserves Better Than a Copier
             </h2>
             <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
-              Upload your PDF, choose your binding, and checkout in under five minutes. Most orders ship next business day.
+              You spent weeks tracking down that manual. Get it printed on production equipment that does it justice. Upload your PDF and we handle the rest.
             </p>
             <a href="/#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               <Upload className="w-5 h-5" /> Upload Your PDF — Get Instant Pricing
@@ -367,6 +375,11 @@ export default function MilitaryDocumentPrinting() {
                   <li><a href="https://www.esscoaircraft.com/policies/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors">Terms of Service</a></li>
                 </ul>
               </div>
+              <div>
+                <h3 className="text-white font-bold text-lg uppercase mb-4" style={{ fontFamily: "'Oswald', sans-serif" }}>About ESSCO</h3>
+                <p className="text-sm leading-relaxed mb-3">Veteran-owned and woman-owned since 1955. 70 years serving the aviation community.</p>
+                <p className="text-sm leading-relaxed">250,000+ orders completed with 100% positive feedback.</p>
+              </div>
             </div>
           </div>
           <div className="border-t border-slate-800">
@@ -383,13 +396,12 @@ export default function MilitaryDocumentPrinting() {
           <div className="flex justify-center items-center gap-6 py-4 border-t border-slate-800">
             <div className="flex items-center gap-2 text-sm"><ShieldCheck size={20} className="text-green-500" /><span>Secure Checkout</span></div>
             <div className="flex items-center gap-2 text-sm"><CreditCard size={20} className="text-blue-400" /><span>PayPal Accepted</span></div>
-            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>70 Years Trusted</span></div>
+            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>Veteran-Owned & Woman-Owned</span></div>
           </div>
-          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. All rights reserved.</p></div></div>
+          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. Veteran-Owned & Woman-Owned. All rights reserved.</p></div></div>
         </footer>
       </ScrollReveal>
 
-      {/* Scroll to Top */}
       {showScrollTop && (
         <button onClick={scrollToTop} className="fixed bottom-6 right-6 p-3 bg-amber-500/70 hover:bg-amber-500 text-slate-900 rounded-full shadow-lg transition-all duration-300 hover:scale-105 z-50" aria-label="Scroll to top">
           <ChevronUp className="w-6 h-6" />
