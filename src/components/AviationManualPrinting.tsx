@@ -313,6 +313,32 @@ export default function AviationManualPrinting() {
         </section>
       </ScrollReveal>
 
+      {/* ==================== RELATED SERVICES ==================== */}
+      <ScrollReveal delay={100}>
+        <section className="py-16 bg-slate-800">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>Related Services</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <a href="/binding-options" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Binding Options</h3>
+                <p className="text-slate-400 text-sm mb-4">Compare binding methods for your aviation manuals. Coil, comb, 3-ring, perfect binding, and saddle stitch explained.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/document-preservation" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Document Preservation</h3>
+                <p className="text-slate-400 text-sm mb-4">Preserve deteriorating vintage manuals with professional reprints. 180,000-title archive access.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/file-preparation-guide" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">File Preparation Guide</h3>
+                <p className="text-slate-400 text-sm mb-4">Optimize your PDFs for printing. Learn about resolution, page setup, and common file issues.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ==================== FOOTER ==================== */}
       <ScrollReveal delay={100}>
                         <footer className="bg-slate-950 text-slate-400 pt-12 pb-4">

@@ -7,7 +7,7 @@ const schemaData = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Large Format Aviation Printing",
-  "description": "Large format printing for aviation schematics, wiring diagrams, blueprints, CAD drawings, and fold-out pages. Up to 36 inches wide, any length.",
+  "description": "Large format printing for aviation schematics, wiring diagrams, blueprints, CAD drawings, and fold-out pages. Up to 36 inches wide on KIP 860 wide format printer, any length.",
   "provider": {
     "@type": "Organization",
     "name": "ESSCO Aircraft",
@@ -34,9 +34,9 @@ export default function LargeFormatPrinting() {
 
     // SEO: OG and Twitter meta tags for social sharing
     const metaTags = [
-      { name: 'description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { name: 'description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on KIP 860 wide format printer. Upload your file for instant pricing.' },
       { property: 'og:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
-      { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { property: 'og:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on KIP 860 wide format printer. Upload your file for instant pricing.' },
       { property: 'og:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
       { property: 'og:image:width', content: '2000' },
       { property: 'og:image:height', content: '1125' },
@@ -44,7 +44,7 @@ export default function LargeFormatPrinting() {
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: 'Large Format Aviation Printing | Schematics & Blueprints' },
-      { name: 'twitter:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on HP DesignJet. Upload your file for instant pricing.' },
+      { name: 'twitter:description', content: 'Large format printing for aviation schematics, wiring diagrams, CAD drawings, and blueprints. Up to 36\" wide on KIP 860 wide format printer. Upload your file for instant pricing.' },
       { name: 'twitter:image', content: 'https://print.esscoaircraft.com/images/large-format-hero.jpg' },
     ];
     const createdMetas: HTMLMetaElement[] = [];
@@ -133,7 +133,7 @@ export default function LargeFormatPrinting() {
         <section className="bg-amber-500/10 border-y border-amber-500/30 py-4 transition-all duration-500 hover:bg-amber-500/15">
           <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-sm text-slate-300">
             <span className="flex items-center gap-2"><Maximize2 className="w-4 h-4 text-blue-400" />Up to 36" Wide</span>
-            <span className="flex items-center gap-2"><Printer className="w-4 h-4 text-amber-400" />HP DesignJet XL 3800</span>
+            <span className="flex items-center gap-2"><Printer className="w-4 h-4 text-amber-400" />KIP 860 Wide Format Printer</span>
             <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-500" />Same-Day Production Available</span>
           </div>
         </section>
@@ -310,6 +310,32 @@ export default function LargeFormatPrinting() {
             <a href="/#calculator" className="bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold uppercase tracking-wide px-10 py-4 rounded-lg shadow-xl transition-all duration-500 hover:scale-[1.05] hover:shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3" style={{ fontFamily: "'Oswald', sans-serif" }}>
               <Upload className="w-5 h-5" /> Upload File & Get Quote
             </a>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* ==================== RELATED SERVICES ==================== */}
+      <ScrollReveal delay={100}>
+        <section className="py-16 bg-slate-800">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>Related Services</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <a href="/posters" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Poster Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">Aircraft profiles, safety procedures, and training visuals. Sizes from 11×17 to 36×48 with optional lamination.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/aviation-manual-printing" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Aviation Manual Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">POH, AFM, and maintenance manuals with professional binding. Upload PDF for instant pricing.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/file-preparation-guide" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">File Preparation Guide</h3>
+                <p className="text-slate-400 text-sm mb-4">Optimize CAD drawings and schematics for large format printing. Resolution and page setup tips.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+            </div>
           </div>
         </section>
       </ScrollReveal>

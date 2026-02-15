@@ -483,6 +483,32 @@ export default function PostersPage() {
         </section>
       </ScrollReveal>
 
+      {/* ==================== RELATED SERVICES ==================== */}
+      <ScrollReveal delay={250}>
+        <section className="py-16 bg-slate-800">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>Related Services</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <a href="/large-format-printing" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Large Format Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">Oversized schematics, CAD drawings, and blueprints. Up to 36" wide on KIP 860 printer.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/checklist-printing" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Checklist Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">Cockpit checklists with coil binding that lays flat. Optional lamination for durability.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/aviation-manual-printing" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Aviation Manual Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">POH, AFM, and maintenance manuals. Professional binding with next-day turnaround.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ==================== FOOTER ==================== */}
       <ScrollReveal delay={300}>
                         <footer className="bg-slate-950 text-slate-400 pt-12 pb-4">

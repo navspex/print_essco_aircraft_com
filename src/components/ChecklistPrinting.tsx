@@ -310,6 +310,32 @@ export default function ChecklistPrinting() {
         </section>
       </ScrollReveal>
 
+      {/* ==================== RELATED SERVICES ==================== */}
+      <ScrollReveal delay={100}>
+        <section className="py-16 bg-slate-800">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12" style={{ fontFamily: "'Oswald', sans-serif" }}>Related Services</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <a href="/aviation-manual-printing" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Aviation Manual Printing</h3>
+                <p className="text-slate-400 text-sm mb-4">Professional POH, AFM, and maintenance manual printing with instant pricing and next-day turnaround.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/binding-options" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Binding Options</h3>
+                <p className="text-slate-400 text-sm mb-4">Compare coil, comb, and 3-ring binding for checklists. Find the best option for cockpit use.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+              <a href="/flight-school-materials" className="bg-slate-900 rounded-xl p-6 border border-slate-700 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20 hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-white mb-3">Flight School Materials</h3>
+                <p className="text-slate-400 text-sm mb-4">Bulk printing for training manuals, syllabi, and student materials. Volume discounts available.</p>
+                <span className="text-amber-400 text-sm font-semibold">Learn More →</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ==================== FOOTER ==================== */}
       <ScrollReveal delay={100}>
                         <footer className="bg-slate-950 text-slate-400 pt-12 pb-4">

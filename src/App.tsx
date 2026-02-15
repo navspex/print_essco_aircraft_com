@@ -150,7 +150,7 @@ function App() {
                 <div className="relative z-20 max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Professional Equipment, Professional Results</h2>
-            <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our facility at KLPR Lorain County Regional Airport houses over $100,000 in commercial-grade printing and finishing equipment. We've invested in the same professional machinery used by commercial print shops and major publishers because aviation professionals deserve nothing less than exceptional quality.</p>
+            <p className="text-lg text-slate-300 max-w-3xl mx-auto">Our facility at KLPR Lorain County Regional Airport—centrally located between KCLE Cleveland Hopkins, KCAK Akron-Canton, and KYNG Youngstown—houses over $100,000 in commercial-grade printing and finishing equipment. We've invested in the same professional machinery used by commercial print shops and major publishers because aviation professionals deserve nothing less than exceptional quality.</p>
           </div>
           
           {/* Equipment Image Strip */}
@@ -159,7 +159,7 @@ function App() {
               <img src="/images/equip-xerox-versant.png" alt="Xerox Versant 4100 Press" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
-              <img src="/images/equip-hp-designjet.png" alt="HP DesignJet XL 3800" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <img src="/images/equip-hp-designjet.png" alt="KIP 860 Wide Format Printer" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg">
               <img src="/images/equip-horizon-binder.png" alt="Horizon BQ-160 Binder" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
@@ -179,7 +179,7 @@ function App() {
             <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
               <Printer className="w-12 h-12 text-amber-400 mb-4" />
               <h3 className="text-white font-bold text-xl mb-3">Professional Equipment</h3>
-              <p className="text-slate-300 leading-relaxed">Our $100,000+ facility features commercial-grade printing and finishing equipment including the Xerox Versant 4100 Press, HP Designjet XL 3800, Horizon BQ-160 Binder, TRIUMPH 4315 Guillotine Cutter, and commercial roll laminator. We use the same professional machinery trusted by major publishers and commercial print shops nationwide.</p>
+              <p className="text-slate-300 leading-relaxed">Our $100,000+ facility features commercial-grade printing and finishing equipment including the Xerox Versant 4100 Press, KIP 860 Wide Format Printer (up to 36" wide), Horizon BQ-160 Binder, TRIUMPH 4315 Guillotine Cutter, and commercial roll laminator. We use the same professional machinery trusted by major publishers and commercial print shops nationwide.</p>
             </div>
             
             <div className="bg-slate-700/90 rounded-xl p-6 border border-slate-600 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/20">
