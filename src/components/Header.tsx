@@ -41,6 +41,8 @@ const Header: FC = () => {
       heading: 'Industries',
       items: [
         { label: 'Flight School Materials', href: '/flight-school-materials' },
+        { label: 'Corporate Flight Departments', href: '/corporate-flight-departments' },
+        { label: 'Military Document Printing', href: '/military-document-printing' },
       ],
     },
   ];

@@ -10,6 +10,8 @@ import BindingOptions from './components/BindingOptions';
 import FlightSchoolMaterials from './components/FlightSchoolMaterials';
 import DocumentPreservation from './components/DocumentPreservation';
 import FilePreparationGuide from './components/FilePreparationGuide';
+import CorporateFlightDepartments from './components/CorporateFlightDepartments';
+import MilitaryDocumentPrinting from './components/MilitaryDocumentPrinting';
 import './index.css';
 
 // Per-route SEO metadata
@@ -53,6 +55,14 @@ const routeMeta: Record<string, { title: string; description: string }> = {
   '/file-preparation-guide': {
     title: 'Aviation PDF File Preparation Guide | Print-Ready Tips | ESSCO Aircraft',
     description: 'How to prepare your aviation PDF for professional printing. Tips for scanned manuals, mixed page sizes, color detection, and resolution. Or just upload as-is — our system handles the rest.',
+  },
+  '/corporate-flight-departments': {
+    title: 'Corporate Flight Department Printing | Part 135 Operations Manuals | ESSCO Aircraft',
+    description: 'Print Part 135 operations manuals, GOM documents, MEL binders, and compliance documentation for corporate flight departments. No minimum order. Upload your PDF for instant pricing.',
+  },
+  '/military-document-printing': {
+    title: 'Military Aviation Document Printing | Technical Manuals & TOs | ESSCO Aircraft',
+    description: 'Print military technical manuals, NAVAIR publications, Army TMs, Air Force Technical Orders, and maintenance documentation. No minimum order. Upload your PDF for instant pricing.',
   },
 };
 
@@ -119,6 +129,14 @@ function Router() {
 
   if (path === '/file-preparation-guide') {
     return <FilePreparationGuide />;
+  }
+
+  if (path === '/corporate-flight-departments') {
+    return <CorporateFlightDepartments />;
+  }
+
+  if (path === '/military-document-printing') {
+    return <MilitaryDocumentPrinting />;
   }
 
   // Default: landing page (manual printing)

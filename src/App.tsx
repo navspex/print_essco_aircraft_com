@@ -558,6 +558,8 @@ function App() {
                   <li><a href="/file-preparation-guide" className="hover:text-amber-400 transition-colors">File Preparation Guide</a></li>
                   <li><a href="/document-preservation" className="hover:text-amber-400 transition-colors">Document Preservation</a></li>
                   <li><a href="/flight-school-materials" className="hover:text-amber-400 transition-colors">Flight School Materials</a></li>
+                  <li><a href="/corporate-flight-departments" className="hover:text-amber-400 transition-colors">Corporate Flight Departments</a></li>
+                  <li><a href="/military-document-printing" className="hover:text-amber-400 transition-colors">Military Document Printing</a></li>
                 </ul>
               </div>
               <div>
