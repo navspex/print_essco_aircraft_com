@@ -565,9 +565,10 @@ export default function PostersPage() {
           <div className="flex justify-center items-center gap-6 py-4 border-t border-slate-800">
             <div className="flex items-center gap-2 text-sm"><ShieldCheck size={20} className="text-green-500" /><span>Secure Checkout</span></div>
             <div className="flex items-center gap-2 text-sm"><CreditCard size={20} className="text-blue-400" /><span>PayPal Accepted</span></div>
-            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>Veteran-Owned & Woman-Owned</span></div>
+            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>Veteran-Owned Business</span></div>
+            <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-purple-400" /><span>Woman-Owned Business</span></div>
           </div>
-          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. Veteran-Owned & Woman-Owned. All rights reserved.</p></div></div>
+          <div className="border-t border-slate-800"><div className="max-w-7xl mx-auto px-4 py-4"><p className="text-sm text-center">&copy; {new Date().getFullYear()} ESSCO Aircraft. Veteran-Owned Business | Woman-Owned Business. All rights reserved.</p></div></div>
         </footer>
       </ScrollReveal>
 
