@@ -391,7 +391,10 @@ export default function ChecklistPrinting() {
           </div>
           <div className="flex justify-center items-center gap-6 py-4 border-t border-slate-800">
             <div className="flex items-center gap-2 text-sm"><ShieldCheck size={20} className="text-green-500" /><span>Secure Checkout</span></div>
-            <div className="flex items-center gap-2 text-sm"><CreditCard size={20} className="text-blue-400" /><span>PayPal Accepted</span></div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-slate-400">We Accept:</span>
+              <img src="/images/payment-methods.png" alt="Payment methods: Shop Pay, PayPal, Amazon Pay, Google Pay" className="h-8" />
+            </div>
             <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-amber-400" /><span>Veteran-Owned Business</span></div>
             <div className="flex items-center gap-2 text-sm"><Award size={20} className="text-purple-400" /><span>Woman-Owned Business</span></div>
           </div>
