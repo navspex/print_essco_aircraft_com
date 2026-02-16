@@ -33,14 +33,21 @@ export const COVER_OPTIONS = {
 export const TAB_SET_PRICE = 5.00;
 export const TAB_SET_WEIGHT_GRAMS = 10;
 
-// Large format pricing (based on poster calculator)
-// Pages from 11×17 up to 36" wide can be auto-priced
-export const LARGE_FORMAT_TIERS = [
-  { maxWidth: 11, maxHeight: 17, bwPrice: 3.00, colorPrice: 5.00, label: '11×17' },
-  { maxWidth: 18, maxHeight: 24, bwPrice: 8.00, colorPrice: 18.00, label: '18×24' },
-  { maxWidth: 24, maxHeight: 36, bwPrice: 14.00, colorPrice: 33.00, label: '24×36' },
-  { maxWidth: 36, maxHeight: 48, bwPrice: 28.00, colorPrice: 68.00, label: '36×48' },
-];
+// Large format pricing - dynamic calculation based on square footage
+// KIP 860 can print up to 36" wide × unlimited length
+// Pricing: $X per square foot, scales with area
+export const LARGE_FORMAT_PRICING = {
+  // Base rates per square foot
+  BW_PER_SQ_FT: 2.80,      // ~$0.019/sq inch B&W
+  COLOR_PER_SQ_FT: 6.50,   // ~$0.045/sq inch color
+  
+  // Minimum charge (prevents tiny pages being too cheap)
+  MIN_BW_PRICE: 3.00,      // Minimum $3 B&W
+  MIN_COLOR_PRICE: 5.00,   // Minimum $5 color
+  
+  // Maximum width KIP 860 can handle
+  MAX_WIDTH_INCHES: 36,
+};
 
 // Paper weight constants (researched Session 20)
 export const PAPER_WEIGHT_GRAMS_PER_SHEET = 4.5; // 20lb bond standard
@@ -104,8 +111,8 @@ function findTier(totalPages: number): PricingTier {
 }
 
 /**
- * Calculate pricing for large format pages (11×17 to 36")
- * Uses poster-style pricing tiers based on actual dimensions
+ * Calculate pricing for large format pages (11×17 to 36" wide)
+ * Uses dynamic square footage calculation - ANY size within 36" width gets auto-priced
  */
 function calculateLargeFormatCost(largeFormatPages: { widthInches: number; heightInches: number; isColor: boolean; }[], copies: number): number {
   if (!largeFormatPages || largeFormatPages.length === 0) return 0;
@@ -113,23 +120,19 @@ function calculateLargeFormatCost(largeFormatPages: { widthInches: number; heigh
   let totalCost = 0;
   
   for (const page of largeFormatPages) {
-    const maxDim = Math.max(page.widthInches, page.heightInches);
-    const minDim = Math.min(page.widthInches, page.heightInches);
+    // Calculate area in square feet
+    const areaSquareInches = page.widthInches * page.heightInches;
+    const areaSquareFeet = areaSquareInches / 144; // 144 sq in = 1 sq ft
     
-    // Find appropriate pricing tier
-    let pageCost = 0;
-    for (const tier of LARGE_FORMAT_TIERS) {
-      if (maxDim <= tier.maxHeight && minDim <= tier.maxWidth) {
-        pageCost = page.isColor ? tier.colorPrice : tier.bwPrice;
-        break;
-      }
-    }
+    // Calculate base cost from area
+    const baseCost = page.isColor 
+      ? areaSquareFeet * LARGE_FORMAT_PRICING.COLOR_PER_SQ_FT
+      : areaSquareFeet * LARGE_FORMAT_PRICING.BW_PER_SQ_FT;
     
-    // If no tier matched (shouldn't happen if page <= 36"), use largest tier
-    if (pageCost === 0) {
-      const largestTier = LARGE_FORMAT_TIERS[LARGE_FORMAT_TIERS.length - 1];
-      pageCost = page.isColor ? largestTier.colorPrice : largestTier.bwPrice;
-    }
+    // Apply minimum charge (prevents tiny pages being underpriced)
+    const pageCost = page.isColor
+      ? Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_COLOR_PRICE)
+      : Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_BW_PRICE);
     
     totalCost += pageCost * copies;
   }

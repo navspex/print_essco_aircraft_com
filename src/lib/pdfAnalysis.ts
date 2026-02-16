@@ -96,10 +96,12 @@ function isFoldoutPage(width: number, height: number): boolean {
 
 /**
  * Determine if a page is oversized (larger than KIP 860 can print: 36" wide)
+ * KIP 860 prints 36" wide × unlimited length
+ * Check the SMALLER dimension (this becomes width when fed through)
  */
 function isOversizedPage(width: number, height: number): boolean {
-  const maxDim = Math.max(width, height);
-  return maxDim > PAGE_SIZES.LARGE_FORMAT_MAX_WIDTH + PAGE_SIZES.TOLERANCE;
+  const widthInches = Math.min(width, height) / 72;
+  return widthInches > 36 + (PAGE_SIZES.TOLERANCE / 72);
 }
 
 // ─── SMALL FILE PATH: Canvas pixel sampling ────────────────────────────
