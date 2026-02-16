@@ -6,7 +6,7 @@ import { useState, useCallback } from 'react';
 import { 
   Upload, FileCheck, AlertCircle, Loader2, 
   Package, DollarSign, CheckCircle, Info, AlertTriangle,
-  Phone, Mail
+  Phone, Mail, Maximize2
 } from 'lucide-react';
 import { analyzePDF, formatFileSize, type PDFAnalysisResult, type AnalysisPhase } from '../../lib/pdfAnalysis';
 import { 
@@ -25,6 +25,8 @@ interface OrderConfig {
   printMode: 'single' | 'double';
   isBooklet: boolean;
   bookletBinding: 'saddle' | 'threeRing' | 'comb' | 'perfect';
+  largeFormatFinish: 'plain' | 'glossy'; // Paper finish for large format pages
+  shrinkToFit: boolean; // Shrink oversized pages to 36" max
 }
 
 export default function Calculator() {
@@ -40,6 +42,8 @@ export default function Calculator() {
     printMode: 'double',
     isBooklet: false,
     bookletBinding: 'saddle',
+    largeFormatFinish: 'plain',
+    shrinkToFit: false,
   });
   const [pricing, setPricing] = useState<PricingBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +63,8 @@ export default function Calculator() {
       hasTabs: orderConfig.hasTabs,
       foldoutPages: analysisData.foldoutPages,
       largeFormatPages: analysisData.largeFormatPages,
+      largeFormatFinish: orderConfig.largeFormatFinish,
+      shrinkToFit: orderConfig.shrinkToFit,
       hasOversizedPages: analysisData.hasOversizedPages,
     });
     setPricing(result);
@@ -620,6 +626,74 @@ export default function Calculator() {
                 <span className="text-slate-400 text-sm">{formatPrice(TAB_SET_PRICE)}</span>
               </label>
             </div>
+
+            {/* Large Format Options - Only show if document has large format pages */}
+            {analysis && analysis.foldoutPages > 0 && (
+              <div className="bg-gradient-to-br from-amber-900/20 to-slate-800/30 rounded-lg p-4 border border-amber-700/50">
+                <div className="flex items-center gap-2 mb-3">
+                  <Maximize2 className="w-4 h-4 text-amber-400" />
+                  <h4 className="text-sm font-semibold text-amber-300">Large Format Options</h4>
+                </div>
+                <p className="text-xs text-slate-400 mb-3">
+                  Your document contains {analysis.foldoutPages} large format page{analysis.foldoutPages > 1 ? 's' : ''} (larger than 11×17)
+                </p>
+                
+                {/* Paper Finish */}
+                <div className="mb-3">
+                  <label className="block text-xs font-medium text-slate-300 mb-2">
+                    Paper Finish
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center justify-between cursor-pointer p-2 rounded hover:bg-slate-700/50">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="largeFormatFinish"
+                          value="plain"
+                          checked={config.largeFormatFinish === 'plain'}
+                          onChange={() => handleConfigChange({ largeFormatFinish: 'plain' })}
+                          className="w-4 h-4 text-amber-500 focus:ring-amber-500"
+                        />
+                        <span className="text-white text-sm">Plain Paper</span>
+                      </div>
+                      <span className="text-slate-400 text-xs">Standard</span>
+                    </label>
+                    <label className="flex items-center justify-between cursor-pointer p-2 rounded hover:bg-slate-700/50">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="largeFormatFinish"
+                          value="glossy"
+                          checked={config.largeFormatFinish === 'glossy'}
+                          onChange={() => handleConfigChange({ largeFormatFinish: 'glossy' })}
+                          className="w-4 h-4 text-amber-500 focus:ring-amber-500"
+                        />
+                        <span className="text-white text-sm">Glossy Paper</span>
+                      </div>
+                      <span className="text-amber-400 text-xs">+33%</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Shrink to Fit - Only show if oversized pages detected */}
+                {analysis.hasOversizedPages && (
+                  <div className="mt-3 pt-3 border-t border-slate-700">
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={config.shrinkToFit}
+                        onChange={(e) => handleConfigChange({ shrinkToFit: e.target.checked })}
+                        className="w-4 h-4 text-amber-500 focus:ring-amber-500 rounded mt-0.5"
+                      />
+                      <div>
+                        <span className="text-white text-sm block">Shrink to Fit (36" max width)</span>
+                        <span className="text-xs text-slate-400">Pages larger than 36" will be scaled down proportionally</span>
+                      </div>
+                    </label>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Right Column - Pricing */}

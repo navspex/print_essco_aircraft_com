@@ -33,20 +33,31 @@ export const COVER_OPTIONS = {
 export const TAB_SET_PRICE = 5.00;
 export const TAB_SET_WEIGHT_GRAMS = 10;
 
-// Large format pricing - dynamic calculation based on square footage
+// Large format pricing - PREMIUM RATES for specialized KIP 860 equipment
 // KIP 860 can print up to 36" wide × unlimited length
-// Pricing: $X per square foot, scales with area
+// Pricing aligned with poster calculator (premium equipment = premium pricing)
 export const LARGE_FORMAT_PRICING = {
-  // Base rates per square foot
-  BW_PER_SQ_FT: 2.80,      // ~$0.019/sq inch B&W
-  COLOR_PER_SQ_FT: 6.50,   // ~$0.045/sq inch color
+  // Base rates per square foot - MARKED UP for high-tech equipment
+  PLAIN: {
+    BW_PER_SQ_FT: 4.20,      // ~$0.029/sq inch B&W plain paper
+    COLOR_PER_SQ_FT: 9.75,   // ~$0.068/sq inch color plain paper
+  },
+  GLOSSY: {
+    BW_PER_SQ_FT: 5.60,      // ~$0.039/sq inch B&W glossy paper (+33%)
+    COLOR_PER_SQ_FT: 13.00,  // ~$0.090/sq inch color glossy paper (+33%)
+  },
   
   // Minimum charge (prevents tiny pages being too cheap)
-  MIN_BW_PRICE: 3.00,      // Minimum $3 B&W
-  MIN_COLOR_PRICE: 5.00,   // Minimum $5 color
+  MIN_BW_PLAIN: 5.00,       // Minimum $5 B&W plain
+  MIN_COLOR_PLAIN: 8.00,    // Minimum $8 color plain
+  MIN_BW_GLOSSY: 7.00,      // Minimum $7 B&W glossy
+  MIN_COLOR_GLOSSY: 11.00,  // Minimum $11 color glossy
   
   // Maximum width KIP 860 can handle
   MAX_WIDTH_INCHES: 36,
+  
+  // Paper finish upcharge
+  GLOSSY_MARKUP: 1.33,      // 33% upcharge for glossy paper
 };
 
 // Paper weight constants (researched Session 20)
@@ -69,7 +80,9 @@ export interface PricingInput {
     heightInches: number;
     isColor: boolean;
   }[]; // Detailed dimensions for pricing
-  hasOversizedPages?: boolean; // Pages > 36" (triggers manual quote)
+  largeFormatFinish?: 'plain' | 'glossy'; // Paper finish for large format pages
+  shrinkToFit?: boolean; // Shrink oversized pages to 36" max width
+  hasOversizedPages?: boolean; // Pages > 36" (triggers manual quote OR shrink-to-fit)
 }
 
 export interface PricingBreakdown {
@@ -112,10 +125,17 @@ function findTier(totalPages: number): PricingTier {
 
 /**
  * Calculate pricing for large format pages (11×17 to 36" wide)
- * Uses dynamic square footage calculation - ANY size within 36" width gets auto-priced
+ * Uses dynamic square footage calculation with paper finish options
+ * Premium pricing for specialized KIP 860 equipment
  */
-function calculateLargeFormatCost(largeFormatPages: { widthInches: number; heightInches: number; isColor: boolean; }[], copies: number): number {
+function calculateLargeFormatCost(
+  largeFormatPages: { widthInches: number; heightInches: number; isColor: boolean; }[], 
+  copies: number,
+  finish: 'plain' | 'glossy' = 'plain'
+): number {
   if (!largeFormatPages || largeFormatPages.length === 0) return 0;
+  
+  const rates = finish === 'glossy' ? LARGE_FORMAT_PRICING.GLOSSY : LARGE_FORMAT_PRICING.PLAIN;
   
   let totalCost = 0;
   
@@ -126,13 +146,20 @@ function calculateLargeFormatCost(largeFormatPages: { widthInches: number; heigh
     
     // Calculate base cost from area
     const baseCost = page.isColor 
-      ? areaSquareFeet * LARGE_FORMAT_PRICING.COLOR_PER_SQ_FT
-      : areaSquareFeet * LARGE_FORMAT_PRICING.BW_PER_SQ_FT;
+      ? areaSquareFeet * rates.COLOR_PER_SQ_FT
+      : areaSquareFeet * rates.BW_PER_SQ_FT;
     
     // Apply minimum charge (prevents tiny pages being underpriced)
-    const pageCost = page.isColor
-      ? Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_COLOR_PRICE)
-      : Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_BW_PRICE);
+    let pageCost;
+    if (finish === 'glossy') {
+      pageCost = page.isColor
+        ? Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_COLOR_GLOSSY)
+        : Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_BW_GLOSSY);
+    } else {
+      pageCost = page.isColor
+        ? Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_COLOR_PLAIN)
+        : Math.max(baseCost, LARGE_FORMAT_PRICING.MIN_BW_PLAIN);
+    }
     
     totalCost += pageCost * copies;
   }
@@ -190,8 +217,9 @@ export function calculatePrice(input: PricingInput): PricingBreakdown {
   const colorPagesCost = standardColorPages * copies * tier.colorRate;
   const standardPagesCost = bwPagesCost + colorPagesCost;
   
-  // Calculate LARGE FORMAT costs (11×17 to 36")
-  const largeFormatCost = largeFormatPages ? calculateLargeFormatCost(largeFormatPages, copies) : 0;
+  // Calculate LARGE FORMAT costs (11×17 to 36") with finish selection
+  const largeFormatFinish = input.largeFormatFinish || 'plain';
+  const largeFormatCost = largeFormatPages ? calculateLargeFormatCost(largeFormatPages, copies, largeFormatFinish) : 0;
   
   // Total pages cost
   const totalPagesCost = standardPagesCost + largeFormatCost;
@@ -212,10 +240,10 @@ export function calculatePrice(input: PricingInput): PricingBreakdown {
   let requiresManualQuote = false;
   let quoteReason: string | undefined;
   
-  // Only trigger manual quote for pages LARGER than 36" (KIP 860 max)
-  if (hasOversizedPages) {
+  // Only trigger manual quote for pages LARGER than 36" if NOT using shrink-to-fit
+  if (hasOversizedPages && !input.shrinkToFit) {
     requiresManualQuote = true;
-    quoteReason = `Document contains pages larger than 36" - please call 877-318-1555 for custom pricing`;
+    quoteReason = `Document contains pages larger than 36" wide. Enable "Shrink to Fit" option or call 877-318-1555 for custom pricing`;
   } else if (totalPrice > 500) {
     requiresManualQuote = true;
     quoteReason = 'Order exceeds $500 - manual quote required';
