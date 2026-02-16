@@ -392,14 +392,38 @@ export default function PosterCalculator() {
                 <button onClick={handleSubmit} className="block w-full text-center py-4 rounded-xl font-bold uppercase tracking-wide text-lg transition-all duration-300 shadow-xl bg-amber-500 hover:bg-amber-400 text-slate-900 hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber-500/50" style={{ fontFamily: "'Oswald', sans-serif" }}>
                   <span className="flex items-center justify-center gap-2"><ShoppingCart size={22} />Checkout — {fmt(orderTotal)}</span>
                 </button>
-                <div className="mt-3 flex flex-col items-center gap-2">
-                  <p className="text-slate-400 text-xs">Secure payment with:</p>
-                  <img 
-                    src="/images/payment-methods.png" 
-                    alt="Accepted payment methods: Shop Pay, PayPal, Amazon Pay, Google Pay, Venmo" 
-                    className="h-8 object-contain"
-                  />
+                
+                {/* Payment Methods - Custom Styled */}
+                <div className="mt-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                  <p className="text-slate-400 text-xs text-center mb-2">Secure checkout with:</p>
+                  <div className="flex justify-center items-center gap-1.5 flex-wrap">
+                    {/* Shop Pay */}
+                    <div className="flex items-center justify-center bg-[#5A31F4] hover:bg-[#6B42FF] text-white text-[10px] font-bold px-2 py-1.5 rounded transition-all duration-200 hover:scale-105">
+                      <span style={{ fontFamily: "'Poppins', sans-serif" }}>Shop Pay</span>
+                    </div>
+                    
+                    {/* PayPal */}
+                    <div className="flex items-center justify-center bg-[#0070BA] hover:bg-[#1088D8] text-white text-[10px] font-bold px-2 py-1.5 rounded transition-all duration-200 hover:scale-105">
+                      <span style={{ fontFamily: "'Helvetica', sans-serif" }}>PayPal</span>
+                    </div>
+                    
+                    {/* Amazon Pay */}
+                    <div className="flex items-center justify-center bg-[#FF9900] hover:bg-[#FFB84D] text-slate-900 text-[10px] font-bold px-2 py-1.5 rounded transition-all duration-200 hover:scale-105">
+                      <span style={{ fontFamily: "'Amazon Ember', sans-serif" }}>Amazon</span>
+                    </div>
+                    
+                    {/* Google Pay */}
+                    <div className="flex items-center justify-center bg-white hover:bg-slate-100 text-slate-900 text-[10px] font-bold px-2 py-1.5 rounded transition-all duration-200 hover:scale-105 border border-slate-300">
+                      <span style={{ fontFamily: "'Google Sans', sans-serif" }}>Google</span>
+                    </div>
+                    
+                    {/* Venmo */}
+                    <div className="flex items-center justify-center bg-[#008CFF] hover:bg-[#1A9FFF] text-white text-[10px] font-bold px-2 py-1.5 rounded transition-all duration-200 hover:scale-105">
+                      <span style={{ fontFamily: "'Graphik', sans-serif" }}>Venmo</span>
+                    </div>
+                  </div>
                 </div>
+                
                 <p className="text-center text-slate-500 text-xs mt-2">Opens secure Shopify checkout in a new tab</p>
               </div>
             </div>

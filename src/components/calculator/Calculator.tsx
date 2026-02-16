@@ -727,14 +727,35 @@ export default function Calculator() {
                   Proceed to Checkout
                 </button>
                 
-                {/* Payment Methods */}
-                <div className="mt-4 flex flex-col items-center gap-2">
-                  <p className="text-slate-400 text-xs">Secure payment with:</p>
-                  <img 
-                    src="/images/payment-methods.png" 
-                    alt="Accepted payment methods: Shop Pay, PayPal, Amazon Pay, Google Pay, Venmo" 
-                    className="h-10 object-contain"
-                  />
+                {/* Payment Methods - Custom Styled */}
+                <div className="mt-4 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+                  <p className="text-slate-400 text-xs text-center mb-3">Secure checkout with:</p>
+                  <div className="flex justify-center items-center gap-2 flex-wrap">
+                    {/* Shop Pay */}
+                    <div className="flex items-center justify-center bg-[#5A31F4] hover:bg-[#6B42FF] text-white text-xs font-bold px-3 py-2 rounded transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/30">
+                      <span style={{ fontFamily: "'Poppins', sans-serif" }}>Shop Pay</span>
+                    </div>
+                    
+                    {/* PayPal */}
+                    <div className="flex items-center justify-center bg-[#0070BA] hover:bg-[#1088D8] text-white text-xs font-bold px-3 py-2 rounded transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30">
+                      <span style={{ fontFamily: "'Helvetica', sans-serif" }}>PayPal</span>
+                    </div>
+                    
+                    {/* Amazon Pay */}
+                    <div className="flex items-center justify-center bg-[#FF9900] hover:bg-[#FFB84D] text-slate-900 text-xs font-bold px-3 py-2 rounded transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/30">
+                      <span style={{ fontFamily: "'Amazon Ember', sans-serif" }}>Amazon Pay</span>
+                    </div>
+                    
+                    {/* Google Pay */}
+                    <div className="flex items-center justify-center bg-white hover:bg-slate-100 text-slate-900 text-xs font-bold px-3 py-2 rounded transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-white/20 border border-slate-300">
+                      <span style={{ fontFamily: "'Google Sans', sans-serif" }}>Google Pay</span>
+                    </div>
+                    
+                    {/* Venmo */}
+                    <div className="flex items-center justify-center bg-[#008CFF] hover:bg-[#1A9FFF] text-white text-xs font-bold px-3 py-2 rounded transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-400/30">
+                      <span style={{ fontFamily: "'Graphik', sans-serif" }}>Venmo</span>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
