@@ -37,10 +37,18 @@ export interface PDFAnalysisResult {
   bwPages: number;
   colorPages: number;
   standardPages: number;  // 8.5x11
-  foldoutPages: number;   // 11x17 or larger
+  foldoutPages: number;   // 11x17 to 36" (can auto-price)
+  
+  // Large format details
+  largeFormatPages?: {
+    pageNumber: number;
+    widthInches: number;
+    heightInches: number;
+    isColor: boolean;
+  }[];
   
   // Validation
-  hasOversizedPages: boolean; // Larger than 11x17
+  hasOversizedPages: boolean; // Larger than 36" (needs manual quote)
   oversizedPageNumbers: number[];
 }
 
@@ -256,6 +264,7 @@ export async function analyzePDF(file: File, onProgress?: ProgressCallback): Pro
     colorPages: 0,
     standardPages: 0,
     foldoutPages: 0,
+    largeFormatPages: [],
     hasOversizedPages: false,
     oversizedPageNumbers: [],
   };
@@ -318,6 +327,13 @@ export async function analyzePDF(file: File, onProgress?: ProgressCallback): Pro
       
       if (foldout) {
         result.foldoutPages++;
+        // Track large format details for pricing
+        result.largeFormatPages!.push({
+          pageNumber: pageNum,
+          widthInches: width / 72,
+          heightInches: height / 72,
+          isColor
+        });
       } else {
         result.standardPages++;
       }

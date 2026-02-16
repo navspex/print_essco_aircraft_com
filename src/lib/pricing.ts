@@ -33,6 +33,15 @@ export const COVER_OPTIONS = {
 export const TAB_SET_PRICE = 5.00;
 export const TAB_SET_WEIGHT_GRAMS = 10;
 
+// Large format pricing (based on poster calculator)
+// Pages from 11×17 up to 36" wide can be auto-priced
+export const LARGE_FORMAT_TIERS = [
+  { maxWidth: 11, maxHeight: 17, bwPrice: 3.00, colorPrice: 5.00, label: '11×17' },
+  { maxWidth: 18, maxHeight: 24, bwPrice: 8.00, colorPrice: 18.00, label: '18×24' },
+  { maxWidth: 24, maxHeight: 36, bwPrice: 14.00, colorPrice: 33.00, label: '24×36' },
+  { maxWidth: 36, maxHeight: 48, bwPrice: 28.00, colorPrice: 68.00, label: '36×48' },
+];
+
 // Paper weight constants (researched Session 20)
 export const PAPER_WEIGHT_GRAMS_PER_SHEET = 4.5; // 20lb bond standard
 
@@ -46,7 +55,14 @@ export interface PricingInput {
   binding: BindingType;
   cover: CoverType;
   hasTabs: boolean;
-  foldoutPages?: number; // 11x17 pages (counted same as regular)
+  foldoutPages?: number; // Count of 11×17 to 36" pages
+  largeFormatPages?: {
+    pageNumber: number;
+    widthInches: number;
+    heightInches: number;
+    isColor: boolean;
+  }[]; // Detailed dimensions for pricing
+  hasOversizedPages?: boolean; // Pages > 36" (triggers manual quote)
 }
 
 export interface PricingBreakdown {
@@ -88,6 +104,40 @@ function findTier(totalPages: number): PricingTier {
 }
 
 /**
+ * Calculate pricing for large format pages (11×17 to 36")
+ * Uses poster-style pricing tiers based on actual dimensions
+ */
+function calculateLargeFormatCost(largeFormatPages: { widthInches: number; heightInches: number; isColor: boolean; }[], copies: number): number {
+  if (!largeFormatPages || largeFormatPages.length === 0) return 0;
+  
+  let totalCost = 0;
+  
+  for (const page of largeFormatPages) {
+    const maxDim = Math.max(page.widthInches, page.heightInches);
+    const minDim = Math.min(page.widthInches, page.heightInches);
+    
+    // Find appropriate pricing tier
+    let pageCost = 0;
+    for (const tier of LARGE_FORMAT_TIERS) {
+      if (maxDim <= tier.maxHeight && minDim <= tier.maxWidth) {
+        pageCost = page.isColor ? tier.colorPrice : tier.bwPrice;
+        break;
+      }
+    }
+    
+    // If no tier matched (shouldn't happen if page <= 36"), use largest tier
+    if (pageCost === 0) {
+      const largestTier = LARGE_FORMAT_TIERS[LARGE_FORMAT_TIERS.length - 1];
+      pageCost = page.isColor ? largestTier.colorPrice : largestTier.bwPrice;
+    }
+    
+    totalCost += pageCost * copies;
+  }
+  
+  return totalCost;
+}
+
+/**
  * Calculate shipping weight
  */
 function calculateWeight(input: PricingInput): { grams: number; lbs: number; shippingLbs: number } {
@@ -116,21 +166,32 @@ function calculateWeight(input: PricingInput): { grams: number; lbs: number; shi
 /**
  * Main pricing calculation function
  * KISS formula with volume pricing model
+ * Now includes large format auto-pricing for pages up to 36"
  */
 export function calculatePrice(input: PricingInput): PricingBreakdown {
-  const { bwPages, colorPages, copies, binding, cover, hasTabs } = input;
+  const { bwPages, colorPages, copies, binding, cover, hasTabs, largeFormatPages, hasOversizedPages } = input;
   
-  // Total pages for volume tier calculation
-  const totalPages = (bwPages + colorPages) * copies;
+  // Separate standard pages from large format pages
+  const standardBwPages = largeFormatPages ? bwPages - largeFormatPages.filter(p => !p.isColor).length : bwPages;
+  const standardColorPages = largeFormatPages ? colorPages - largeFormatPages.filter(p => p.isColor).length : colorPages;
   
-  // Find applicable tier (volume pricing - same rate for ALL pages)
-  const tier = findTier(totalPages);
+  // Total STANDARD pages for volume tier calculation (large format priced separately)
+  const totalStandardPages = (standardBwPages + standardColorPages) * copies;
+  
+  // Find applicable tier for standard pages (volume pricing - same rate for ALL pages)
+  const tier = findTier(totalStandardPages);
   const tierNumber = PRICING_TIERS.indexOf(tier) + 1;
   
-  // Calculate page costs
-  const bwPagesCost = bwPages * copies * tier.bwRate;
-  const colorPagesCost = colorPages * copies * tier.colorRate;
-  const totalPagesCost = bwPagesCost + colorPagesCost;
+  // Calculate STANDARD page costs
+  const bwPagesCost = standardBwPages * copies * tier.bwRate;
+  const colorPagesCost = standardColorPages * copies * tier.colorRate;
+  const standardPagesCost = bwPagesCost + colorPagesCost;
+  
+  // Calculate LARGE FORMAT costs (11×17 to 36")
+  const largeFormatCost = largeFormatPages ? calculateLargeFormatCost(largeFormatPages, copies) : 0;
+  
+  // Total pages cost
+  const totalPagesCost = standardPagesCost + largeFormatCost;
   
   // Calculate per-copy add-ons
   const bindingCost = BINDING_OPTIONS[binding].price * copies;
@@ -148,9 +209,10 @@ export function calculatePrice(input: PricingInput): PricingBreakdown {
   let requiresManualQuote = false;
   let quoteReason: string | undefined;
   
-  if (input.foldoutPages && input.foldoutPages > 0) {
+  // Only trigger manual quote for pages LARGER than 36" (KIP 860 max)
+  if (hasOversizedPages) {
     requiresManualQuote = true;
-    quoteReason = `Document contains ${input.foldoutPages} large format page(s) - please call 877-318-1555 for custom pricing`;
+    quoteReason = `Document contains pages larger than 36" - please call 877-318-1555 for custom pricing`;
   } else if (totalPrice > 500) {
     requiresManualQuote = true;
     quoteReason = 'Order exceeds $500 - manual quote required';

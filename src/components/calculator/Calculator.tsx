@@ -58,6 +58,8 @@ export default function Calculator() {
       cover: orderConfig.cover,
       hasTabs: orderConfig.hasTabs,
       foldoutPages: analysisData.foldoutPages,
+      largeFormatPages: analysisData.largeFormatPages,
+      hasOversizedPages: analysisData.hasOversizedPages,
     });
     setPricing(result);
   }, []);
