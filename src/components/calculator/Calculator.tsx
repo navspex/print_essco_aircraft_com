@@ -726,6 +726,16 @@ export default function Calculator() {
                   <Package size={20} />
                   Proceed to Checkout
                 </button>
+                
+                {/* Payment Methods */}
+                <div className="mt-4 flex flex-col items-center gap-2">
+                  <p className="text-slate-400 text-xs">Secure payment with:</p>
+                  <img 
+                    src="/images/payment-methods.png" 
+                    alt="Accepted payment methods: Shop Pay, PayPal, Amazon Pay, Google Pay, Venmo" 
+                    className="h-10 object-contain"
+                  />
+                </div>
               </>
             )}
 
