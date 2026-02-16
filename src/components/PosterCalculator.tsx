@@ -227,7 +227,7 @@ export default function PosterCalculator() {
       setError('Network error. Please try again.');
       setStep('error');
     }
-  }, [file, ensureUploaded, unitPrintPrice, sizeData, quantity, addOns, tube, imageNaturalSize]);
+  }, [file, ensureUploaded, unitPrintPrice, sizeData, quantity, addOns, imageNaturalSize]);
 
   // ==================== RENDER HELPERS ====================
   const renderUpload = () => (

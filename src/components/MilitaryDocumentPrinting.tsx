@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './Header';
 import ScrollReveal from './ScrollReveal';
-import { ChevronUp, ShieldCheck, Clock, Phone, Mail, CreditCard, Award, CheckCircle, FileText, Printer, Upload, ArrowRight, Shield, Star, BookOpen, Wrench, Layers, Package, ClipboardList, Archive } from 'lucide-react';
+import { ChevronUp, ShieldCheck, Clock, Phone, Mail, CreditCard, Award, CheckCircle, Printer, Upload, Shield, Star, BookOpen, Wrench, Layers, Package, ClipboardList, Archive } from 'lucide-react';
 
 // Schema.org structured data
 const schemaData = {
